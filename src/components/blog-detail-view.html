@@ -1,0 +1,100 @@
+<div class="animate-fade-in bg-slate-50 dark:bg-slate-950 min-h-screen pb-12">
+
+  <!-- Hero Banner Section — Dynamic Post Image -->
+  <div class="relative min-h-[55vh] flex items-center bg-cover bg-center text-white border-b border-slate-900 overflow-hidden mb-6" style="background-image: url('{{image}}');">
+    <!-- Premium Dark Green Gradient Overlay -->
+    <div class="absolute inset-0 bg-slate-950/70 backdrop-blur-[1px] bg-gradient-to-t from-emerald-950/75 via-slate-950/85 to-slate-950/45"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full text-center sm:text-left space-y-3">
+      <span class="bg-primary-500/10 text-primary-400 font-bold uppercase tracking-widest text-[9px] px-2.5 py-1 rounded-full border border-primary-500/20">
+        {{category}}
+      </span>
+      <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-wide max-w-3xl leading-tight">
+        {{title}}
+      </h1>
+      <!-- Breadcrumbs in Hero -->
+      <div class="flex items-center justify-center sm:justify-start gap-1.5 text-xs text-slate-300 font-medium">
+        <a href="#home" class="hover:text-primary-400 transition-colors flex items-center gap-1">
+          <i class="bx bx-home-alt"></i> Home
+        </a>
+        <span>/</span>
+        <a href="#blogs" class="hover:text-primary-400 transition-colors">Blogs</a>
+        <span>/</span>
+        <span class="text-primary-400 font-semibold truncate max-w-[200px]">{{title}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Grid -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Article Content (Col 8) -->
+      <article class="lg:col-span-8 bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-xl p-5 sm:p-6 space-y-6 shadow-sm">
+        
+        <!-- Post Header Metadata -->
+        <div class="flex items-center flex-wrap gap-4 pb-4 border-b border-slate-100 dark:border-slate-800/60">
+          <div class="flex items-center gap-1.5 text-slate-450 text-[10px] uppercase font-bold tracking-wider">
+            <i class="bx bx-calendar text-primary-500"></i>
+            <span>{{date}}</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-slate-450 text-[10px] uppercase font-bold tracking-wider">
+            <i class="bx bx-time text-primary-500"></i>
+            <span>4 Min Read</span>
+          </div>
+        </div>
+
+        <!-- Render Content Body -->
+        <div class="prose prose-slate dark:prose-invert max-w-none text-sm text-slate-650 dark:text-slate-400 font-light leading-relaxed space-y-4">
+          {{content}}
+        </div>
+
+        <!-- Share Article Row -->
+        <div class="pt-6 border-t border-slate-150 dark:border-slate-800/60 flex items-center justify-between gap-4">
+          <span class="text-[11px] text-slate-500 uppercase tracking-wider font-bold">Share Article</span>
+          <div class="flex items-center gap-2">
+            <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-white hover:border-primary-500 hover:bg-primary-600 transition-all duration-300 shadow-sm" aria-label="Share Facebook">
+              <i class="bx bxl-facebook text-base"></i>
+            </a>
+            <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-white hover:border-primary-500 hover:bg-primary-600 transition-all duration-300 shadow-sm" aria-label="Share Twitter">
+              <i class="bx bxl-twitter text-base"></i>
+            </a>
+            <a href="#" class="h-8 w-8 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-white hover:border-primary-500 hover:bg-primary-600 transition-all duration-300 shadow-sm" aria-label="Share LinkedIn">
+              <i class="bx bxl-linkedin text-base"></i>
+            </a>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- Sidebar widgets (Col 4) -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24 h-fit">
+        
+        <!-- Related Articles Widget -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm space-y-4">
+          <h4 class="font-display font-extrabold text-xs text-slate-800 dark:text-white uppercase tracking-wider pb-2 border-b border-slate-100 dark:border-slate-800/80">
+            Recent Publications
+          </h4>
+          <div class="space-y-4">
+            {{relatedArticlesHtml}}
+          </div>
+        </div>
+
+        <!-- Quick Consultation Promo Card -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-xl shadow-sm space-y-3 transition-all duration-300">
+          <div class="flex items-center gap-2 text-primary-550 dark:text-primary-400">
+            <i class="bx bx-help-circle text-base"></i>
+            <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-800 dark:text-white">Questions?</h4>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-light leading-relaxed">
+            Speak with one of our specialized client advisors to arrange a walkthrough.
+          </p>
+          <a href="#contact" class="w-full btn btn-xs btn-primary justify-center text-xs py-2 rounded-md uppercase font-bold tracking-wider">
+            Contact Advisors
+          </a>
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</div>

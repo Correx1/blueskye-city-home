@@ -1,0 +1,104 @@
+<!-- Projects View Template -->
+<div class="animate-fade-in space-y-12 pb-20">
+
+  <!-- Hero Section — same style as Properties and About page -->
+  <div class="relative min-h-[50vh] flex items-center bg-cover bg-center text-white border-b border-slate-900 overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1920&q=80');">
+    <!-- Dark Gradient Overlay -->
+    <div class="absolute inset-0 bg-slate-950/65 backdrop-blur-[1px] bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/40"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left w-full">
+      <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-wide leading-tight">Landmark Developments</h1>
+      <p class="text-xs sm:text-base text-slate-200 mt-3 font-medium max-w-xl leading-relaxed">Preview high-fidelity urban layouts, master-planned developments, and exclusive pre-construction investment opportunities.</p>
+    </div>
+  </div>
+
+  <!-- Content Section - 8:4 Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Project List Column (Col 8) -->
+      <div class="lg:col-span-8 space-y-6">
+        <!-- PROJECTS_GRID -->
+      </div>
+      
+      <!-- Sidebar Column (Col 4) -->
+      <aside class="lg:col-span-4 space-y-6 lg:sticky lg:top-24 h-fit">
+        
+        <!-- Filters Card -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-xl p-6 shadow-sm transition-all duration-300">
+          <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-50 dark:border-slate-800/60">
+            <i class="bx bx-slider-alt text-primary-600 dark:text-primary-400 text-base"></i>
+            <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-800 dark:text-white">Filter Projects</h4>
+          </div>
+          
+          <div class="space-y-4">
+            <!-- Filter City -->
+            <div class="space-y-1.5">
+              <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1">
+                <i class="bx bx-map-pin text-xs text-primary-500"></i> City
+              </label>
+              <select id="project-filter-city" class="form-input text-xs rounded-md">
+                <option value="all">All Cities</option>
+                <option value="Lagos">Lagos</option>
+                <option value="Abuja">Abuja</option>
+              </select>
+            </div>
+            
+            <!-- Filter Status -->
+            <div class="space-y-1.5">
+              <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400 flex items-center gap-1">
+                <i class="bx bx-purchase-tag-alt text-xs text-primary-500"></i> Status
+              </label>
+              <select id="project-filter-status" class="form-input text-xs rounded-md">
+                <option value="all">All Statuses</option>
+                <option value="Pre-Launch">Pre-Launch</option>
+                <option value="In Construction">In Construction</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Open for Projects Card -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-xl p-6 shadow-sm space-y-3 transition-all duration-300">
+          <div class="flex items-center gap-2 text-amber-500">
+            <i class="bx bx-buildings text-base"></i>
+            <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-800 dark:text-white">Open for Projects</h4>
+          </div>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 font-light leading-relaxed">
+            Looking for joint ventures, co-development partnerships, or premium land acquisitions? We review survey plans and coordinate structural proposals.
+          </p>
+          <button data-action="jv-proposal-btn" class="btn btn-xs btn-outline border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md w-full justify-center text-xs py-2">
+            Contact Us
+          </button>
+        </div>
+
+        <!-- Affiliate Program Card -->
+        <div class="relative bg-slate-950 text-white rounded-xl p-6 shadow-md border border-white/5 overflow-hidden">
+          <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80');"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 to-slate-900/95"></div>
+          
+          <div class="relative z-10 space-y-4 text-left">
+            <div class="inline-flex items-center gap-2 border-l-4 border-primary-500 pl-3 py-0.5">
+              <span class="text-[9px] font-bold uppercase tracking-widest text-primary-400">Partnership Program</span>
+            </div>
+            <h4 class="font-display font-extrabold text-base text-white leading-tight">Earn Elite Commissions as a Blueskye Affiliate</h4>
+            <p class="text-[11px] text-slate-400 font-light leading-relaxed">
+              Join our exclusive circle of referral partners and real estate brokers. Unlock competitive commissions, priority access to off-market listings, and dedicated concierge support.
+            </p>
+            <div class="space-y-2 pt-2">
+              <button id="affiliate-join-btn" class="w-full btn btn-sm btn-primary justify-center rounded-md text-[10px] py-2.5 uppercase tracking-wider font-bold">
+                Register as Affiliate
+              </button>
+              <button id="affiliate-login-btn" class="w-full btn btn-sm btn-outline border-slate-800 text-white hover:bg-slate-900/40 justify-center rounded-md text-[10px] py-2.5 uppercase tracking-wider font-bold">
+                Partner Login
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </section>
+
+</div>

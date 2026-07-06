@@ -1,0 +1,86 @@
+<!-- Navbar component -->
+<header class="fixed top-0 inset-x-0 z-40 w-full border-b border-slate-100/80 dark:border-slate-900/60 backdrop-blur-md bg-white/80 dark:bg-slate-950/80 transition-colors duration-300 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    
+    <!-- Logo -->
+    <a href="#home" class="flex items-center gap-2 group">
+      <img src="/image/blueskye logo.png" alt="Blueskye City Home" class="h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.02]" />
+    </a>
+    
+    <!-- Desktop Nav Menu -->
+    <nav class="hidden lg:flex items-center gap-8" id="desktop-nav">
+      <a href="#home" data-route="home" class="nav-link">Home</a>
+      <a href="#properties" data-route="properties" class="nav-link">Properties</a>
+      <a href="#about" data-route="about" class="nav-link">About Us</a>
+      <a href="#projects" data-route="projects" class="nav-link">Projects</a>
+      <a href="#blogs" data-route="blogs" class="nav-link">Blogs</a>
+      <a href="#contact" data-route="contact" class="nav-link">Contact</a>
+    </nav>
+    
+    <!-- Actions (Desktop & Tablet) -->
+    <div class="hidden sm:flex items-center gap-3">
+      
+      <!-- Favorites -->
+      <a href="#properties" id="quick-favs-trigger" class="relative p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors" title="Saved Favorites">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-all fill-none" id="fav-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+        <span id="fav-badge" class="hidden absolute top-1 right-1 bg-primary-600 text-white text-[8px] font-bold h-3.5 w-3.5 flex items-center justify-center rounded-full">0</span>
+      </a>
+      
+      <!-- Auth CTA Button -->
+      <a href="#auth" id="auth-nav-btn" class="btn btn-sm bg-gradient-to-r from-primary-600 to-blue-600 hover:from-primary-700 hover:to-blue-750 text-white rounded-md px-5 py-2 transition-all duration-300 shadow-md shadow-primary-600/10 hover:shadow-lg active:scale-95">
+        Login / Register
+      </a>
+      
+    </div>
+
+    <!-- Hamburger Icon & Mobile toggles -->
+    <div class="flex lg:hidden items-center gap-2">
+      <button id="mobile-menu-toggle" class="p-2 rounded-md text-slate-650 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Open menu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Drawer Overlay -->
+<div id="mobile-drawer" class="hidden fixed inset-0 z-50 overflow-hidden lg:hidden" role="dialog" aria-modal="true">
+  <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" id="mobile-drawer-overlay"></div>
+  
+  <div class="absolute inset-y-0 right-0 max-w-xs w-full bg-white border-l border-slate-100 p-6 flex flex-col justify-between shadow-2xl">
+    <div>
+      <div class="flex items-center justify-between pb-6 border-b border-slate-100">
+        <img src="/image/blueskye logo.png" alt="Blueskye City Home" class="h-10 w-auto object-contain" />
+        <button id="mobile-menu-close" class="h-8 w-8 rounded-full border border-slate-100 flex items-center justify-center text-slate-500 hover:text-slate-950 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      
+      <nav class="flex flex-col gap-2.5 mt-6" id="mobile-nav">
+        <a href="#home" data-route="home" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          Home
+        </a>
+        <a href="#properties" data-route="properties" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          Properties
+        </a>
+        <a href="#about" data-route="about" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          About Us
+        </a>
+        <a href="#projects" data-route="projects" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          Projects
+        </a>
+        <a href="#blogs" data-route="blogs" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          Blogs
+        </a>
+        <a href="#contact" data-route="contact" class="relative text-xs font-extrabold uppercase tracking-[0.2em] py-3 text-slate-650 hover:text-primary-600 transition-all duration-200 w-fit block">
+          Contact
+        </a>
+      </nav>
+    </div>
+    
+    <div class="pt-6 border-t border-slate-100 flex flex-col gap-3">
+      <a href="#auth" class="btn btn-md bg-gradient-to-r from-primary-600 to-blue-600 hover:from-primary-700 hover:to-blue-750 text-white rounded-md w-full justify-center shadow-md active:scale-95 py-3">
+        Login / Register
+      </a>
+    </div>
+  </div>
+</div>

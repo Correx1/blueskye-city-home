@@ -1,0 +1,165 @@
+<div class="animate-fade-in">
+  <div class="relative min-h-[60vh] flex items-center bg-cover bg-center text-white border-b border-slate-900 overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1920&q=80');">
+    <!-- Dark Gradient Overlay -->
+    <div class="absolute inset-0 bg-slate-950/65 backdrop-blur-[1px] bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/40"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left w-full">
+      <h1 class="font-display font-extrabold text-3xl sm:text-5xl text-white tracking-wide leading-tight">Explore Our Properties</h1>
+      <p class="text-xs sm:text-base text-slate-200 mt-3 font-medium max-w-xl leading-relaxed">Discover, compare, and bookmark elite residences and investment land plots in Nigeria's prime locations.</p>
+    </div>
+  </div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+      
+      <!-- Filters Sidebar (Sticky on desktop and wider) -->
+      <aside class="lg:col-span-1 space-y-6 mb-8 lg:mb-0 lg:sticky lg:top-24 h-fit lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto pr-1">
+        <div class="bg-white p-6 rounded-md shadow-lg space-y-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <span class="font-display font-bold text-xs uppercase tracking-wider text-slate-800">Filter Listings</span>
+            <button id="reset-filters" class="text-[10px] text-primary-600 hover:text-primary-700 font-semibold uppercase tracking-wider">Reset</button>
+          </div>
+          
+          <!-- Search query keyword -->
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Keyword</label>
+            <div class="relative">
+              <input type="text" id="filter-query" placeholder="e.g. lagoon, ocean..." value="" class="form-input" />
+              <i data-lucide="search" class="absolute right-3 top-2.5 w-4 h-4 text-slate-400"></i>
+            </div>
+          </div>
+
+          <!-- Location Filter -->
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Location</label>
+            <select id="filter-city" class="form-input cursor-pointer bg-white text-slate-850">
+              <option value="all">All Locations</option>
+              <option value="Lagos">Lagos</option>
+              <option value="Abuja">Abuja</option>
+              <option value="Port Harcourt">Port Harcourt</option>
+            </select>
+          </div>
+
+          <!-- Price Filter -->
+          <div class="space-y-2">
+            <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Price Range (NGN)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <select id="filter-min-price" class="form-input cursor-pointer bg-white text-slate-850 py-1.5 px-2 text-[11px]">
+                <option value="all">Min Price</option>
+                <option value="100000">₦100k</option>
+                <option value="500000">₦500k</option>
+                <option value="1000000">₦1.0M</option>
+                <option value="2000000">₦2.0M</option>
+                <option value="3000000">₦3.0M</option>
+                <option value="5000000">₦5.0M</option>
+              </select>
+              <select id="filter-max-price" class="form-input cursor-pointer bg-white text-slate-850 py-1.5 px-2 text-[11px]">
+                <option value="all">Max Price</option>
+                <option value="500000">₦500k</option>
+                <option value="1000000">₦1.0M</option>
+                <option value="2000000">₦2.0M</option>
+                <option value="3000000">₦3.0M</option>
+                <option value="5000000">₦5.0M</option>
+                <option value="10000000">₦10M</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Size Filter -->
+          <div class="space-y-2">
+            <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Size (Sqft)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <select id="filter-min-size" class="form-input cursor-pointer bg-white text-slate-850 py-1.5 px-2 text-[11px]">
+                <option value="all">Min Size</option>
+                <option value="1000">1,000</option>
+                <option value="3000">3,000</option>
+                <option value="5000">5,000</option>
+                <option value="8000">8,000</option>
+                <option value="10000">10,000</option>
+              </select>
+              <select id="filter-max-size" class="form-input cursor-pointer bg-white text-slate-850 py-1.5 px-2 text-[11px]">
+                <option value="all">Max Size</option>
+                <option value="3000">3,000</option>
+                <option value="5000">5,000</option>
+                <option value="8000">8,000</option>
+                <option value="10000">10,000</option>
+                <option value="15000">15,000</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Status</label>
+            <select id="filter-status" class="form-input cursor-pointer bg-white text-slate-850">
+              <option value="all">Sale & Rent</option>
+              <option value="For Sale">For Sale</option>
+              <option value="For Rent">For Rent</option>
+            </select>
+          </div>
+          
+        </div>
+        <div id="sidebar-comparison-container" class="mt-5"></div>
+      </aside>
+      
+      <!-- Results list (Takes up 2/3 of space on desktop) -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- Controls Panel -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-4 rounded-md shadow-lg">
+          <div class="text-[11px] text-slate-500 font-medium">
+            Found <span class="font-bold text-slate-800" id="properties-count">0</span> matching listings.
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <label class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Sort</label>
+              <select id="sort-by" class="bg-slate-50 rounded-md text-[11px] px-2 py-1.5 cursor-pointer focus:outline-none text-slate-800">
+                <option value="featured">Featured</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="area-desc">Size: Largest first</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Grid Container -->
+        <div id="properties-grid-container">
+          <!-- PROPERTIES_GRID -->
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Affiliate CTA Section -->
+    <section class="mt-20">
+      <div class="relative rounded-xl overflow-hidden bg-slate-950 text-white p-8 sm:p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-lg">
+        <!-- Background Image with Dark Overlay (Reduced overlay density) -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/75 to-slate-950/90"></div>
+        
+        <div class="relative z-10 space-y-4 max-w-2xl text-center md:text-left">
+          <div class="section-badge text-primary-450 border-primary-500/50">Partnership Program</div>
+          
+          <h2 class="section-header text-white">
+            Earn Elite Commissions as a Blueskye Affiliate
+          </h2>
+          
+          <p class="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
+            Join our exclusive circle of referral partners and real estate brokers. Unlock competitive commissions, priority access to off-market listings, and dedicated concierge support.
+          </p>
+        </div>
+        
+        <div class="relative z-10 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center gap-3 w-full md:w-auto flex-shrink-0">
+          <a href="#auth" class="w-full sm:w-auto md:w-full lg:w-auto btn btn-md btn-primary justify-center px-6 rounded-md">
+            Register as Affiliate
+          </a>
+          <a href="#auth" class="w-full sm:w-auto md:w-full lg:w-auto btn btn-md btn-outline border-slate-700 text-white hover:bg-slate-900 justify-center px-6 rounded-md">
+            Partner Login
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>

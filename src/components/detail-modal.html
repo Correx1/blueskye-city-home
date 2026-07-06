@@ -1,0 +1,85 @@
+<div class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-white dark:bg-dark-surface border border-slate-200 dark:border-slate-800 rounded-md w-full max-w-4xl shadow-2xl overflow-hidden relative flex flex-col max-h-[90vh]">
+    
+    <!-- Controls -->
+    <div class="absolute right-4 top-4 z-10 flex items-center gap-2">
+      <button data-action="toggle-fav" data-id="{{id}}" class="h-9 w-9 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:scale-105 transition-transform text-slate-800 dark:text-white shadow-sm">
+        <i data-lucide="heart" class="w-4 h-4 {{favClass}}"></i>
+      </button>
+      <button id="close-detail-modal" class="h-9 w-9 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center hover:scale-105 transition-transform text-slate-800 dark:text-white shadow-sm">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    
+    <div class="overflow-y-auto flex-grow">
+      <!-- Slide image -->
+      <div class="relative h-60 sm:h-96 bg-slate-950 overflow-hidden">
+        <img src="{{slideImgUrl}}" alt="{{title}}" class="w-full h-full object-cover" id="detail-slider-img" />
+        
+        <button id="prev-detail-image" class="absolute left-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <button id="next-detail-image" class="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+      </div>
+      
+      <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-500">
+        <!-- Details -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="space-y-1.5">
+            <span class="px-2 py-0.5 rounded bg-primary-100 dark:bg-primary-950/20 text-primary-600 text-[9px] font-bold uppercase tracking-wider">{{status}}</span>
+            <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white">{{title}}</h2>
+            <p class="flex items-center gap-1 text-[10px] text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-primary-600"></i> {{location}}, {{city}}</p>
+            <div class="font-display font-extrabold text-base text-primary-600 mt-1">{{formattedPrice}}</div>
+          </div>
+          
+          <div class="grid grid-cols-4 gap-2 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md text-center">
+            <div><div class="font-bold text-slate-800 dark:text-white">{{beds}}</div><div class="text-[8px] uppercase text-slate-400">Beds</div></div>
+            <div><div class="font-bold text-slate-800 dark:text-white">{{baths}}</div><div class="text-[8px] uppercase text-slate-400">Baths</div></div>
+            <div><div class="font-bold text-slate-800 dark:text-white">{{area}}</div><div class="text-[8px] uppercase text-slate-400">Sqft</div></div>
+            <div><div class="font-bold text-slate-800 dark:text-white">{{yearBuilt}}</div><div class="text-[8px] uppercase text-slate-400">Year</div></div>
+          </div>
+          
+          <div class="space-y-1">
+            <h4 class="font-display font-bold text-slate-800 dark:text-white uppercase tracking-wider">Description</h4>
+            <p class="leading-relaxed font-light">{{description}}</p>
+          </div>
+          
+          <div class="space-y-1">
+            <h4 class="font-display font-bold text-slate-800 dark:text-white uppercase tracking-wider">Calculator Estimates</h4>
+            <div class="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-md flex items-center justify-between">
+              <div>
+                <span class="text-[9px] uppercase tracking-wider text-slate-400 block font-bold">Mortgage (Monthly)</span>
+                <span class="font-display font-extrabold text-sm text-primary-600" id="mortgage-monthly">{{formattedMonthly}}</span>
+              </div>
+              <div class="w-3/5 space-y-2">
+                <input type="range" id="slider-downpayment" min="5" max="80" step="5" value="{{downpaymentPct}}" class="w-full h-1 bg-slate-200 dark:bg-slate-700 appearance-none rounded-lg cursor-pointer accent-primary-600" />
+                <div class="flex justify-between text-[9px] text-slate-400"><span>Downpayment: {{downpaymentPct}}%</span><span>Interest: 6.5%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Sidebar Contact -->
+        <div class="space-y-4">
+          <div class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-md text-center space-y-3">
+            <img src="{{agent.image}}" alt="{{agent.name}}" class="w-14 h-14 rounded-full mx-auto object-cover border border-primary-600" />
+            <div>
+              <h4 class="font-display font-bold text-slate-800 dark:text-white text-xs">{{agent.name}}</h4>
+              <p class="text-[8px] uppercase tracking-wider text-slate-400">{{agent.role}}</p>
+            </div>
+          </div>
+          
+          <button data-action="purchase-direct" data-id="{{id}}" class="btn btn-md bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white w-full justify-center font-bold uppercase tracking-wider text-xs py-2.5 rounded-md shadow-md active:scale-95">
+            {{purchaseCtaText}}
+          </button>
+          
+          <div class="text-center text-[9px] text-slate-400 font-bold uppercase tracking-widest my-1">— OR —</div>
+          
+          <form id="inquiry-form" class="space-y-2">
+            <input type="text" placeholder="Your Name" required class="form-input" />
+            <input type="email" placeholder="Your Email" required class="form-input" />
+            <button type="submit" class="btn btn-sm btn-primary w-full justify-center">Send Inquiry</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

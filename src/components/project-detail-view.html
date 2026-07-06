@@ -1,0 +1,503 @@
+<div class="animate-fade-in py-10 bg-slate-50 dark:bg-slate-950 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+    
+    <!-- Navigation Breadcrumbs & Back link -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-200 dark:border-slate-800">
+      <div class="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 font-medium">
+        <a href="#home" class="hover:text-primary-600 transition-colors">Home</a>
+        <span>/</span>
+        <a href="#projects" class="hover:text-primary-600 transition-colors">Projects</a>
+        <span>/</span>
+        <span class="text-slate-900 dark:text-white font-semibold truncate max-w-[160px] sm:max-w-[240px]">{{title}}</span>
+      </div>
+      <a href="#projects" class="inline-flex items-center gap-1 text-xs font-bold text-slate-650 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors uppercase tracking-wider">
+        <i class="bx bx-left-arrow-alt text-sm"></i>
+        Back to Developments
+      </a>
+    </div>
+
+    <!-- Header Title & Price -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-white bg-primary-600 shadow-sm">{{status}}</span>
+          <span class="px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-slate-700 bg-slate-200 dark:bg-slate-800 dark:text-slate-350">{{type}}</span>
+        </div>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white tracking-tight leading-tight">{{title}}</h1>
+        <p class="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <i class="bx bx-map text-sm text-primary-500"></i>
+          {{location}}, {{city}}
+        </p>
+      </div>
+      
+      <div class="text-left md:text-right bg-white dark:bg-slate-900/40 px-6 py-4 rounded-md shadow-sm border border-slate-100 dark:border-slate-800 flex flex-col justify-center">
+        <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Investment Starting from</span>
+        <span class="font-display font-extrabold text-2xl sm:text-3xl text-primary-600 dark:text-primary-400">{{investmentStarting}}</span>
+      </div>
+    </div>
+
+    <!-- Images Gallery Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:h-[60vh] md:max-h-[550px] mb-8">
+      <!-- Main Large Featured Media -->
+      <div id="detail-featured-media-container" class="md:col-span-2 h-[35vh] sm:h-[45vh] md:h-full bg-slate-900 rounded-md overflow-hidden shadow-md relative group">
+        {{featuredMediaHtml}}
+        
+        <!-- Unique Image Title Label Overlay -->
+        <div class="absolute bottom-4 left-4 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-md text-[9px] uppercase font-bold tracking-wider z-10 border border-white/5 flex items-center gap-1.5 shadow">
+          <i class="bx bx-image-alt text-primary-400 text-xs"></i>
+          <span id="detail-image-title">{{currentImageTitle}}</span>
+        </div>
+        
+        <!-- Big Image Slider navigation chevrons -->
+        <button data-action="detail-prev-slide" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white h-10 w-10 rounded-full flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 z-10">
+          <i class="bx bx-chevron-left text-2xl"></i>
+        </button>
+        <button data-action="detail-next-slide" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white h-10 w-10 rounded-full flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 z-10">
+          <i class="bx bx-chevron-right text-2xl"></i>
+        </button>
+      </div>
+      
+      <!-- Vertical Thumbnails scroll list on desktop -->
+      <div class="md:col-span-1 flex flex-row md:flex-col gap-3 overflow-x-auto md:overflow-y-auto h-20 sm:h-24 md:h-full scrollbar-thin pb-2 md:pb-0 pr-0 md:pr-1 select-none">
+        {{thumbnailsHtml}}
+      </div>
+    </div>
+
+    <!-- Main Content layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Left Details Side -->
+      <div class="lg:col-span-2 space-y-8">
+        
+        <!-- Specs Details Card -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+          <div class="space-y-1 flex flex-col items-center justify-between">
+            <span class="text-[9px] uppercase font-bold tracking-widest text-slate-400">Construction</span>
+            <div class="my-1 flex items-center justify-center">
+              <i class="bx bx-analyse text-primary-500 text-lg"></i>
+            </div>
+            <div class="font-display font-extrabold text-slate-800 dark:text-white text-sm sm:text-base leading-tight">
+              {{progress}}%
+            </div>
+          </div>
+
+          <div class="space-y-1 flex flex-col items-center justify-between">
+            <span class="text-[9px] uppercase font-bold tracking-widest text-slate-400">Delivery Target</span>
+            <div class="my-1 flex items-center justify-center">
+              <i class="bx bx-calendar text-primary-500 text-lg"></i>
+            </div>
+            <div class="font-display font-extrabold text-slate-800 dark:text-white text-sm sm:text-base leading-tight">
+              {{completionDate}}
+            </div>
+          </div>
+
+          <div class="space-y-1 flex flex-col items-center justify-between">
+            <span class="text-[9px] uppercase font-bold tracking-widest text-slate-400">Project Type</span>
+            <div class="my-1 flex items-center justify-center">
+              <i class="bx bx-grid-alt text-primary-500 text-lg"></i>
+            </div>
+            <div class="font-display font-extrabold text-slate-800 dark:text-white text-xs uppercase tracking-wide leading-tight text-center max-w-[120px] mx-auto break-words">
+              {{type}}
+            </div>
+          </div>
+
+          <div class="space-y-1 flex flex-col items-center justify-between">
+            <span class="text-[9px] uppercase font-bold tracking-widest text-slate-400">Allocation</span>
+            <div class="my-1 flex items-center justify-center">
+              <i class="bx bx-shield-quarter text-primary-500 text-lg"></i>
+            </div>
+            <div class="font-display font-extrabold text-slate-800 dark:text-white text-sm sm:text-base leading-tight">
+              Milestone Escrow
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-5 text-sm text-slate-650 dark:text-slate-400">
+          <h3 class="font-display font-extrabold text-sm text-slate-850 dark:text-white uppercase tracking-wider pb-3 border-b border-slate-100 dark:border-slate-800">Development Overview</h3>
+          <p class="leading-relaxed font-light text-slate-550 dark:text-slate-400">{{description}}</p>
+        </div>
+
+        <!-- Amenities Checklist -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-4 text-sm text-slate-650 dark:text-slate-400">
+          <h3 class="font-display font-extrabold text-sm text-slate-850 dark:text-white uppercase tracking-wider pb-3 border-b border-slate-100 dark:border-slate-800 font-bold">Planned Amenities & Infrastructure</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            {{amenitiesListHtml}}
+          </div>
+        </div>
+
+        <!-- Construction Progress & Timeline -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-6 text-sm text-slate-650 dark:text-slate-400">
+          <div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-800">
+            <h3 class="font-display font-extrabold text-sm text-slate-850 dark:text-white uppercase tracking-wider font-bold">Construction Stage & Timeline</h3>
+            <span class="bg-primary-50 dark:bg-primary-950/20 text-primary-600 dark:text-primary-400 font-bold uppercase tracking-wider text-[9px] px-2 py-0.5 rounded">
+              Stage: {{status}}
+            </span>
+          </div>
+
+          <!-- Construction Stats Info Box -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800/60">
+              <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Current Progress</span>
+              <span class="font-display font-extrabold text-lg text-primary-600 dark:text-primary-400 block mt-1">{{progress}}% Complete</span>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800/60">
+              <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Current Phase</span>
+              <span class="font-display font-semibold text-xs text-slate-850 dark:text-white block mt-1 uppercase tracking-wide truncate max-w-full">
+                {{status}}
+              </span>
+            </div>
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800/60">
+              <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Expected Completion</span>
+              <span class="font-display font-extrabold text-lg text-slate-850 dark:text-white block mt-1">{{completionDate}}</span>
+            </div>
+          </div>
+
+          <!-- Horizontal/Vertical Development Roadmap (Timeline) -->
+          <div class="space-y-6 pt-2">
+            <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-slate-800 dark:text-white flex items-center gap-1.5">
+              <i class="bx bx-git-commit text-primary-500 text-base"></i>
+              Development Roadmap & Timeline
+            </h4>
+            
+            <div class="relative pl-6 border-l-2 border-slate-100 dark:border-slate-800 space-y-8 ml-3">
+              <!-- Timeline Milestone 1 -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0 bg-emerald-500 text-white rounded-full w-4 h-4 flex items-center justify-center border-4 border-white dark:border-slate-900 shadow-sm">
+                  <i class="bx bx-check text-[10px] font-bold"></i>
+                </span>
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-extrabold tracking-widest text-emerald-500 uppercase">Phase 1</span>
+                    <h5 class="font-bold text-slate-800 dark:text-white text-xs">Title Deed Perfection & Survey Layout</h5>
+                  </div>
+                  <p class="text-xs text-slate-450 dark:text-slate-400 font-light leading-relaxed">
+                    Land registry mapping, environmental approvals, and initial layout boundaries completed.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Timeline Milestone 2 -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0 bg-emerald-500 text-white rounded-full w-4 h-4 flex items-center justify-center border-4 border-white dark:border-slate-900 shadow-sm">
+                  <i class="bx bx-check text-[10px] font-bold"></i>
+                </span>
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-extrabold tracking-widest text-emerald-500 uppercase">Phase 2</span>
+                    <h5 class="font-bold text-slate-800 dark:text-white text-xs">Substructure & Piling Engineering</h5>
+                  </div>
+                  <p class="text-xs text-slate-450 dark:text-slate-400 font-light leading-relaxed">
+                    Excavation excavation, concrete piles cast, and structural load tests approved.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Timeline Milestone 3 -->
+              <div class="relative">
+                <span class="absolute -left-[31px] top-0 bg-primary-600 text-white rounded-full w-4 h-4 flex items-center justify-center border-4 border-white dark:border-slate-900 shadow-sm animate-pulse">
+                </span>
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-extrabold tracking-widest text-primary-500 uppercase">Phase 3</span>
+                    <h5 class="font-bold text-slate-800 dark:text-white text-xs">Superstructure Framing</h5>
+                  </div>
+                  <p class="text-xs text-slate-450 dark:text-slate-400 font-light leading-relaxed">
+                    Cast columns, brick masonry walling, and slab roofing casting (Currently active stage).
+                  </p>
+                </div>
+              </div>
+
+              <!-- Timeline Milestone 4 -->
+              <div class="relative opacity-60">
+                <span class="absolute -left-[31px] top-0 bg-slate-200 dark:bg-slate-800 text-slate-400 rounded-full w-4 h-4 flex items-center justify-center border-4 border-white dark:border-slate-900 shadow-sm">
+                </span>
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-extrabold tracking-widest text-slate-400 uppercase">Phase 4</span>
+                    <h5 class="font-bold text-slate-800 dark:text-white text-xs">Smart Fittings & Handover</h5>
+                  </div>
+                  <p class="text-xs text-slate-450 dark:text-slate-400 font-light leading-relaxed">
+                    Interior installations, smart automation configuration, and handover deed perfect.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documents Preview Section -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-4 text-sm text-slate-650 dark:text-slate-400">
+          <h3 class="font-display font-extrabold text-sm text-slate-850 dark:text-white uppercase tracking-wider pb-3 border-b border-slate-100 dark:border-slate-800">Legal Documentation & Land Deeds</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 pb-2">All development layout deeds, survey plans, and environmental permits are fully vetted.</p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- Layout Approved Survey -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800 flex flex-col justify-between space-y-3 hover:shadow-md transition-shadow">
+              <div class="space-y-1">
+                <span class="text-[8px] uppercase tracking-widest text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400 px-2 py-0.5 rounded">Verified</span>
+                <h4 class="font-bold text-slate-800 dark:text-white text-[11px] pt-1">Approved Survey Plan</h4>
+              </div>
+              <button data-action="preview-doc" data-doc="Approved Layout Survey" class="w-full py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] font-bold text-slate-600 dark:text-slate-350 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                Preview Document
+              </button>
+            </div>
+            
+            <!-- Global C of O -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800 flex flex-col justify-between space-y-3 hover:shadow-md transition-shadow">
+              <div class="space-y-1">
+                <span class="text-[8px] uppercase tracking-widest text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400 px-2 py-0.5 rounded">Verified</span>
+                <h4 class="font-bold text-slate-800 dark:text-white text-[11px] pt-1">Certificate of Occupancy</h4>
+              </div>
+              <button data-action="preview-doc" data-doc="Global Certificate of Occupancy" class="w-full py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] font-bold text-slate-600 dark:text-slate-350 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                Preview Document
+              </button>
+            </div>
+
+            <!-- EIA Approval -->
+            <div class="p-4 bg-slate-50 dark:bg-slate-900/20 rounded-md border border-slate-100 dark:border-slate-800 flex flex-col justify-between space-y-3 hover:shadow-md transition-shadow">
+              <div class="space-y-1">
+                <span class="text-[8px] uppercase tracking-widest text-emerald-600 font-bold bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-400 px-2 py-0.5 rounded">Verified</span>
+                <h4 class="font-bold text-slate-800 dark:text-white text-[11px] pt-1">EIA Approved Permit</h4>
+              </div>
+              <button data-action="preview-doc" data-doc="Environmental Impact Assessment Permit" class="w-full py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded text-[10px] font-bold text-slate-600 dark:text-slate-350 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+                Preview Document
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Location Map -->
+        <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-4 text-xs text-slate-650 dark:text-slate-400">
+          <h3 class="font-display font-extrabold text-sm text-slate-850 dark:text-white uppercase tracking-wider pb-3 border-b border-slate-100 dark:border-slate-800">Development Location Map</h3>
+          <div class="w-full h-80 rounded overflow-hidden shadow-sm relative border border-slate-100 dark:border-slate-800">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.7282631558296!2d3.4357597147702036!3d6.428055495349272!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf53280e55097%3A0x24d864197e4113!2sLekki%20Phase%201%2C%20Lagos!5e0!3m2!1sen!2sng!4v1625567890123!5m2!1sen!2sng"
+              class="w-full h-full border-none outline-none"
+              style="border:0;"
+              allowfullscreen="" 
+              loading="lazy">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Contact / Order Sidebar -->
+      <div class="lg:col-span-1">
+        <aside class="space-y-6 lg:sticky lg:top-24 h-fit pr-1">
+          
+          <!-- Order Now & Agent Contact Box -->
+          <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-6 rounded-md shadow-sm space-y-6">
+            
+            <div class="pb-4 border-b border-slate-100 dark:border-slate-800">
+              <span class="text-[9px] uppercase tracking-widest text-slate-400 font-bold block">Assigned Project Advisor</span>
+              <div class="flex items-center gap-4 mt-3">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80" alt="Chidi Okafor" class="w-14 h-14 rounded-full object-cover border-2 border-primary-100 dark:border-primary-950" />
+                <div>
+                  <h4 class="font-display font-extrabold text-sm text-slate-800 dark:text-white">Chidi Okafor</h4>
+                  <p class="text-[9px] uppercase tracking-wider text-slate-455 font-semibold">Development Concierge</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order Now Primary Action -->
+            <div class="space-y-3">
+              <button data-action="contact-advisor" data-id="{{id}}" class="w-full btn btn-md btn-primary justify-center font-bold uppercase tracking-wider text-xs py-3 rounded-md shadow-md active:scale-95">
+                Book Private Presentation
+              </button>
+              <p class="text-[10px] text-slate-450 dark:text-slate-400 text-center leading-relaxed font-medium">Secured under Blueskye Milestone Escrow protection.</p>
+            </div>
+
+            <div class="text-center text-[10px] text-slate-300 font-bold uppercase tracking-widest">— OR —</div>
+
+            <!-- Agent Message Form -->
+            <div class="space-y-3">
+              <h4 class="font-display font-bold text-xs text-slate-850 dark:text-white uppercase tracking-wider">Request Layout / Catalog</h4>
+              <form id="project-inquiry-form" class="space-y-3">
+                <input type="text" placeholder="Your Name" required class="form-input" />
+                <input type="email" placeholder="Your Email" required class="form-input" />
+                <button type="submit" class="btn btn-sm btn-primary w-full justify-center py-2.5 font-bold uppercase tracking-wider text-[10px]">
+                  Request PDF Brochure
+                </button>
+              </form>
+            </div>
+
+          </div>
+
+          <!-- Quick Bookmark/Favorite Card -->
+          <div class="bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 p-4 rounded-md shadow-sm flex items-center justify-between">
+            <span class="text-xs text-slate-550 dark:text-slate-400 font-medium">Save this project to favorites</span>
+            <button data-action="toggle-project-fav" data-id="{{id}}" class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-800 hover:border-red-500 rounded-md text-[10px] font-bold text-slate-600 dark:text-slate-350 hover:text-red-500 transition-colors uppercase tracking-wider">
+              <i class="bx bx-heart text-sm"></i>
+              Bookmark
+            </button>
+          </div>
+
+        </aside>
+      </div>
+
+    </div>
+  </div> <!-- Closes max-w-7xl to let the next section stretch wide end-to-end -->
+
+  <!-- How We Work Section spanning wide end-to-end across screen -->
+  <section class="mt-16 relative bg-slate-950 text-white py-20 border-y border-slate-900 overflow-hidden">
+    <!-- Background Image Overlay -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-10" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80');"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-950/90 to-slate-900/95 z-0"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+      <!-- Section Header — centered -->
+      <div class="text-center space-y-2">
+        <div class="section-badge border-primary-500/30 text-primary-400">How We Work</div>
+        <h2 class="section-header text-white mt-1">Simple Process. Fast Results.</h2>
+      </div>
+
+      <!-- Process Steps Grid -->
+      <div class="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        <!-- Connecting Line behind circles on desktop -->
+        <div class="absolute top-[42px] left-[8%] right-[8%] h-[1px] bg-slate-800 hidden lg:block z-0"></div>
+
+        <!-- Step 1 -->
+        <div class="relative flex flex-col items-center text-center space-y-4 z-10 group">
+          <!-- Large Transparent Watermark Number -->
+          <div class="absolute -top-6 text-slate-900 font-display font-black text-6xl select-none z-0 opacity-80">01</div>
+          
+          <!-- Circular Icon Badge -->
+          <div class="w-12 h-12 rounded-full border border-primary-500/20 bg-slate-900/80 flex items-center justify-center relative shadow-sm z-10 group-hover:border-primary-500 transition-all duration-300">
+            <i class="bx bx-message-detail text-primary-400 text-lg"></i>
+          </div>
+          
+          <div class="space-y-2 relative z-10">
+            <h3 class="font-display font-extrabold text-sm text-white">Tell Us What You Need</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed px-2">
+              Fill in our short contact form. Tell us your budget range, desired state location, and your timeframe. We respond within 2 hours.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="relative flex flex-col items-center text-center space-y-4 z-10 group">
+          <!-- Large Transparent Watermark Number -->
+          <div class="absolute -top-6 text-slate-900 font-display font-black text-6xl select-none z-0 opacity-80">02</div>
+          
+          <!-- Circular Icon Badge -->
+          <div class="w-12 h-12 rounded-full border border-primary-500/20 bg-slate-900/80 flex items-center justify-center relative shadow-sm z-10 group-hover:border-primary-500 transition-all duration-300">
+            <i class="bx bx-file-blank text-primary-400 text-lg"></i>
+          </div>
+          
+          <div class="space-y-2 relative z-10">
+            <h3 class="font-display font-extrabold text-sm text-white">Get Your Quote</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed px-2">
+              We recommend the right property units or plots and send a clear, itemised quote and legal deeds overview. No hidden fees.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="relative flex flex-col items-center text-center space-y-4 z-10 group">
+          <!-- Large Transparent Watermark Number -->
+          <div class="absolute -top-6 text-slate-900 font-display font-black text-6xl select-none z-0 opacity-80">03</div>
+          
+          <!-- Circular Icon Badge -->
+          <div class="w-12 h-12 rounded-full border border-primary-500/20 bg-slate-900/80 flex items-center justify-center relative shadow-sm z-10 group-hover:border-primary-500 transition-all duration-300">
+            <i class="bx bx-bolt text-primary-400 text-lg"></i>
+          </div>
+          
+          <div class="space-y-2 relative z-10">
+            <h3 class="font-display font-extrabold text-sm text-white">We Get to Work</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed px-2">
+              Safe escrow deposit secures your acquisition. We immediately initiate site allocation or transfer processing without delays.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="relative flex flex-col items-center text-center space-y-4 z-10 group">
+          <!-- Large Transparent Watermark Number -->
+          <div class="absolute -top-6 text-slate-900 font-display font-black text-6xl select-none z-0 opacity-80">04</div>
+          
+          <!-- Circular Icon Badge -->
+          <div class="w-12 h-12 rounded-full border border-primary-500/20 bg-slate-900/80 flex items-center justify-center relative shadow-sm z-10 group-hover:border-primary-500 transition-all duration-300">
+            <i class="bx bx-rocket text-primary-400 text-lg"></i>
+          </div>
+          
+          <div class="space-y-2 relative z-10">
+            <h3 class="font-display font-extrabold text-sm text-white">Delivery & Growth</h3>
+            <p class="text-xs text-slate-400 font-light leading-relaxed px-2">
+              Fast, professional deed handovers. 30-day post-handover support. Most clients purchase multiple plots with us.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section tailored to Projects -->
+  <section class="max-w-7xl mx-auto px-4 py-16 border-t border-slate-100 dark:border-slate-800/80">
+    <div class="text-center mb-12">
+      <div class="section-badge">FAQ'S</div>
+      <h2 class="section-header mt-1 text-slate-850 dark:text-white">Frequently Asked Questions</h2>
+    </div>
+
+    <!-- Centered FAQ Accordions (No much border-radius: using rounded-md) -->
+    <div class="max-w-3xl mx-auto space-y-4">
+      
+      <!-- Accordion 1 -->
+      <div class="border border-slate-200/60 dark:border-slate-800 rounded-md overflow-hidden bg-slate-50 dark:bg-slate-900/30">
+        <button data-action="toggle-faq-accordion" class="flex justify-between items-center w-full py-4 px-5 text-left font-display font-extrabold text-sm sm:text-base text-slate-800 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors rounded-md animate-none">
+          <span>1. Can I visit the construction site before committing capital?</span>
+          <span class="h-8 w-8 rounded-full bg-primary-600/10 dark:bg-primary-600/20 text-primary-600 flex items-center justify-center flex-shrink-0 transition-transform duration-300">
+            <i class="bx bx-plus text-base"></i>
+          </span>
+        </button>
+        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-light">
+          Yes. We arrange private site presentations and guided physical inspections with our Development Advisory team. Contact your assigned project advisor directly using the contact sidebar to schedule a guided tour.
+        </div>
+      </div>
+
+      <!-- Accordion 2 -->
+      <div class="border border-slate-200/60 dark:border-slate-800 rounded-md overflow-hidden bg-slate-50 dark:bg-slate-900/30">
+        <button data-action="toggle-faq-accordion" class="flex justify-between items-center w-full py-4 px-5 text-left font-display font-extrabold text-sm sm:text-base text-slate-800 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors rounded-md animate-none">
+          <span>2. How does the Milestone Escrow payment plan safeguard my investment?</span>
+          <span class="h-8 w-8 rounded-full bg-primary-600/10 dark:bg-primary-600/20 text-primary-600 flex items-center justify-center flex-shrink-0 transition-transform duration-300">
+            <i class="bx bx-plus text-base"></i>
+          </span>
+        </button>
+        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-light">
+          Your capital is secure. Payments are held in protected escrow accounts and only released to developers in structured phases upon verified engineering milestones. If milestones aren't met, releases are paused.
+        </div>
+      </div>
+
+      <!-- Accordion 3 -->
+      <div class="border border-slate-200/60 dark:border-slate-800 rounded-md overflow-hidden bg-slate-50 dark:bg-slate-900/30">
+        <button data-action="toggle-faq-accordion" class="flex justify-between items-center w-full py-4 px-5 text-left font-display font-extrabold text-sm sm:text-base text-slate-800 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors rounded-md animate-none">
+          <span>3. What happens if a construction phase is delayed?</span>
+          <span class="h-8 w-8 rounded-full bg-primary-600/10 dark:bg-primary-600/20 text-primary-600 flex items-center justify-center flex-shrink-0 transition-transform duration-300">
+            <i class="bx bx-plus text-base"></i>
+          </span>
+        </button>
+        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-light">
+          Our developers operate under strict timelines with integrated buffers. In the rare event of major delays, the escrow release is suspended, and buyers are protected by structural fallback clauses or priority reallocation options.
+        </div>
+      </div>
+
+      <!-- Accordion 4 -->
+      <div class="border border-slate-200/60 dark:border-slate-800 rounded-md overflow-hidden bg-slate-50 dark:bg-slate-900/30">
+        <button data-action="toggle-faq-accordion" class="flex justify-between items-center w-full py-4 px-5 text-left font-display font-extrabold text-sm sm:text-base text-slate-800 dark:text-white hover:bg-slate-100/50 dark:hover:bg-slate-900/50 transition-colors rounded-md animate-none">
+          <span>4. When will the official Title Deeds be perfected in my name?</span>
+          <span class="h-8 w-8 rounded-full bg-primary-600/10 dark:bg-primary-600/20 text-primary-600 flex items-center justify-center flex-shrink-0 transition-transform duration-300">
+            <i class="bx bx-plus text-base"></i>
+          </span>
+        </button>
+        <div class="faq-content max-h-0 overflow-hidden transition-all duration-300 ease-in-out px-5 text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-light">
+          Deed perfection begins immediately during Phase 4 (Finishing & Handover). Upon final structural audit and sign-off, all surveyor logs, deed of assignment registries, and transfer certificates are fully signed, perfected, and handed over to you.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</div> <!-- Closes animate-fade-in -->

@@ -1,0 +1,79 @@
+<!-- Project Card Template -->
+<div data-project-card data-id="{{id}}" data-active-index="0" class="group flex flex-col md:flex-row bg-white dark:bg-slate-900/40 border border-slate-100 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary-500/30 transition-all duration-300 cursor-pointer">
+  
+  <!-- Left Side: Image Slider / Carousel Styling -->
+  <div class="relative md:w-[42%] min-h-[250px] md:min-h-full shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-950">
+    <img src="{{image}}" alt="{{title}}" class="project-slide-img absolute inset-0 w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" />
+    
+    <!-- Heart Icon Overlay (Top Right) -->
+    <button class="absolute top-4 right-4 h-8 w-8 rounded-full bg-white/90 dark:bg-slate-900/90 text-slate-600 dark:text-slate-350 shadow-sm flex items-center justify-center hover:text-red-500 transition-colors z-10">
+      <i class="bx bx-heart text-base"></i>
+    </button>
+
+    <!-- Slider Arrow Overlays -->
+    <button data-action="project-prev-slide" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white h-7 w-7 rounded-full flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 z-10">
+      <i class="bx bx-chevron-left text-lg"></i>
+    </button>
+    <button data-action="project-next-slide" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white h-7 w-7 rounded-full flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 z-10">
+      <i class="bx bx-chevron-right text-lg"></i>
+    </button>
+
+    <!-- Photos/Slider Badge (Bottom Left) -->
+    <div class="absolute bottom-3 left-4 bg-slate-950/60 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 flex items-center gap-1 text-white z-10">
+      <i class="bx bx-image text-[10px]"></i>
+      <span class="project-slide-count text-[8px] font-bold uppercase tracking-wider">Photo 1 of 3</span>
+    </div>
+  </div>
+
+  <!-- Right Side: Content Area -->
+  <div class="p-6 md:w-[58%] flex flex-col justify-between space-y-4">
+    <div class="space-y-2">
+      <!-- Price -->
+      <div class="text-slate-900 dark:text-white mt-1">
+        <span class="text-xs text-slate-450 block font-light leading-none">Investment starting from</span>
+        <span class="text-xl font-display font-extrabold text-slate-900 dark:text-white block mt-0.5">{{investmentStarting}}</span>
+      </div>
+
+      <!-- Status & Type -->
+      <div class="text-xs font-semibold text-primary-600 dark:text-primary-400 mt-1 uppercase tracking-wider">
+        {{status}} &middot; {{type}}
+      </div>
+
+      <!-- Title -->
+      <h3 class="font-display font-extrabold text-slate-800 dark:text-white text-base md:text-lg leading-snug">
+        {{title}}
+      </h3>
+
+      <!-- Location Pin -->
+      <div class="flex items-center gap-1 text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+        <i class="bx bx-map text-xs text-primary-500"></i> {{location}}, {{city}}
+      </div>
+
+      <!-- Description -->
+      <p class="text-xs text-slate-500 dark:text-slate-400 font-light leading-relaxed">
+        {{description}}
+      </p>
+    </div>
+
+    <!-- Construction & Delivery Status Block (Percentage only) -->
+    <div class="flex items-center gap-4 text-[9px] font-bold uppercase tracking-widest text-slate-400 py-2 border-t border-b border-slate-100 dark:border-slate-800/60">
+      <span class="flex items-center gap-1 text-primary-600 dark:text-primary-400">
+        <i class="bx bx-analyse text-xs"></i> Construction: {{progress}}%
+      </span>
+      <span class="flex items-center gap-1">
+        <i class="bx bx-calendar text-xs"></i> Target: {{completionDate}}
+      </span>
+    </div>
+
+    <!-- Call / View Project Buttons (using design system buttons btn-outline and btn-primary) -->
+    <div class="flex items-center gap-3 pt-1">
+      <button data-action="call-advisor" class="btn btn-sm btn-outline border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-md py-2 px-4 text-xs font-semibold flex items-center gap-1.5">
+        <i class="bx bx-phone text-sm"></i> Call Advisor
+      </button>
+      <button data-action="view-project" data-id="{{id}}" class="btn btn-sm btn-primary rounded-md py-2 px-5 text-xs font-semibold flex items-center gap-1.5">
+        View Project
+      </button>
+    </div>
+  </div>
+  
+</div>
