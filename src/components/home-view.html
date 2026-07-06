@@ -25,13 +25,13 @@
           
           <!-- Keyword input -->
           <div class="w-full md:w-1/3 flex items-center px-3 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 focus-within:border-primary-500 transition-colors">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 flex-shrink-0"></i>
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 shrink-0"></i>
             <input type="text" id="hero-query" placeholder="Search keyword" value="" class="w-full bg-transparent text-slate-800 dark:text-white text-xs border-none focus:outline-none focus:ring-0 px-2 py-3" />
           </div>
           
           <!-- Land Type dropdown selection with explicit high visibility styles -->
           <div class="w-full md:w-1/4 flex items-center px-3 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 focus-within:border-primary-500 transition-colors">
-            <i data-lucide="building" class="w-4 h-4 text-slate-400 flex-shrink-0"></i>
+            <i data-lucide="building" class="w-4 h-4 text-slate-400 shrink-0"></i>
             <select id="hero-type" class="w-full bg-transparent text-slate-855 dark:text-white font-semibold text-xs border-none focus:outline-none focus:ring-0 py-3 cursor-pointer">
               <option class="bg-white text-slate-855 dark:bg-slate-900 dark:text-slate-100" value="all">Land Type</option>
               <option class="bg-white text-slate-855 dark:bg-slate-900 dark:text-slate-100" value="Land">Land</option>
@@ -45,7 +45,7 @@
 
           <!-- State Location dropdown with high visibility styling -->
           <div class="w-full md:w-1/4 flex items-center px-3 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 focus-within:border-primary-500 transition-colors">
-            <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 flex-shrink-0"></i>
+            <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 shrink-0"></i>
             <select id="hero-city" class="w-full bg-transparent text-slate-855 dark:text-white font-semibold text-xs border-none focus:outline-none focus:ring-0 py-3 cursor-pointer">
               <option class="bg-white text-slate-855 dark:bg-slate-900 dark:text-slate-100" value="all">All States</option>
               <option class="bg-white text-slate-855 dark:bg-slate-900 dark:text-slate-100" value="Lagos">Lagos State</option>
@@ -55,7 +55,7 @@
           </div>
           
           <!-- Search Submit Button with reduced border-radius -->
-          <button type="submit" class="w-full md:w-auto btn btn-md btn-primary justify-center font-display uppercase tracking-widest px-8 rounded-md h-[44px] flex-shrink-0">
+          <button type="submit" class="w-full md:w-auto btn btn-md btn-primary justify-center font-display uppercase tracking-widest px-8 rounded-md h-[44px] shrink-0">
             Search
           </button>
         </form>
@@ -65,9 +65,10 @@
   
   <!-- ABOUT_SECTION -->
   
+ 
 
   <!-- PORTFOLIO_BENEFITS_SECTION -->
-
+ 
 
 
   <!-- Featured listings grid -->
@@ -100,7 +101,7 @@
     <div class="relative rounded-xl overflow-hidden bg-slate-950 text-white p-8 sm:p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm">
       <!-- Background Image with Dark Overlay (Reduced overlay density) -->
       <div class="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80');"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/75 to-slate-950/90"></div>
+      <div class="absolute inset-0 bg-linear-to-r from-slate-950/40 via-slate-950/75 to-slate-950/90"></div>
       
       <div class="relative z-10 space-y-4 max-w-2xl text-center md:text-left">
         <div class="section-badge text-primary-450 border-primary-500/50">Partnership Program</div>
@@ -114,7 +115,7 @@
         </p>
       </div>
       
-      <div class="relative z-10 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center gap-3 w-full md:w-auto flex-shrink-0">
+      <div class="relative z-10 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center gap-3 w-full md:w-auto shrink-0">
         <a href="#auth" class="w-full sm:w-auto md:w-full lg:w-auto btn btn-md btn-primary justify-center px-6 rounded-md">
           Register as Affiliate
         </a>
@@ -141,11 +142,11 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:grid-rows-12 gap-6 min-h-[900px] md:h-[900px]">
       
       <!-- CARD 1: Lekki (Row Span 5) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-5">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-5">
         <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" alt="Lekki" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -164,11 +165,11 @@
       </div>
       
       <!-- CARD 2: Single-Family Home (Row Span 7) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-7">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-7">
         <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80" alt="Single-Family Home" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -187,11 +188,11 @@
       </div>
       
       <!-- CARD 3: Apartment (Row Span 8) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-8">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-8">
         <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Apartment" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -210,11 +211,11 @@
       </div>
       
       <!-- CARD 4: Terrace (Row Span 4) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-4">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-4">
         <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=600&q=80" alt="Terrace" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -233,11 +234,11 @@
       </div>
       
       <!-- CARD 5: Ikoyi (Row Span 4) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-4">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-4">
         <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80" alt="Ikoyi" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -256,11 +257,11 @@
       </div>
       
       <!-- CARD 6: Ajah (Row Span 4) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-4">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-4">
         <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80" alt="Ajah" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -279,11 +280,11 @@
       </div>
       
       <!-- CARD 7: Victoria Island (Row Span 4) -->
-      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-[4/3] md:aspect-auto md:row-span-4">
+      <div class="relative rounded-2xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-500 hover:-translate-y-1 aspect-4/3 md:aspect-auto md:row-span-4">
         <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Victoria Island" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
         
         <!-- Dark Vignette Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-slate-950/40 opacity-80 group-hover:opacity-95 transition-opacity duration-300"></div>
         
         <!-- FLOATING CONTENT -->
         <div class="absolute inset-0 p-5 flex flex-col justify-between z-10">
@@ -311,7 +312,7 @@
   <section class="w-full relative overflow-hidden py-24 text-white">
     <!-- Background Image with Overlay -->
     <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" style="background-image: url('https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1920&q=80');"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/85 to-slate-900/40"></div>
+    <div class="absolute inset-0 bg-linear-to-r from-slate-950/95 via-slate-950/85 to-slate-900/40"></div>
     
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl space-y-6 text-left">

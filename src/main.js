@@ -631,7 +631,7 @@ function getTestimonialsHtml() {
         <i class="fa-solid fa-star text-xs"></i>
       </div>
       
-      <p class="text-slate-600 dark:text-slate-350 text-xs italic leading-relaxed font-light mb-6 flex-grow">
+      <p class="text-slate-600 dark:text-slate-350 text-xs italic leading-relaxed font-light mb-6 grow">
         "${test.quote}"
       </p>
       
@@ -810,7 +810,7 @@ function PropertyDetailViewTemplate() {
       path = '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2zm0 0v-5-2"/>';
     }
     
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary-600 flex-shrink-0">${path}</svg>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary-600 shrink-0">${path}</svg>`;
   };
 
   // Generate amenities checklist with custom mapped icons
@@ -831,7 +831,7 @@ function PropertyDetailViewTemplate() {
   let thumbsHtml = prop.images.map((img, i) => {
     const activeBorder = (state.selectedImageIndex === i) ? 'border-2 border-primary-600' : 'border border-slate-200/50';
     return `
-      <div class="w-24 h-16 md:w-full md:h-[170px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all flex-shrink-0 relative ${activeBorder}" data-action="set-image" data-index="${i}">
+      <div class="w-24 h-16 md:w-full md:h-[170px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all shrink-0 relative ${activeBorder}" data-action="set-image" data-index="${i}">
         <img src="${img}" class="w-full h-full object-cover" />
       </div>
     `;
@@ -840,7 +840,7 @@ function PropertyDetailViewTemplate() {
   // Add 9th thumbnail for the video
   const videoThumbActive = isVideoSelected ? 'border-2 border-primary-600' : 'border border-slate-200/50';
   thumbsHtml += `
-    <div class="w-24 h-16 md:w-full md:h-[170px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all flex-shrink-0 relative bg-slate-950 ${videoThumbActive}" data-action="set-image" data-index="8">
+    <div class="w-24 h-16 md:w-full md:h-[170px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all shrink-0 relative bg-slate-950 ${videoThumbActive}" data-action="set-image" data-index="8">
       <img src="${prop.images[0]}" class="w-full h-full object-cover opacity-60" />
       <div class="absolute inset-0 flex items-center justify-center bg-black/40">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white"><path d="M8 5v14l11-7z"/></svg>
@@ -905,7 +905,7 @@ function ProjectDetailViewTemplate() {
   let thumbsHtml = proj.images.map((img, i) => {
     const activeBorder = (safeIndex === i) ? 'border-2 border-primary-600' : 'border border-slate-200/50';
     return `
-      <div class="w-24 h-16 md:w-full md:h-[120px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all flex-shrink-0 relative ${activeBorder}" data-action="set-image" data-index="${i}">
+      <div class="w-24 h-16 md:w-full md:h-[120px] rounded-md overflow-hidden cursor-pointer hover:opacity-90 transition-all shrink-0 relative ${activeBorder}" data-action="set-image" data-index="${i}">
         <img src="${img}" class="w-full h-full object-cover" />
       </div>
     `;
@@ -994,7 +994,7 @@ function renderBlogBlocks(blocks) {
       case 'image':
         return `
           <div class="my-6 space-y-2 group">
-            <div class="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/80 aspect-[16/10] max-h-[360px]">
+            <div class="rounded-xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/80 aspect-16/10 max-h-[360px]">
               <img src="${block.url}" alt="${block.caption || ''}" class="w-full h-full object-cover group-hover:scale-[1.01] transition-transform duration-500" />
             </div>
             ${block.caption ? `<p class="text-[10px] text-center text-slate-400 dark:text-slate-500 font-medium italic">${block.caption}</p>` : ''}
@@ -1004,7 +1004,7 @@ function renderBlogBlocks(blocks) {
       case 'gallery':
         const colsClass = block.columns === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2';
         const galleryItems = block.images.map(img => `
-          <div class="rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800/80 shadow-sm aspect-[4/3] group">
+          <div class="rounded-xl overflow-hidden border border-slate-100 dark:border-slate-800/80 shadow-sm aspect-4/3 group">
             <img src="${img}" alt="Gallery photo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-550" />
           </div>
         `).join('');
@@ -1026,7 +1026,7 @@ function renderBlogBlocks(blocks) {
         }
         return `
           <div class="flex gap-3 border-l-4 p-4 rounded-r-lg my-6 ${bgStyle}">
-            <i class="${icon} flex-shrink-0 mt-0.5"></i>
+            <i class="${icon} shrink-0 mt-0.5"></i>
             <p class="text-xs font-medium leading-relaxed">${block.text}</p>
           </div>
         `;
@@ -1054,8 +1054,8 @@ function BlogDetailViewTemplate() {
   const related = blogs.filter(b => b.id !== blog.id).slice(0, 4);
   const relatedArticlesHtml = related.map(rel => `
     <div class="flex gap-3 items-center group">
-      <img src="${rel.image}" alt="${rel.title}" class="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-slate-100 dark:border-slate-800/60 shadow-sm" />
-      <div class="min-w-0 flex-grow">
+      <img src="${rel.image}" alt="${rel.title}" class="w-14 h-14 rounded-lg object-cover shrink-0 border border-slate-100 dark:border-slate-800/60 shadow-sm" />
+      <div class="min-w-0 grow">
         <a href="#blog-detail?id=${rel.id}" class="font-display font-extrabold text-[11px] text-slate-850 dark:text-white hover:text-primary-600 block truncate leading-tight transition-colors">
           ${rel.title}
         </a>
