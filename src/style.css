@@ -247,3 +247,94 @@ body.dark {
 .dark .footer-watermark {
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.025);
 }
+
+/* --- Admin Dashboard Custom Sidebar Styles (White and Big Texts) --- */
+.admin-menu-btn, .admin-menu-group-btn, .admin-submenu-btn {
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.admin-menu-btn, .admin-menu-group-btn {
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+}
+
+.admin-submenu-btn {
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  padding-left: 2rem !important; /* Indent submenus slightly */
+}
+
+.admin-menu-btn i, .admin-menu-group-btn i, .admin-submenu-btn i {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 17px !important;
+}
+
+.admin-menu-btn.active, .admin-menu-group-btn.active, .admin-submenu-btn.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.admin-menu-btn.active i, .admin-menu-group-btn.active i, .admin-submenu-btn.active i {
+  color: #ffffff !important;
+}
+
+.admin-menu-btn:hover, .admin-menu-group-btn:hover, .admin-submenu-btn:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.admin-menu-btn:hover i, .admin-menu-group-btn:hover i, .admin-submenu-btn:hover i {
+  color: #ffffff !important;
+}
+
+/* --- Admin Color Overrides to Primary Royal Blue --- */
+#admin-viewport .text-primary-500,
+#admin-viewport .text-primary-600,
+#admin-viewport .text-primary-650,
+#admin-viewport .text-primary-655 {
+  color: #1d4ed8 !important;
+}
+
+#admin-viewport .bg-primary-50 {
+  background-color: rgba(29, 78, 216, 0.08) !important;
+}
+
+#admin-viewport .border-primary-500,
+#admin-viewport .border-primary-500/30,
+#admin-viewport .border-primary-600 {
+  border-color: rgba(29, 78, 216, 0.3) !important;
+}
+
+#admin-viewport .accent-primary-600 {
+  accent-color: #1d4ed8 !important;
+}
+
+/* Force buttons inside admin console workspace to use Primary Royal Blue */
+#admin-viewport .btn-primary {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(29, 78, 216, 0.2), 0 2px 4px -2px rgba(29, 78, 216, 0.2) !important;
+}
+
+#admin-viewport .btn-primary:hover {
+  background-color: #1e3a8a !important;
+  box-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.3), 0 4px 6px -4px rgba(29, 78, 216, 0.3) !important;
+}
+
+#admin-viewport .btn-secondary {
+  border-color: #1d4ed8 !important;
+  color: #1d4ed8 !important;
+}
+
+#admin-viewport .btn-secondary:hover {
+  background-color: rgba(29, 78, 216, 0.05) !important;
+}
+
+#admin-viewport select:focus,
+#admin-viewport input:focus,
+#admin-viewport textarea:focus {
+  border-color: #1d4ed8 !important;
+  box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15) !important;
+}

@@ -18,6 +18,7 @@ import projectsHtml from './components/projects-view.html?raw';
 import blogsHtml from './components/blogs-view.html?raw';
 import contactHtml from './components/contact-view.html?raw';
 import authHtml from './components/auth-view.html?raw';
+import affiliateHtml from './components/affiliate-view.html?raw';
 import propertyCardHtml from './components/property-card.html?raw';
 import blogCardHtml from './components/blog-card.html?raw';
 import comparisonDrawerHtml from './components/comparison-drawer.html?raw';
@@ -31,6 +32,21 @@ import faqSectionHtml from './components/faq-section.html?raw';
 import projectCardHtml from './components/project-card.html?raw';
 import projectDetailViewHtml from './components/project-detail-view.html?raw';
 import blogDetailViewHtml from './components/blog-detail-view.html?raw';
+
+// --- HTML Form Modal Templates ---
+import clientLoginFormHtml from './components/client-login-form.html?raw';
+import clientRegisterFormHtml from './components/client-register-form.html?raw';
+import affiliateLoginFormHtml from './components/affiliate-login-form.html?raw';
+import affiliateRegisterFormHtml from './components/affiliate-register-form.html?raw';
+import orderWizardModalHtml from './components/order-wizard-modal.html?raw';
+
+// --- Privacy and Terms Page Templates ---
+import privacyHtml from './components/privacy-view.html?raw';
+import termsHtml from './components/terms-view.html?raw';
+
+// --- Admin Dashboard Template ---
+import adminHtml from './admin/admin-view.html?raw';
+import { renderAdminTabContent, bindAdminTabListeners } from './admin/admin-subviews.js';
 
 
 
@@ -91,6 +107,67 @@ const state = {
   projectFilters: {
     city: 'all',
     status: 'all'
+  },
+  admin: {
+    isAuthenticated: true,
+    activeTab: 'overview',
+    expandedGroups: {
+      properties: false,
+      customers: false,
+      sales: false,
+      partners: false,
+      finance: false,
+      inspections: false,
+      staff: false,
+      blog: false,
+      reports: false,
+      settings: false
+    },
+    staffName: 'Amina Bello',
+    staffRole: 'Administrator',
+    theme: localStorage.getItem('blueskye_admin_theme') || 'light',
+    
+    // Mock databases
+    kycQueue: [
+      { id: 1, name: 'Chukwu Raphael', email: 'chukwu@domain.com', docType: 'International Passport', docUrl: 'passport.jpg', status: 'Pending Review', date: '2026-07-06' },
+      { id: 2, name: 'Amina Yusuf', email: 'amina@domain.com', docType: 'Driver\'s License', docUrl: 'license.jpg', status: 'Approved', date: '2026-07-05' }
+    ],
+    inspectionsList: [
+      { id: 1, name: 'Jane Doe', phone: '+2348011122233', email: 'jane@domain.com', propertyTitle: 'Magnolia Diplomat Mansion', date: '2026-07-10', type: 'Physical Tour', status: 'Pending' },
+      { id: 2, name: 'John Smith', phone: '+2348099988877', email: 'john@domain.com', propertyTitle: 'Serene Serviced Plot', date: '2026-07-12', type: 'Virtual Video', status: 'Confirmed' }
+    ],
+    ordersLedger: [
+      { id: 1, clientName: 'Jane Doe', email: 'jane@domain.com', propertyTitle: 'Magnolia Diplomat Mansion', price: 850000000, formattedPrice: '₦850,000,000', plan: 'Outright', date: '2026-07-07', status: 'Pending Downpayment', paidAmount: 0 },
+      { id: 2, clientName: 'Amina Yusuf', email: 'amina@domain.com', propertyTitle: 'Serene Serviced Plot', price: 150000000, formattedPrice: '₦150,000,000', plan: '6-Month Installment', date: '2026-07-05', status: 'Active Installments', paidAmount: 50000000 }
+    ],
+    referralsList: [
+      { id: 1, name: 'Obinna Diala', email: 'obinna@partner.com', phone: '+2347065554433', status: 'Approved', code: 'SKY-OBIN-99', clicks: 245, sales: 3, earned: 45000000 },
+      { id: 2, name: 'Fatima Bello', email: 'fatima@partner.com', phone: '+2349032221100', status: 'Pending Review', code: 'SKY-FATI-12', clicks: 89, sales: 0, earned: 0 }
+    ],
+    contactMessages: [
+      { id: 1, name: 'Emeka Okafor', email: 'emeka@gmail.com', message: 'I want to know if there is a payment flexible plan for Eko Atlantic duplex.', date: '2026-07-07' },
+      { id: 2, name: 'Sarah Lawson', email: 'sarah@yahoo.com', message: 'Please send me the structural layout details for the Abuja diplomat estates.', date: '2026-07-06' }
+    ],
+    auditLogs: [
+      { id: 1, time: '2026-07-07 08:15', staff: 'Amina Bello', action: 'Update Affiliate Rules commission rate to 10%', component: 'System Settings' },
+      { id: 2, time: '2026-07-07 08:00', staff: 'Amina Bello', action: 'Log in successful', component: 'Authentication' }
+    ],
+    settings: {
+      companyName: 'Blueskye City Home',
+      companyLogo: '/image/blueskye logo.png',
+      companyAddress: 'Plot 15, Lekki Phase 1, Lagos, Nigeria',
+      companyPhone: '+234 1 234 5678',
+      companyEmail: 'advisors@blueskyecityhome.com',
+      
+      commissionDirect: 10,
+      commissionOverride: 5,
+      cookieLifespanDays: 90,
+      
+      escrowBankName: 'Zenith Bank PLC',
+      escrowAccountName: 'Blueskye Escrow Shield Ltd',
+      escrowAccountNumber: '1012345678',
+      escrowSwiftCode: 'ZENINGLA'
+    }
   }
 };
 
@@ -135,6 +212,22 @@ const routes = {
   'auth': { 
     title: 'Client Portal Login & Registration | Blueskye City Home',
     description: 'Access your premium real estate dashboard, track active site inspection requests, and monitor escrow perfection milestones.' 
+  },
+  'affiliate': { 
+    title: 'Elite Affiliate Partner Program | Blueskye City Home',
+    description: 'Join the most elite real estate partnership network in Nigeria. Earn 10% direct commissions and 5% passive override commissions.' 
+  },
+  'privacy': {
+    title: 'Privacy Policy | Blueskye City Home',
+    description: 'Read our client data handling policies, encryption protocols, and affiliate referral cookies configuration.'
+  },
+  'terms': {
+    title: 'Terms & Conditions | Blueskye City Home',
+    description: 'Review our premium purchase terms, milestone payments guidelines, and site tour booking guidelines.'
+  },
+  'admin': {
+    title: 'Admin Console | Blueskye City Home',
+    description: 'Internal console for property management, customer audits, commission payouts, and settings.'
   }
 };
 
@@ -301,7 +394,23 @@ function handleRoute() {
     }
   }
 
-  const hash = rawHash.replace('#', '') || 'home';
+  const hash = rawHash.split('?')[0].replace('#', '') || 'home';
+  if (hash === 'auth') {
+    window.location.hash = '#home';
+    setTimeout(() => {
+      const urlParams = new URLSearchParams(rawHash.split('?')[1] || '');
+      const typeParam = urlParams.get('type') || urlParams.get('tab');
+      if (typeParam === 'affiliate' || typeParam === 'register-affiliate') {
+        openAffiliateAuthModal('register');
+      } else if (typeParam === 'affiliate-login') {
+        openAffiliateAuthModal('login');
+      } else {
+        openClientAuthModal('login');
+      }
+    }, 100);
+    return;
+  }
+
   if (routes[hash]) {
     state.activeRoute = hash;
     updateMetaTags(routes[hash].title, routes[hash].description);
@@ -316,6 +425,10 @@ function handleRoute() {
   // Render main layout
   renderApp();
   window.scrollTo({ top: 0, behavior: 'instant' });
+
+  if (state.activeRoute === 'admin' && state.admin.isAuthenticated) {
+    initAdminTab(state.admin.activeTab);
+  }
 
   // Manage slideshow timer based on active view
   if (state.activeRoute === 'home') {
@@ -374,7 +487,24 @@ function startHeroSlider() {
 
 // --- Main Layout Render ---
 function renderApp() {
+  const navbar = document.querySelector('app-navbar');
+  const footer = document.querySelector('footer');
   const mainContent = document.querySelector('#main-content');
+
+  if (state.activeRoute === 'admin') {
+    if (navbar) navbar.classList.add('hidden');
+    if (footer) footer.classList.add('hidden');
+    if (mainContent) {
+      mainContent.className = "grow h-screen overflow-hidden";
+    }
+  } else {
+    if (navbar) navbar.classList.remove('hidden');
+    if (footer) footer.classList.remove('hidden');
+    if (mainContent) {
+      mainContent.className = "grow pt-16";
+    }
+  }
+
   if (mainContent) {
     mainContent.innerHTML = renderActiveView();
   }
@@ -566,6 +696,7 @@ function renderApp() {
 }
 
 // --- Active View Route Orchestrator ---
+// --- Active View Route Orchestrator ---
 function renderActiveView() {
   switch (state.activeRoute) {
     case 'home':
@@ -588,9 +719,190 @@ function renderActiveView() {
       return ContactViewTemplate();
     case 'auth':
       return AuthViewTemplate();
+    case 'affiliate':
+      return AffiliateViewTemplate();
+    case 'privacy':
+      return privacyHtml;
+    case 'terms':
+      return termsHtml;
+    case 'admin':
+      return adminHtml;
     default:
       return HomeViewTemplate();
   }
+}
+
+// --- Admin Console Core Helpers ---
+function renderAdminLoginView() {
+  return `
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/90 backdrop-blur-md p-4 text-slate-800 dark:text-slate-200">
+      <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200/20 animate-fade-in p-8 space-y-6 relative">
+        
+        <!-- Logo -->
+        <div class="text-center space-y-2">
+          <img src="/image/blueskye logo.png" alt="Blueskye Logo" class="h-16 w-auto mx-auto object-contain mb-3" />
+          <span class="text-primary-650 dark:text-primary-400 uppercase tracking-[0.25em] text-[9px] font-black">Security Console</span>
+          <h2 class="font-display font-extrabold text-xl text-slate-900 dark:text-white leading-tight">Admin Console Log In</h2>
+          <p class="text-[10px] text-slate-450 dark:text-slate-500 font-light">Verification required for employee network access.</p>
+        </div>
+
+        <form id="admin-login-form" class="space-y-4">
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Employee Email</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <i class="bx bx-user text-sm"></i>
+              </span>
+              <input type="email" id="admin-email" value="admin@blueskye.com" required class="form-input text-xs pl-9 bg-slate-50/50 dark:bg-slate-950 text-slate-800 dark:text-white" />
+            </div>
+          </div>
+          
+          <div class="space-y-1.5">
+            <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Security Password</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <i class="bx bx-lock-alt text-sm"></i>
+              </span>
+              <input type="password" id="admin-password" placeholder="••••••••" required class="form-input text-xs pl-9 bg-slate-50/50 dark:bg-slate-950 text-slate-800 dark:text-white" />
+              <button type="button" id="toggle-admin-pass-visibility" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-650 transition-colors">
+                <i class="bx bx-show text-sm" id="admin-pass-eye-icon"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-md btn-primary w-full justify-center mt-2 shadow-md active:scale-98">
+            Access System Console
+          </button>
+        </form>
+
+        <div class="text-center pt-2 border-t border-slate-100 dark:border-slate-850">
+          <a href="#home" class="text-xs text-slate-400 hover:text-slate-600 transition-colors flex items-center justify-center gap-1">
+            <i class="bx bx-arrow-back text-sm"></i> Back to Homepage
+          </a>
+        </div>
+
+      </div>
+    </div>
+  `;
+}
+
+function getTabFriendlyTitle(tabName) {
+  switch (tabName) {
+    case 'overview': return 'Overview Dashboard';
+    case 'properties-list': return 'Properties List';
+    case 'properties-projects': return 'Development Projects';
+    case 'properties-track': return 'Track Construction';
+    case 'properties-mapping': return 'Land Plot Mapping';
+    case 'customers-list': return 'Customers Directory';
+    case 'customers-kyc': return 'Customer KYC Management';
+    case 'customers-access': return 'Portal Access Controls';
+    case 'customers-docs': return 'Upload Land Documents';
+    case 'customers-notes': return 'Customer Notes';
+    case 'clients-bookings': return 'Tour Bookings';
+    case 'clients-messages': return 'Contact Messages';
+    case 'sales-list': return 'Sales Catalog';
+    case 'sales-installments': return 'Installment Plans';
+    case 'sales-payments': return 'Confirmed Payments';
+    case 'sales-invoicing': return 'Invoices List';
+    case 'partners-directory': return 'Partner Directory';
+    case 'partners-ledger': return 'Commission Ledger';
+    case 'partners-payouts': return 'Payout Records';
+    case 'partners-tree': return 'Affiliate Hierarchy Tree';
+    case 'inspections-calendar': return 'Inspection Calendar';
+    case 'reports-sales': return 'Sales Summary Reports';
+    case 'reports-commissions': return 'Commission Payouts Report';
+    case 'reports-performance': return 'Performance Analytics';
+    case 'finance-ledger': return 'Payment Ledger (Escrow)';
+    case 'staff-accounts': return 'Staff Accounts';
+    case 'staff-permissions': return 'Access Permissions';
+    case 'blog-write': return 'Write Articles';
+    case 'blog-subscribers': return 'News Subscribers';
+    case 'settings-profile': return 'Platform Profile Settings';
+    case 'settings-affiliate': return 'Affiliate Rules Settings';
+    case 'settings-bank': return 'Escrow Bank Setup';
+    case 'settings-audit': return 'System Audit Logs';
+    case 'properties-add': return 'Manage Property Form';
+    default: return 'Admin Console';
+  }
+}
+
+function initAdminTab(tabName) {
+  const titleEl = document.querySelector('#admin-header-title');
+  const viewport = document.querySelector('#admin-viewport');
+  if (!viewport) return;
+  
+  if (titleEl) {
+    titleEl.innerText = getTabFriendlyTitle(tabName);
+  }
+
+  // Sync active classes in sidebar navigation menu
+  document.querySelectorAll('#admin-sidebar-menu button').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('data-tab') === tabName) {
+      btn.classList.add('active');
+      if (btn.classList.contains('admin-submenu-btn')) {
+        const parentDiv = btn.closest('div');
+        if (parentDiv) {
+          parentDiv.classList.remove('hidden');
+          const groupName = parentDiv.id.replace('group-', '');
+          state.admin.expandedGroups[groupName] = true;
+          const toggleBtn = parentDiv.parentElement.querySelector('[data-toggle]');
+          const chevron = document.querySelector(`#chevron-${groupName}`);
+          if (chevron) chevron.className = 'bx bx-chevron-up text-xs transition-transform duration-200 text-white/60';
+        }
+      }
+    }
+  });
+
+  // Restore sidebar expand states on render
+  Object.keys(state.admin.expandedGroups).forEach(group => {
+    const groupEl = document.querySelector(`#group-${group}`);
+    const chevron = document.querySelector(`#chevron-${group}`);
+    if (groupEl) {
+      if (state.admin.expandedGroups[group]) {
+        groupEl.classList.remove('hidden');
+        if (chevron) chevron.className = 'bx bx-chevron-up text-xs transition-transform duration-200 text-white/60';
+      } else {
+        groupEl.classList.add('hidden');
+        if (chevron) chevron.className = 'bx bx-chevron-down text-xs transition-transform duration-200 text-white/60';
+      }
+    }
+  });
+
+  // Render tab HTML content
+  viewport.innerHTML = renderAdminTabContent(tabName, state, properties, projects, blogs);
+
+  // Sync avatar and name elements on header topbar
+  const avatarEl = document.querySelector('#admin-header-avatar');
+  const nameEl = document.querySelector('#admin-header-name');
+  const roleEl = document.querySelector('#admin-header-role');
+  if (avatarEl) {
+    const initials = state.admin.staffName.split(' ').map(n => n[0]).join('').substring(0, 2);
+    avatarEl.innerText = initials;
+  }
+  if (nameEl) nameEl.innerText = state.admin.staffName;
+  if (roleEl) roleEl.innerText = state.admin.staffRole;
+
+  // Restore dashboard isolated dark theme state
+  const container = document.querySelector('#admin-root-container');
+  const themeIconEl = document.querySelector('#admin-theme-icon');
+  if (container) {
+    if (state.admin.theme === 'dark') {
+      container.classList.add('dark');
+    } else {
+      container.classList.remove('dark');
+    }
+  }
+  if (themeIconEl) {
+    themeIconEl.className = state.admin.theme === 'dark' ? 'bx bx-sun text-lg' : 'bx bx-moon text-lg';
+  }
+
+  // Bind sub-component interactive controls (CRUD listeners, CMS clicks, settings inputs)
+  bindAdminTabListeners(tabName, state, properties, projects, blogs, renderApp, initAdminTab);
+}
+
+function AffiliateViewTemplate() {
+  return affiliateHtml;
 }
 
 // --- View Templates ---
@@ -848,7 +1160,27 @@ function PropertyDetailViewTemplate() {
     </div>
   `;
 
-  const purchaseCtaText = prop.status === 'For Sale' ? 'Buy Now' : 'Rent Now';
+  let purchaseCtaText = 'Buy Now';
+  let purchaseActionText = 'Order Now (Buy Now)';
+  let purchaseBtnClass = 'bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white shadow-md active:scale-95';
+  let purchaseDisabledAttr = '';
+  let statusBadgeClass = 'bg-primary-600';
+
+  if (prop.status === 'Sold') {
+    purchaseCtaText = 'Sold';
+    purchaseActionText = 'Sold / Archived';
+    purchaseBtnClass = 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed pointer-events-none';
+    purchaseDisabledAttr = 'disabled';
+    statusBadgeClass = 'bg-red-600';
+  } else if (prop.status === 'For Rent') {
+    purchaseCtaText = 'Rent Now';
+    purchaseActionText = 'Order Now (Rent Now)';
+    statusBadgeClass = 'bg-emerald-600';
+  } else if (prop.status === 'For Sale') {
+    purchaseCtaText = 'Buy Now';
+    purchaseActionText = 'Order Now (Buy Now)';
+    statusBadgeClass = 'bg-primary-600';
+  }
 
   // Generate similar properties grid list
   let similar = properties.filter(p => p.id !== prop.id && (p.type === prop.type || p.city === prop.city));
@@ -866,6 +1198,10 @@ function PropertyDetailViewTemplate() {
     formattedMonthly,
     downpaymentPct: state.mortgage.downPaymentPct,
     purchaseCtaText,
+    purchaseActionText,
+    purchaseBtnClass,
+    purchaseDisabledAttr,
+    statusBadgeClass,
     amenitiesListHtml,
     featuredMediaHtml,
     thumbnailsHtml: thumbsHtml,
@@ -1090,17 +1426,36 @@ function AuthViewTemplate() {
 function PropertyCardTemplate(prop) {
   const isCompared = state.comparedPropertyIds.includes(prop.id);
   const compareIconSvg = isCompared
-    ? `<svg xmlns="http://www.w3.org/2500/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary-600"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="m9 12 2 2 4-4"/></svg>`
-    : `<svg xmlns="http://www.w3.org/2500/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-slate-400"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg>`;
+    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-primary-600"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><path d="m9 12 2 2 4-4"/></svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-slate-400"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></svg>`;
 
-  const purchaseCtaText = prop.status === 'For Sale' ? 'Buy Now' : 'Rent Now';
+  let purchaseCtaText = 'Buy Now';
+  let purchaseBtnClass = 'btn-primary';
+  let purchaseDisabledAttr = '';
+  let statusBadgeClass = 'bg-primary-600';
+
+  if (prop.status === 'Sold') {
+    purchaseCtaText = 'Sold';
+    purchaseBtnClass = 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed pointer-events-none';
+    purchaseDisabledAttr = 'disabled';
+    statusBadgeClass = 'bg-red-600';
+  } else if (prop.status === 'For Rent') {
+    purchaseCtaText = 'Rent Now';
+    statusBadgeClass = 'bg-emerald-600';
+  } else if (prop.status === 'For Sale') {
+    purchaseCtaText = 'Buy Now';
+    statusBadgeClass = 'bg-primary-600';
+  }
 
   const cardData = {
     ...prop,
     imageUrl: prop.images[0],
     isFavoritedClass: state.favorites.includes(prop.id) ? 'fill-primary-600 text-primary-600' : 'fill-none text-slate-600 dark:text-slate-350',
     compareIconSvg,
-    purchaseCtaText
+    purchaseCtaText,
+    purchaseBtnClass,
+    purchaseDisabledAttr,
+    statusBadgeClass
   };
   return interpolate(propertyCardHtml, cardData);
 }
@@ -1519,7 +1874,35 @@ function setupEventListeners() {
     if (purchaseTrigger) {
       const id = parseInt(purchaseTrigger.getAttribute('data-id'));
       const prop = properties.find(p => p.id === id);
-      alert(`Congratulations! Your request to ${prop.status === 'For Sale' ? 'buy' : 'rent'} "${prop.title}" has been successfully logged. An executive advisor will contact you within 2 hours to complete the process.`);
+      openOrderWizardModal(prop);
+      return;
+    }
+
+    // Intercept clicks on links pointing to #auth
+    const authLink = e.target.closest('[href="#auth"]');
+    if (authLink) {
+      e.preventDefault();
+      state.isMobileMenuOpen = false;
+      
+      const mobileDrawer = document.querySelector('#mobile-drawer');
+      if (mobileDrawer) {
+        mobileDrawer.classList.add('hidden');
+      }
+      
+      const text = authLink.innerText.toLowerCase();
+      if (text.includes('affiliate') || text.includes('partner') || state.activeRoute === 'affiliate') {
+        if (text.includes('login') || text.includes('sign in')) {
+          openAffiliateAuthModal('login');
+        } else {
+          openAffiliateAuthModal('register');
+        }
+      } else {
+        if (text.includes('register') || text.includes('sign up') || text.includes('create')) {
+          openClientAuthModal('register');
+        } else {
+          openClientAuthModal('login');
+        }
+      }
       return;
     }
 
@@ -1676,6 +2059,192 @@ function setupEventListeners() {
       return;
     }
 
+    // Toggle Admin Password Visibility
+    const togglePassBtn = e.target.closest('#toggle-admin-pass-visibility');
+    if (togglePassBtn) {
+      const passInput = document.querySelector('#admin-password');
+      const eyeIcon = document.querySelector('#admin-pass-eye-icon');
+      if (passInput && eyeIcon) {
+        if (passInput.type === 'password') {
+          passInput.type = 'text';
+          eyeIcon.className = 'bx bx-hide text-sm';
+        } else {
+          passInput.type = 'password';
+          eyeIcon.className = 'bx bx-show text-sm';
+        }
+      }
+      return;
+    }
+
+    // Admin Sidebar Toggle Click Handlers (Responsive Collapse & Mobile Overlay)
+    const sidebarToggleBtn = e.target.closest('#admin-sidebar-toggle');
+    if (sidebarToggleBtn) {
+      e.preventDefault();
+      const sidebar = document.querySelector('#admin-sidebar');
+      const overlay = document.querySelector('#admin-sidebar-overlay');
+      if (sidebar) {
+        const isCollapsed = sidebar.classList.contains('-translate-x-full') || sidebar.classList.contains('lg:-translate-x-full');
+        if (isCollapsed) {
+          sidebar.classList.remove('-translate-x-full');
+          sidebar.classList.remove('lg:-translate-x-full');
+          if (overlay) {
+            overlay.classList.remove('hidden');
+            setTimeout(() => {
+              overlay.classList.remove('opacity-0');
+            }, 10);
+          }
+        } else {
+          sidebar.classList.add('-translate-x-full');
+          sidebar.classList.add('lg:-translate-x-full');
+          if (overlay) {
+            overlay.classList.add('opacity-0');
+            overlay.addEventListener('transitionend', function hideOverlay() {
+              overlay.classList.add('hidden');
+              overlay.removeEventListener('transitionend', hideOverlay);
+            }, { once: true });
+          }
+        }
+      }
+      return;
+    }
+
+    const overlayEl = e.target.closest('#admin-sidebar-overlay');
+    if (overlayEl) {
+      e.preventDefault();
+      const sidebar = document.querySelector('#admin-sidebar');
+      if (sidebar) {
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.add('lg:-translate-x-full');
+      }
+      overlayEl.classList.add('opacity-0');
+      overlayEl.addEventListener('transitionend', function hideOverlay() {
+        overlayEl.classList.add('hidden');
+        overlayEl.removeEventListener('transitionend', hideOverlay);
+      }, { once: true });
+      return;
+    }
+
+    // Admin Dark Mode Toggle
+    const adminThemeBtn = e.target.closest('#admin-dark-mode-toggle');
+    if (adminThemeBtn) {
+      e.preventDefault();
+      state.admin.theme = state.admin.theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('blueskye_admin_theme', state.admin.theme);
+      
+      const container = document.querySelector('#admin-root-container');
+      const themeIconEl = document.querySelector('#admin-theme-icon');
+      if (container) {
+        if (state.admin.theme === 'dark') {
+          container.classList.add('dark');
+        } else {
+          container.classList.remove('dark');
+        }
+      }
+      if (themeIconEl) {
+        themeIconEl.className = state.admin.theme === 'dark' ? 'bx bx-sun text-lg' : 'bx bx-moon text-lg';
+      }
+      return;
+    }
+
+    // Admin Logout Trigger
+    const logoutBtn = e.target.closest('#admin-logout-btn');
+    if (logoutBtn) {
+      e.preventDefault();
+      state.admin.activeTab = 'overview';
+      alert("Logged out of Admin Console successfully.");
+      window.location.hash = '#home';
+      return;
+    }
+
+    // Admin Sidebar Group Collapsible Toggle
+    const toggleGroupBtn = e.target.closest('[data-toggle]');
+    if (toggleGroupBtn) {
+      const groupName = toggleGroupBtn.getAttribute('data-toggle');
+      const groupEl = document.querySelector(`#group-${groupName}`);
+      const chevron = document.querySelector(`#chevron-${groupName}`);
+      
+      if (groupEl) {
+        const isHidden = groupEl.classList.contains('hidden');
+        if (isHidden) {
+          // Close all other groups first
+          Object.keys(state.admin.expandedGroups).forEach(g => {
+            state.admin.expandedGroups[g] = false;
+            const otherGroupEl = document.querySelector(`#group-${g}`);
+            const otherChevron = document.querySelector(`#chevron-${g}`);
+            if (otherGroupEl) otherGroupEl.classList.add('hidden');
+            if (otherChevron) otherChevron.className = 'bx bx-chevron-down text-xs transition-transform duration-200 text-white/60';
+          });
+
+          // Expand current group
+          groupEl.classList.remove('hidden');
+          if (chevron) chevron.className = 'bx bx-chevron-up text-xs transition-transform duration-200 text-white/60';
+          state.admin.expandedGroups[groupName] = true;
+        } else {
+          // Collapse current group
+          groupEl.classList.add('hidden');
+          if (chevron) chevron.className = 'bx bx-chevron-down text-xs transition-transform duration-200 text-white/60';
+          state.admin.expandedGroups[groupName] = false;
+        }
+      }
+      return;
+    }
+
+    // Admin Tab selection click delegation
+    const adminTabBtn = e.target.closest('[data-tab]');
+    if (adminTabBtn && state.activeRoute === 'admin') {
+      const tabName = adminTabBtn.getAttribute('data-tab');
+      // Reset active styles
+      document.querySelectorAll('#admin-sidebar-menu button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Set active style
+      adminTabBtn.classList.add('active');
+      if (adminTabBtn.classList.contains('admin-submenu-btn')) {
+        const parentDiv = adminTabBtn.closest('div');
+        if (parentDiv) {
+          const activeGroupName = parentDiv.id.replace('group-', '');
+          
+          // Collapse other groups
+          Object.keys(state.admin.expandedGroups).forEach(g => {
+            if (g !== activeGroupName) {
+              state.admin.expandedGroups[g] = false;
+              const otherGroupEl = document.querySelector(`#group-${g}`);
+              const otherChevron = document.querySelector(`#chevron-${g}`);
+              if (otherGroupEl) otherGroupEl.classList.add('hidden');
+              if (otherChevron) otherChevron.className = 'bx bx-chevron-down text-xs transition-transform duration-200 text-white/60';
+            }
+          });
+        }
+      } else {
+        // It's a top level link (e.g. Dashboard) - close all collapsible groups!
+        Object.keys(state.admin.expandedGroups).forEach(g => {
+          state.admin.expandedGroups[g] = false;
+          const otherGroupEl = document.querySelector(`#group-${g}`);
+          const otherChevron = document.querySelector(`#chevron-${g}`);
+          if (otherGroupEl) otherGroupEl.classList.add('hidden');
+          if (otherChevron) otherChevron.className = 'bx bx-chevron-down text-xs transition-transform duration-200 text-white/60';
+        });
+      }
+      
+      state.admin.activeTab = tabName;
+      initAdminTab(tabName);
+
+      // Auto-close sidebar on mobile after tab select
+      if (window.innerWidth < 1024) {
+        const sidebar = document.querySelector('#admin-sidebar');
+        const overlay = document.querySelector('#admin-sidebar-overlay');
+        if (sidebar) {
+          sidebar.classList.add('-translate-x-full');
+        }
+        if (overlay) {
+          overlay.classList.add('opacity-0');
+          overlay.classList.add('hidden');
+        }
+      }
+      return;
+    }
+
     // Reset filters
     if (e.target.id === 'reset-filters' || e.target.id === 'no-results-reset') {
       state.propertiesPage = 1;
@@ -1711,6 +2280,55 @@ function setupEventListeners() {
     if (e.target.id === 'inquiry-form' || e.target.id === 'contact-form' || e.target.id === 'login-form' || e.target.id === 'footer-news' || e.target.id === 'faq-newsletter-form' || e.target.id === 'project-inquiry-form') {
       e.preventDefault();
       alert("Submitted successfully!");
+      e.target.reset();
+      return;
+    }
+
+    if (e.target.id === 'admin-login-form') {
+      e.preventDefault();
+      const email = document.querySelector('#admin-email').value.trim();
+      
+      if (email.toLowerCase().includes('site')) {
+        state.admin.staffName = 'Aliyu Bello';
+        state.admin.staffRole = 'Site Inspector Manager';
+      } else if (email.toLowerCase().includes('editor') || email.toLowerCase().includes('blog')) {
+        state.admin.staffName = 'Chidi Okafor';
+        state.admin.staffRole = 'Blog Editor';
+      } else {
+        state.admin.staffName = 'Amina Bello';
+        state.admin.staffRole = 'Administrator';
+      }
+
+      const code = prompt("2FA SECURE CODE\n\nEnter the 6-digit security code from your authentication token (e.g. Google Authenticator) to verify identity:");
+      if (code !== null) {
+        state.admin.isAuthenticated = true;
+        
+        const log = {
+          id: state.admin.auditLogs.length + 1,
+          time: new Date().toISOString().replace('T', ' ').substring(0, 16),
+          staff: state.admin.staffName,
+          action: 'Log in successful (2FA verified)',
+          component: 'Authentication'
+        };
+        state.admin.auditLogs.unshift(log);
+
+        alert(`Access Granted. Welcome back, ${state.admin.staffName}!`);
+        renderApp();
+        initAdminTab('overview');
+      }
+      return;
+    }
+
+    if (e.target.id === 'inspection-booking-form') {
+      e.preventDefault();
+      const name = document.querySelector('#inspect-name').value;
+      const email = document.querySelector('#inspect-email').value;
+      const phone = document.querySelector('#inspect-phone').value;
+      const date = document.querySelector('#inspect-date').value;
+      const type = document.querySelector('input[name="inspect-type"]:checked').value;
+      const propertyTitle = e.target.getAttribute('data-property-title');
+      
+      alert(`Thank you, ${name}! Your request for a ${type} Inspection of "${propertyTitle}" on ${date} has been scheduled. An advisor will contact you at ${phone} to confirm.`);
       e.target.reset();
       return;
     }
@@ -1874,6 +2492,250 @@ const TestimonialsData = [
     image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80"
   }
 ];
+
+// --- Client Auth Modal (Login / Register) ---
+function openClientAuthModal(defaultTab = 'login') {
+  const existing = document.querySelector('#client-auth-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'client-auth-modal';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+  
+  modal.innerHTML = `
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200/20 animate-fade-in text-slate-800 dark:text-slate-200 p-8 space-y-6 relative">
+      
+      <!-- Close Button -->
+      <button id="close-client-auth" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
+        <i class="bx bx-x text-xl"></i>
+      </button>
+
+      <!-- Content Container -->
+      <div id="client-auth-container"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const container = modal.querySelector('#client-auth-container');
+  const closeBtn = modal.querySelector('#close-client-auth');
+
+  closeBtn.addEventListener('click', () => modal.remove());
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  function showForm(tab) {
+    if (tab === 'login') {
+      container.innerHTML = clientLoginFormHtml;
+
+      const form = container.querySelector('#modal-client-login');
+      const toggleBtn = container.querySelector('#toggle-client-to-register');
+      
+      toggleBtn.addEventListener('click', () => showForm('register'));
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert("Logged in successfully!");
+        modal.remove();
+      });
+    } else {
+      container.innerHTML = clientRegisterFormHtml;
+
+      const form = container.querySelector('#modal-client-register');
+      const toggleBtn = container.querySelector('#toggle-client-to-login');
+      
+      toggleBtn.addEventListener('click', () => showForm('login'));
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = container.querySelector('#modal-reg-name').value;
+        alert(`Congratulations ${name}! Your client profile has been registered. You can now log in.`);
+        showForm('login');
+      });
+    }
+  }
+
+  showForm(defaultTab);
+}
+
+// --- Affiliate Auth Modal (Login / Register - Simple & Fast!) ---
+function openAffiliateAuthModal(defaultTab = 'register') {
+  const existing = document.querySelector('#affiliate-auth-modal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'affiliate-auth-modal';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+  
+  modal.innerHTML = `
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-sm w-full overflow-hidden border border-slate-200/20 animate-fade-in text-slate-800 dark:text-slate-200 p-8 space-y-6 relative">
+      
+      <!-- Close Button -->
+      <button id="close-aff-auth" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 transition-colors">
+        <i class="bx bx-x text-xl"></i>
+      </button>
+
+      <!-- Content Container -->
+      <div id="aff-auth-container"></div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  const container = modal.querySelector('#aff-auth-container');
+  const closeBtn = modal.querySelector('#close-aff-auth');
+
+  closeBtn.addEventListener('click', () => modal.remove());
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  function showForm(tab) {
+    if (tab === 'login') {
+      container.innerHTML = affiliateLoginFormHtml;
+
+      const form = container.querySelector('#modal-aff-login');
+      const toggleBtn = container.querySelector('#toggle-aff-to-register');
+      
+      toggleBtn.addEventListener('click', () => showForm('register'));
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert("Affiliate logged in successfully!");
+        modal.remove();
+      });
+    } else {
+      container.innerHTML = affiliateRegisterFormHtml;
+
+      const form = container.querySelector('#modal-aff-register');
+      const toggleBtn = container.querySelector('#toggle-aff-to-login');
+      
+      toggleBtn.addEventListener('click', () => showForm('login'));
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = container.querySelector('#modal-aff-name').value;
+        alert(`Congratulations ${name}! You have successfully registered as an Affiliate Partner. You can now log in.`);
+        showForm('login');
+      });
+    }
+  }
+
+  showForm(defaultTab);
+}
+
+// --- Order / Register Interest Multi-step Form Wizard ---
+function openOrderWizardModal(property) {
+  // Pre-compile property selector options to avoid nesting backticks inside template literal
+  const optionsHtml = properties.map(p => {
+    const isSelected = p.id === property.id ? 'selected' : '';
+    return `<option value="${p.id}" ${isSelected}>${p.title} (${p.formattedPrice})</option>`;
+  }).join('');
+
+  const modal = document.createElement('div');
+  modal.id = 'order-wizard-modal';
+  modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4';
+  modal.setAttribute('data-step', '1');
+  
+  // Compiling options and interpolating order wizard modal template
+  let wizardHtml = orderWizardModalHtml;
+  wizardHtml = wizardHtml.replace(/\{\{title\}\}/g, property.title);
+  wizardHtml = wizardHtml.replace(/\{\{formattedPrice\}\}/g, property.formattedPrice);
+  wizardHtml = wizardHtml.replace(/\{\{image\}\}/g, property.images[0]);
+  wizardHtml = wizardHtml.replace(/\{\{location\}\}/g, property.location);
+  wizardHtml = wizardHtml.replace(/\{\{city\}\}/g, property.city);
+  wizardHtml = wizardHtml.replace(/\{\{options\}\}/g, optionsHtml);
+
+  modal.innerHTML = wizardHtml;
+  
+  document.body.appendChild(modal);
+  setupWizardListeners(property, modal);
+}
+
+function setupWizardListeners(initialProperty, modal) {
+  const backBtn = modal.querySelector('#wizard-back-btn');
+  const nextBtn = modal.querySelector('#wizard-next-btn');
+  const closeBtn = modal.querySelector('#close-order-wizard');
+  const propSelect = modal.querySelector('#wizard-property-select');
+  
+  let currentStep = 1;
+  let activeProperty = initialProperty;
+  
+  // Sync select drop down change
+  propSelect.addEventListener('change', (e) => {
+    const val = parseInt(e.target.value);
+    activeProperty = properties.find(p => p.id === val);
+    
+    // Update Step 2 preview panel dynamically
+    const thumb = modal.querySelector('#wizard-prop-thumb');
+    const name = modal.querySelector('#wizard-prop-name');
+    const price = modal.querySelector('#wizard-prop-price');
+    const loc = modal.querySelector('#wizard-prop-loc');
+    if (thumb) thumb.src = activeProperty.images[0];
+    if (name) name.innerText = activeProperty.title;
+    if (price) price.innerText = activeProperty.formattedPrice;
+    if (loc) loc.innerText = `${activeProperty.location}, ${activeProperty.city}`;
+  });
+  
+  closeBtn.addEventListener('click', () => modal.remove());
+  
+  backBtn.addEventListener('click', () => {
+    if (currentStep > 1) {
+      setStep(currentStep - 1);
+    }
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    if (currentStep < 4) {
+      // Perform validation on inputs
+      if (currentStep === 1) {
+        const name = modal.querySelector('#wizard-name').value.trim();
+        const email = modal.querySelector('#wizard-email').value.trim();
+        const phone = modal.querySelector('#wizard-phone').value.trim();
+        const address = modal.querySelector('#wizard-address').value.trim();
+        if (!name || !email || !phone || !address) {
+          alert("Please fill in all personal contact details.");
+          return;
+        }
+      }
+      setStep(currentStep + 1);
+    } else {
+      // Final submit
+      const name = modal.querySelector('#wizard-name').value.trim();
+      const paymentPlan = modal.querySelector('input[name="wizard-payment-plan"]:checked').value;
+      
+      alert(`Congratulations, ${name}! Your interest registration for "${activeProperty.title}" under the "${paymentPlan}" plan has been successfully sent. A transaction specialist will call you shortly.`);
+      modal.remove();
+    }
+  });
+  
+  function setStep(step) {
+    modal.querySelector(`#wizard-page-${currentStep}`).classList.add('hidden');
+    modal.querySelector(`#wizard-page-${step}`).classList.remove('hidden');
+    
+    // Sync indicators classes
+    modal.querySelector(`#step-dot-${currentStep}`).className = "h-5 w-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-550 dark:text-slate-450 flex items-center justify-center text-[9px] font-extrabold";
+    modal.querySelector(`#step-label-${currentStep}`).className = "text-[9px] font-bold uppercase tracking-wider text-slate-400";
+    
+    modal.querySelector(`#step-dot-${step}`).className = "h-5 w-5 rounded-full bg-primary-600 text-white flex items-center justify-center text-[9px] font-extrabold";
+    modal.querySelector(`#step-label-${step}`).className = "text-[9px] font-bold uppercase tracking-wider text-primary-600";
+    
+    currentStep = step;
+    
+    // Back button disabled status
+    backBtn.disabled = currentStep === 1;
+    
+    // Next button text sync
+    if (currentStep === 4) {
+      nextBtn.innerText = "Submit Request";
+      
+      // Populate step 4 text
+      modal.querySelector('#confirm-prop-title').innerText = activeProperty.title;
+      modal.querySelector('#confirm-prop-price').innerText = activeProperty.formattedPrice;
+      modal.querySelector('#confirm-client-name').innerText = modal.querySelector('#wizard-name').value;
+      modal.querySelector('#confirm-payment-plan').innerText = modal.querySelector('input[name="wizard-payment-plan"]:checked').value;
+    } else {
+      nextBtn.innerText = "Next";
+    }
+  }
+}
 
 // Start
 init();

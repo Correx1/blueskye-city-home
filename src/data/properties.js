@@ -377,5 +377,63 @@ export const properties = [
     },
     featured: false,
     trending: true
+  },
+  {
+    id: 9,
+    title: "Lekki Phase 1 Luxury Smart Villa",
+    description: "An exceptional luxury villa in Lekki Phase 1 featuring glass facades, full smart home integration, private swimming pool, and pristine interior finishes. Officially sold to a private client in 2025 and archived in our portfolio.",
+    price: 1800000,
+    formattedPrice: "₦1,800,000",
+    location: "Block 12, Admiralty Way, Lekki Phase 1",
+    city: "Lagos",
+    type: "Villa",
+    status: "Sold",
+    beds: 5,
+    baths: 5.5,
+    area: 5500,
+    yearBuilt: 2024,
+    amenities: ["Private Pool", "Smart Automation", "Perfected Title", "Admiralty Access", "Fully Furnished"],
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80"
+    ],
+    agent: {
+      name: "Chidi Okafor",
+      role: "Director of Private Client Sales",
+      phone: "+234 803 555 0192",
+      email: "c.okafor@blueskye.com",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80"
+    },
+    featured: false,
+    trending: false
+  },
+  {
+    id: 10,
+    title: "Ikoyi Lagoonfront Heights Triplex",
+    description: "Perched on the waterfront edges of Ikoyi, this expansive triplex apartment features a private terrace deck, floor-to-ceiling glass panorama screens, and dual elevator shafts. Officially closed and handed over to private buyers in late 2025.",
+    price: 3800000,
+    formattedPrice: "₦3,800,000",
+    location: "Kingsway Road, Old Ikoyi",
+    city: "Lagos",
+    type: "Apartment",
+    status: "Sold",
+    beds: 4,
+    baths: 4.5,
+    area: 4900,
+    yearBuilt: 2024,
+    amenities: ["Waterfront View", "Private Terrace", "Double Elevators", "Milestone Escrow Perfected", "Chef Kitchen"],
+    images: [
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80"
+    ],
+    agent: {
+      name: "Amina Yusuf",
+      role: "Senior Partner, Abuja Hub",
+      phone: "+234 809 555 0144",
+      email: "a.yusuf@blueskye.com",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+    },
+    featured: false,
+    trending: false
   }
 ];

@@ -1,0 +1,150 @@
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200/20 animate-fade-in text-slate-800 dark:text-slate-200">
+  
+  <!-- Header -->
+  <div class="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <img src="/image/blueskye logo.png" alt="Blueskye" class="h-8 w-auto object-contain" />
+      <div>
+        <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-primary-600 dark:text-primary-400">Order / Register Interest</h4>
+        <p class="text-[9px] text-slate-400 dark:text-slate-500 font-medium">Acquire Premium Asset: {{title}}</p>
+      </div>
+    </div>
+    <button id="close-order-wizard" class="text-slate-400 hover:text-red-500 transition-colors p-1">
+      <i class="bx bx-x text-xl"></i>
+    </button>
+  </div>
+
+  <!-- Stepper Indicators -->
+  <div class="px-6 py-4 bg-slate-50 dark:bg-slate-950 flex justify-between items-center border-b border-slate-100 dark:border-slate-800 select-none">
+    <div class="flex items-center gap-1.5">
+      <span id="step-dot-1" class="h-5 w-5 rounded-full bg-primary-600 text-white flex items-center justify-center text-[9px] font-extrabold">1</span>
+      <span class="text-[9px] font-bold uppercase tracking-wider text-primary-600" id="step-label-1">Info</span>
+    </div>
+    <div class="h-px bg-slate-200 dark:bg-slate-850 flex-1 mx-2"></div>
+    <div class="flex items-center gap-1.5">
+      <span id="step-dot-2" class="h-5 w-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-550 dark:text-slate-450 flex items-center justify-center text-[9px] font-extrabold">2</span>
+      <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400" id="step-label-2">Property</span>
+    </div>
+    <div class="h-px bg-slate-200 dark:bg-slate-850 flex-1 mx-2"></div>
+    <div class="flex items-center gap-1.5">
+      <span id="step-dot-3" class="h-5 w-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-550 dark:text-slate-450 flex items-center justify-center text-[9px] font-extrabold">3</span>
+      <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400" id="step-label-3">Plan</span>
+    </div>
+    <div class="h-px bg-slate-200 dark:bg-slate-850 flex-1 mx-2"></div>
+    <div class="flex items-center gap-1.5">
+      <span id="step-dot-4" class="h-5 w-5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-550 dark:text-slate-450 flex items-center justify-center text-[9px] font-extrabold">4</span>
+      <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400" id="step-label-4">Confirm</span>
+    </div>
+  </div>
+
+  <!-- Wizard Content Pages -->
+  <div class="p-6">
+    <form id="wizard-form" class="space-y-4">
+      
+      <!-- Page 1: Personal Info -->
+      <div id="wizard-page-1" class="space-y-3">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Your Full Name</label>
+          <input type="text" id="wizard-name" required class="form-input text-xs" placeholder="Jane Doe" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Email Address</label>
+            <input type="email" id="wizard-email" required class="form-input text-xs" placeholder="jane@domain.com" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Phone Number</label>
+            <input type="tel" id="wizard-phone" required class="form-input text-xs" placeholder="+234..." />
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Residential Address</label>
+          <input type="text" id="wizard-address" required class="form-input text-xs" placeholder="Ikoyi, Lagos, Nigeria" />
+        </div>
+      </div>
+
+      <!-- Page 2: Property Selection -->
+      <div id="wizard-page-2" class="space-y-3 hidden">
+        <div class="flex items-center gap-3 p-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-slate-100 dark:border-slate-800">
+          <img id="wizard-prop-thumb" src="{{image}}" alt="{{title}}" class="w-16 h-16 rounded object-cover border border-slate-200/50" />
+          <div class="min-w-0">
+            <h4 id="wizard-prop-name" class="font-display font-extrabold text-xs text-slate-850 dark:text-white truncate">{{title}}</h4>
+            <span id="wizard-prop-price" class="text-[10px] text-primary-650 dark:text-primary-400 font-extrabold block">{{formattedPrice}}</span>
+            <span id="wizard-prop-loc" class="text-[9px] text-slate-400 font-medium block">{{location}}, {{city}}</span>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Confirm Asset Selection</label>
+          <select id="wizard-property-select" class="form-input text-xs bg-white dark:bg-slate-950 text-slate-850 dark:text-white">
+            {{options}}
+          </select>
+        </div>
+      </div>
+
+      <!-- Page 3: Payment Plan Preference -->
+      <div id="wizard-page-3" class="space-y-3 hidden">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider block mb-2">Preferred Installment Plan</label>
+        <div class="space-y-2">
+          <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950 cursor-pointer">
+            <input type="radio" name="wizard-payment-plan" value="Outright" checked class="accent-primary-600 mt-0.5" />
+            <div>
+              <span class="block text-xs font-bold text-slate-800 dark:text-white">Outright Settlement</span>
+              <span class="block text-[10px] text-slate-400 font-light mt-0.5">Pay 100% upfront with priority title processing and immediate deed signing.</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950 cursor-pointer">
+            <input type="radio" name="wizard-payment-plan" value="3-Month Installment" class="accent-primary-600 mt-0.5" />
+            <div>
+              <span class="block text-xs font-bold text-slate-800 dark:text-white">3-Month Installment Structure</span>
+              <span class="block text-[10px] text-slate-400 font-light mt-0.5">Split payments across 3 standard milestones. Escrow Shield secures each phase.</span>
+            </div>
+          </label>
+          <label class="flex items-start gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-950 cursor-pointer">
+            <input type="radio" name="wizard-payment-plan" value="6-Month Installment" class="accent-primary-600 mt-0.5" />
+            <div>
+              <span class="block text-xs font-bold text-slate-800 dark:text-white">6-Month Installment Plan</span>
+              <span class="block text-[10px] text-slate-400 font-light mt-0.5">Monthly installments for 6 months. Standard processing fees apply.</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Page 4: Review and Submit -->
+      <div id="wizard-page-4" class="space-y-3 hidden">
+        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-lg border border-slate-100 dark:border-slate-800 space-y-3 text-xs text-slate-700 dark:text-slate-300">
+          <div class="flex justify-between border-b border-slate-200/60 dark:border-slate-850 pb-2">
+            <span class="text-slate-400 font-medium">Asset Interested:</span>
+            <span class="font-extrabold text-slate-850 dark:text-white" id="confirm-prop-title">{{title}}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200/60 dark:border-slate-850 pb-2">
+            <span class="text-slate-400 font-medium">Cost:</span>
+            <span class="font-extrabold text-primary-600" id="confirm-prop-price">{{formattedPrice}}</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-200/60 dark:border-slate-850 pb-2">
+            <span class="text-slate-400 font-medium">Client Name:</span>
+            <span class="font-extrabold text-slate-850 dark:text-white" id="confirm-client-name">John Doe</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400 font-medium">Preferred Plan:</span>
+            <span class="font-extrabold text-slate-850 dark:text-white" id="confirm-payment-plan">Outright</span>
+          </div>
+        </div>
+        <p class="text-[9px] text-slate-400 font-light text-center leading-relaxed">
+          By submitting this registration of interest, you acknowledge that Blueskye Escrow Shield secures all financial operations. An advisor will contact you within 2 hours.
+        </p>
+      </div>
+
+      <!-- Footer Navigation Controls -->
+      <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
+        <button type="button" id="wizard-back-btn" class="px-4 py-2 border border-slate-250 dark:border-slate-800 text-xs font-bold uppercase rounded-md text-slate-400 hover:text-slate-650 disabled:opacity-50" disabled>
+          Back
+        </button>
+        <button type="button" id="wizard-next-btn" class="btn btn-sm btn-primary py-2 px-6 rounded-md">
+          Next
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>

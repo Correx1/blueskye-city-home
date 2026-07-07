@@ -1,28 +1,117 @@
-<div class="animate-fade-in max-w-sm mx-auto px-4 py-16">
-  <div class="bg-white dark:bg-dark-surface border border-slate-200/60 dark:border-slate-800 p-8 rounded-md shadow-sm space-y-6">
-    <div class="text-center space-y-2">
-      <span class="text-primary-600 dark:text-primary-500 uppercase tracking-widest text-[9px] font-bold">Verify Identity</span>
-      <h2 class="font-display font-extrabold text-xl text-slate-900 dark:text-white">Welcome Back</h2>
-      <p class="text-[10px] text-slate-400 font-light">Access your saved collections and broker contacts.</p>
-    </div>
+<div class="animate-fade-in max-w-md mx-auto px-4 py-16">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 p-8 rounded-xl shadow-lg space-y-6">
     
+    <!-- Tab toggles -->
+    <div class="flex border-b border-slate-100 dark:border-slate-800 pb-3">
+      <button id="tab-auth-login" class="flex-1 text-center py-2 text-xs uppercase font-extrabold tracking-wider border-b-2 border-primary-600 text-primary-600 focus:outline-none" data-action="toggle-auth-tab" data-tab="login">
+        Sign In
+      </button>
+      <button id="tab-auth-register" class="flex-1 text-center py-2 text-xs uppercase font-extrabold tracking-wider border-b-2 border-transparent text-slate-450 hover:text-slate-650 focus:outline-none" data-action="toggle-auth-tab" data-tab="register">
+        Client Signup
+      </button>
+      <button id="tab-auth-affiliate" class="flex-1 text-center py-2 text-xs uppercase font-extrabold tracking-wider border-b-2 border-transparent text-slate-450 hover:text-slate-650 focus:outline-none" data-action="toggle-auth-tab" data-tab="affiliate">
+        Partner Signup
+      </button>
+    </div>
+
+    <!-- FORM 1: Login Form -->
     <form id="login-form" class="space-y-4">
-      <div class="space-y-1">
-        <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Email address</label>
-        <input type="email" placeholder="name@domain.com" required class="form-input" />
+      <div class="text-center space-y-1">
+        <span class="text-primary-600 dark:text-primary-500 uppercase tracking-widest text-[9px] font-bold">Secure Access</span>
+        <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white">Welcome Back</h2>
       </div>
       
-      <div class="space-y-1">
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Email address</label>
+        <input type="email" id="login-email" placeholder="name@domain.com" required class="form-input text-xs" />
+      </div>
+      
+      <div class="space-y-1.5">
         <div class="flex justify-between items-center">
-          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Password</label>
+          <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Password</label>
           <a href="#" class="text-[9px] text-primary-600 hover:text-primary-700 font-semibold tracking-wider uppercase">Forgot?</a>
         </div>
-        <input type="password" placeholder="••••••••" required class="form-input" />
+        <input type="password" id="login-password" placeholder="••••••••" required class="form-input text-xs" />
       </div>
       
       <button type="submit" class="btn btn-md btn-primary w-full justify-center">
         Sign In
       </button>
     </form>
+
+    <!-- FORM 2: Client Register Form (Hidden by default) -->
+    <form id="register-client-form" class="space-y-4 hidden">
+      <div class="text-center space-y-1">
+        <span class="text-primary-600 dark:text-primary-500 uppercase tracking-widest text-[9px] font-bold">Client Account</span>
+        <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white">Create Client Profile</h2>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Full Name</label>
+        <input type="text" id="reg-client-name" placeholder="John Doe" required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Email address</label>
+        <input type="email" id="reg-client-email" placeholder="name@domain.com" required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Phone Number</label>
+        <input type="tel" id="reg-client-phone" placeholder="+234..." required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Password</label>
+        <input type="password" id="reg-client-password" placeholder="••••••••" required class="form-input text-xs" />
+      </div>
+
+      <button type="submit" class="btn btn-md btn-primary w-full justify-center">
+        Create Client Account
+      </button>
+    </form>
+
+    <!-- FORM 3: Affiliate Register Form (Hidden by default, Simple & Fast!) -->
+    <form id="register-affiliate-form" class="space-y-4 hidden">
+      <div class="text-center space-y-1">
+        <span class="text-primary-600 dark:text-primary-500 uppercase tracking-widest text-[9px] font-bold">Affiliate Partner</span>
+        <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white">Register as Affiliate Partner</h2>
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Full Name</label>
+        <input type="text" id="reg-aff-name" placeholder="Aliyu Bello" required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Email address</label>
+        <input type="email" id="reg-aff-email" placeholder="partner@domain.com" required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Phone Number</label>
+        <input type="tel" id="reg-aff-phone" placeholder="+234..." required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">Password</label>
+        <input type="password" id="reg-aff-password" placeholder="••••••••" required class="form-input text-xs" />
+      </div>
+
+      <div class="space-y-1.5">
+        <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider">How did you hear about us?</label>
+        <select id="reg-aff-source" class="form-input text-xs bg-white cursor-pointer dark:bg-slate-950 text-slate-850 dark:text-white">
+          <option value="Social Media">Social Media</option>
+          <option value="Search Engine">Search Engine</option>
+          <option value="Direct Broker">Direct Broker</option>
+          <option value="Friend / Referral">Friend / Referral</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-md btn-primary w-full justify-center inline-flex items-center gap-1.5">
+        Register Partner <i class="bx bx-right-arrow-alt text-base"></i>
+      </button>
+    </form>
+
   </div>
 </div>

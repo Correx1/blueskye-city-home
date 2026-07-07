@@ -20,7 +20,7 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
       <div class="space-y-2">
         <div class="flex items-center gap-2">
-          <span class="px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-white bg-primary-600 shadow-sm">{{status}}</span>
+          <span class="px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-white {{statusBadgeClass}} shadow-sm">{{status}}</span>
           <span class="px-2.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider text-slate-700 bg-slate-200">{{type}}</span>
         </div>
         <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 tracking-tight leading-tight">{{title}}</h1>
@@ -228,22 +228,42 @@
 
             <!-- Order Now Primary Action (Buy Now / Rent Now) -->
             <div class="space-y-3">
-              <button data-action="purchase-direct" data-id="{{id}}" class="w-full btn btn-md bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white justify-center font-bold uppercase tracking-wider text-xs py-3 rounded-md shadow-md active:scale-95">
-                Order Now ({{purchaseCtaText}})
+              <button data-action="purchase-direct" data-id="{{id}}" class="w-full btn btn-md {{purchaseBtnClass}}" {{purchaseDisabledAttr}}>
+                {{purchaseActionText}}
               </button>
               <p class="text-[10px] text-slate-400 text-center leading-relaxed font-medium">Secured with Blueskye Escrow Shield protection.</p>
             </div>
 
             <div class="text-center text-[10px] text-slate-300 font-bold uppercase tracking-widest">— OR —</div>
 
-            <!-- Agent Message Form -->
-            <div class="space-y-3">
-              <h4 class="font-display font-bold text-xs text-slate-850 uppercase tracking-wider">Request Information</h4>
-              <form id="inquiry-form" class="space-y-3">
-                <input type="text" placeholder="Your Name" required class="form-input" />
-                <input type="email" placeholder="Your Email" required class="form-input" />
-                <button type="submit" class="btn btn-sm btn-primary w-full justify-center py-2.5 font-bold uppercase tracking-wider text-[10px]">
-                  Send Inquiry
+            <!-- Site Inspection Booking Form -->
+            <div class="space-y-3 border-t border-slate-100 dark:border-slate-800/60 pt-4 mt-4">
+              <h4 class="font-display font-extrabold text-xs text-slate-850 dark:text-white uppercase tracking-wider">Book Site Tour</h4>
+              <form id="inspection-booking-form" class="space-y-3" data-property-id="{{id}}" data-property-title="{{title}}">
+                <input type="text" id="inspect-name" placeholder="Your Full Name" required class="form-input text-xs" />
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="email" id="inspect-email" placeholder="Email Address" required class="form-input text-xs" />
+                  <input type="tel" id="inspect-phone" placeholder="Phone Number" required class="form-input text-xs" />
+                </div>
+                <div class="space-y-1 text-left">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Preferred Date</label>
+                  <input type="date" id="inspect-date" required class="form-input text-xs cursor-pointer" />
+                </div>
+                <div class="space-y-1.5 text-left">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Tour Type</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <label class="flex items-center gap-1.5 p-2 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-[10px] font-semibold text-slate-650 cursor-pointer">
+                      <input type="radio" name="inspect-type" value="Physical" checked class="accent-primary-600 focus:ring-0 focus:ring-offset-0" />
+                      <span>Physical</span>
+                    </label>
+                    <label class="flex items-center gap-1.5 p-2 rounded bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 text-[10px] font-semibold text-slate-650 cursor-pointer">
+                      <input type="radio" name="inspect-type" value="Virtual" class="accent-primary-600 focus:ring-0 focus:ring-offset-0" />
+                      <span>Virtual Tour</span>
+                    </label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary w-full justify-center py-2.5 font-bold uppercase tracking-wider text-[10px] inline-flex items-center gap-1.5">
+                  Schedule Inspection <i class="bx bx-calendar-event text-sm"></i>
                 </button>
               </form>
             </div>

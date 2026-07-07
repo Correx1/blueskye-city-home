@@ -1,0 +1,358 @@
+<!-- Mobile dark overlay backdrop -->
+<div id="admin-sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden transition-opacity duration-300 opacity-0"></div>
+
+<div id="admin-root-container" class="flex flex-col h-screen bg-[#f3f4f6] dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-200 overflow-hidden relative">
+
+  <!-- Top Action Header Bar (Full Width, Site Primary Blue #1e3a8a) -->
+  <header class="h-20 bg-[#1e3a8a] dark:bg-[#0b1329] border-b border-white/10 px-4 sm:px-6 flex items-center justify-between shrink-0 z-30">
+    
+    <!-- Left Menu Toggle Button + Logo Section -->
+    <div class="flex items-center gap-3 sm:gap-4">
+      <!-- Menu Toggle Button (Hamburger / Collapse) -->
+      <button id="admin-sidebar-toggle" class="text-white hover:bg-white/10 p-2 rounded-lg transition-colors cursor-pointer focus:outline-none flex items-center justify-center" title="Toggle Navigation Menu">
+        <i class="bx bx-menu text-2xl"></i>
+      </button>
+
+      <!-- Big Logo -->
+      <a href="#home" class="flex items-center">
+        <img src="/image/footer-logo.png" alt="Blueskye Logo" class="h-16 sm:h-20 w-auto object-contain transition-transform hover:scale-102" />
+      </a>
+    </div>
+
+    <!-- Middle Search Bar (Hidden on Mobile) -->
+    <div class="hidden md:flex items-center flex-1 max-w-xs lg:max-w-sm px-4">
+      <div class="relative w-full">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/70">
+          <i class="bx bx-search text-base"></i>
+        </span>
+        <input type="text" placeholder="Search here..." disabled class="w-full text-xs pl-9 pr-14 py-2 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none" />
+        <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-[9px] font-bold text-white/60 uppercase tracking-widest gap-0.5">
+          <kbd class="bg-white/20 px-1 py-0.5 rounded border border-white/10">Ctrl</kbd> + <kbd class="bg-white/20 px-1 py-0.5 rounded border border-white/10">K</kbd>
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Header Actions Widgets -->
+    <div class="flex items-center gap-3 sm:gap-5 text-white/80">
+      
+      <!-- Globe Link (Hidden on Mobile) -->
+      <a href="#home" title="View Public Website" class="hidden sm:flex hover:text-white transition-colors items-center gap-1 text-xs font-semibold">
+        <i class="bx bx-globe text-lg"></i>
+      </a>
+
+      <!-- Notifications Bell Widget -->
+      <div class="relative cursor-pointer hover:text-white transition-colors" title="System Alerts">
+        <i class="bx bx-bell text-lg"></i>
+        <span class="absolute -top-1.5 -right-1.5 h-4 w-4 bg-orange-500 text-white text-[8px] font-black rounded-full flex items-center justify-center border border-[#1e3a8a]">
+          9+
+        </span>
+      </div>
+
+      <!-- Settings Wrench Widget (Hidden on Mobile) -->
+      <button data-tab="settings-profile" class="hidden sm:block hover:text-white transition-colors" title="Console Settings">
+        <i class="bx bx-wrench text-lg"></i>
+      </button>
+
+      <!-- Dark Mode Toggle Button -->
+      <button id="admin-dark-mode-toggle" class="hover:text-white transition-colors cursor-pointer" title="Toggle Light/Dark Theme">
+        <i class="bx bx-moon text-lg" id="admin-theme-icon"></i>
+      </button>
+
+      <!-- Vertical Divider (Hidden on xs screens) -->
+      <div class="h-5 w-px bg-white/25 hidden xs:block"></div>
+
+      <!-- User Admin Profile Widget -->
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <div class="h-8 w-8 rounded-full bg-white text-[#1e3a8a] flex items-center justify-center font-bold text-xs uppercase" id="admin-header-avatar">
+            AD
+          </div>
+          <!-- Verified check circle badge -->
+          <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 text-white text-[8px] rounded-full flex items-center justify-center border-2 border-[#1e3a8a]">
+            <i class="bx bx-check"></i>
+          </span>
+        </div>
+        <div class="hidden sm:block text-left leading-none cursor-pointer">
+          <span class="block text-xs font-extrabold text-white" id="admin-header-name">admin</span>
+          <span class="block text-[8px] text-white/70 font-bold uppercase tracking-wider mt-0.5" id="admin-header-role">Administrator</span>
+        </div>
+        <i class="bx bx-chevron-down text-white/50 text-xs hidden sm:block"></i>
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- Sidebar + Content Flex Container -->
+  <div class="flex-1 flex overflow-hidden relative">
+
+    <!-- Sidebar Navigation (Site Primary Blue #1e3a8a) - Mobile Slide-out + Desktop Collapsible -->
+    <aside id="admin-sidebar" class="fixed lg:relative inset-y-0 left-0 w-64 h-full bg-[#1e3a8a] dark:bg-[#0b1329] border-r border-white/10 flex flex-col justify-between shrink-0 z-50 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+      
+      <!-- Menu Links (With Spacing and Large White Fonts) -->
+      <nav class="p-4 space-y-2 overflow-y-auto flex-1 scrollbar-hide" id="admin-sidebar-menu">
+        
+        <!-- Dashboard Overview (Direct Link) -->
+        <button data-tab="overview" class="admin-menu-btn active w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+          <span class="flex items-center gap-3">
+            <i class="bx bxs-dashboard text-base text-white/90"></i>
+            <span>Dashboard Overview</span>
+          </span>
+        </button>
+        
+        <!-- Properties (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="properties" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-building-house text-base text-white/90"></i>
+              <span>Properties</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-properties"></i>
+          </button>
+          <div id="group-properties" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="properties-list" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>All Properties</span>
+            </button>
+            <button data-tab="properties-projects" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Development Projects</span>
+            </button>
+            <button data-tab="properties-track" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Construction Progress</span>
+            </button>
+            <button data-tab="properties-mapping" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Plot Allocations</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Customer Database (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="customers" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-user text-base text-white/90"></i>
+              <span>Customer Database</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-customers"></i>
+          </button>
+          <div id="group-customers" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="customers-list" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Customers Directory</span>
+            </button>
+            <button data-tab="customers-kyc" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>KYC Management</span>
+            </button>
+            <button data-tab="customers-access" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Portal Access Controls</span>
+            </button>
+            <button data-tab="customers-docs" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Upload Land Documents</span>
+            </button>
+            <button data-tab="customers-notes" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Customer Notes</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Sales & Invoicing (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="sales" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-credit-card-front text-base text-white/90"></i>
+              <span>Sales & Invoicing</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-sales"></i>
+          </button>
+          <div id="group-sales" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="sales-list" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Sales Catalog</span>
+            </button>
+            <button data-tab="sales-installments" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Installment Plans</span>
+            </button>
+            <button data-tab="sales-payments" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Confirmed Payments</span>
+            </button>
+            <button data-tab="sales-invoicing" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Invoices List</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Partner Network (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="partners" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-network-chart text-base text-white/90"></i>
+              <span>Partner Network</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-partners"></i>
+          </button>
+          <div id="group-partners" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="partners-directory" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>All Partners</span>
+            </button>
+            <button data-tab="partners-ledger" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Commission Ledger</span>
+            </button>
+            <button data-tab="partners-payouts" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Withdrawal Requests</span>
+            </button>
+            <button data-tab="partners-tree" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Affiliate Hierarchy Tree</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Site Inspections (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="inspections" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-calendar text-base text-white/90"></i>
+              <span>Site Inspections</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-inspections"></i>
+          </button>
+          <div id="group-inspections" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="clients-bookings" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Inspection Bookings</span>
+            </button>
+            <button data-tab="inspections-calendar" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Inspection Calendar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Blog & CMS (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="blog" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-edit text-base text-white/90"></i>
+              <span>Blog & CMS</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-blog"></i>
+          </button>
+          <div id="group-blog" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="blog-write" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Publish Articles</span>
+            </button>
+            <button data-tab="blog-subscribers" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Newsletter Subscriptions</span>
+            </button>
+            <button data-tab="clients-messages" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Customer Inquiries</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Reports & Analytics (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="reports" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-bar-chart-square text-base text-white/90"></i>
+              <span>Reports & Analytics</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-reports"></i>
+          </button>
+          <div id="group-reports" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="reports-sales" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Sales Summary Reports</span>
+            </button>
+            <button data-tab="reports-commissions" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Commission Payouts Report</span>
+            </button>
+            <button data-tab="reports-performance" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Performance Analytics</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Staff Management (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="staff" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-lock-open-alt text-base text-white/90"></i>
+              <span>Staff Management</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-staff"></i>
+          </button>
+          <div id="group-staff" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="staff-accounts" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Staff Directory</span>
+            </button>
+            <button data-tab="staff-permissions" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Access Controls Matrix</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- System Settings (Collapsible Group) -->
+        <div class="space-y-0.5">
+          <button data-toggle="settings" class="admin-menu-group-btn w-full flex items-center justify-between py-3 px-4 rounded text-left text-[14.5px] font-semibold text-white hover:bg-white/10 transition-all duration-150">
+            <span class="flex items-center gap-3">
+              <i class="bx bx-cog text-base text-white/90"></i>
+              <span>System Settings</span>
+            </span>
+            <i class="bx bx-chevron-down text-xs transition-transform duration-200 text-white/60" id="chevron-settings"></i>
+          </button>
+          <div id="group-settings" class="space-y-0.5 mt-0.5 hidden">
+            <button data-tab="settings-profile" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>General Profile Setup</span>
+            </button>
+            <button data-tab="settings-bank" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Escrow Bank Setup</span>
+            </button>
+            <button data-tab="settings-audit" class="admin-submenu-btn w-full flex items-center gap-3 text-left text-[13.5px] font-medium py-3 px-4 text-white/80 hover:text-white transition-all duration-150 rounded">
+              <span class="text-white/40 font-bold ml-1">•</span>
+              <span>Audit logs</span>
+            </button>
+          </div>
+        </div>
+
+      </nav>
+
+      <!-- Sidebar Log out footer action -->
+      <div class="p-4 border-t border-white/10 bg-black/15">
+        <button id="admin-logout-btn" class="w-full flex items-center justify-center gap-2 text-[13.5px] uppercase font-semibold text-white hover:text-red-200 transition-colors py-3 px-3 rounded hover:bg-white/10">
+          <i class="bx bx-log-out text-sm"></i>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Content Workspace -->
+    <main class="flex-1 overflow-y-auto bg-[#f3f4f6] dark:bg-slate-950 p-4 sm:p-6" id="admin-viewport">
+      <!-- Dynamic tab templates rendered via JS -->
+    </main>
+
+  </div>
+
+</div>
