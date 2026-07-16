@@ -270,12 +270,12 @@ export function bindInvoicesTabListeners(state, root, initAdminTab, addAuditLog,
       const inv = log.find(item => item.id === invId);
 
       if (inv) {
-        const companyName = state.admin.settings?.companyName || 'BLUESKYE CITY HOME';
+        const companyName = state.admin.settings?.companyName || 'BLUESKY CITY HOMES';
         const companyAddress = state.admin.settings?.companyAddress || 'Plot 15, Lekki Phase 1, Lagos';
         const companyEmail = state.admin.settings?.companyEmail || 'advisors@blueskyecityhome.com';
         
         const escrowBank = state.admin.settings?.escrowBankName || 'Zenith Bank PLC';
-        const escrowName = state.admin.settings?.escrowAccountName || 'Blueskye Escrow Shield Ltd';
+        const escrowName = state.admin.settings?.escrowAccountName || 'BlueSky Escrow Shield Ltd';
         const escrowNumber = state.admin.settings?.escrowAccountNumber || '1012345678';
 
         const w = window.open('', '_blank');

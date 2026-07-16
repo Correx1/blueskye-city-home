@@ -999,12 +999,12 @@ export function bindSalesTabListeners(state, root, initAdminTab, addAuditLog, re
         const invoices = state.admin.invoicesLog || [];
         const matchedInv = invoices.find(i => i.saleId === saleToPrint.id) || { invoiceRef: 'INV-TEMP', date: saleToPrint.date, notes: '' };
         
-        const companyName = state.admin.settings?.companyName || 'BLUESKYE CITY HOME';
+        const companyName = state.admin.settings?.companyName || 'BLUESKY CITY HOMES';
         const companyAddress = state.admin.settings?.companyAddress || 'Plot 15, Lekki Phase 1, Lagos';
         const companyEmail = state.admin.settings?.companyEmail || 'advisors@blueskyecityhome.com';
         
         const escrowBank = state.admin.settings?.escrowBankName || 'Zenith Bank PLC';
-        const escrowName = state.admin.settings?.escrowAccountName || 'Blueskye Escrow Shield Ltd';
+        const escrowName = state.admin.settings?.escrowAccountName || 'BlueSky Escrow Shield Ltd';
         const escrowNumber = state.admin.settings?.escrowAccountNumber || '1012345678';
 
         const totalPaid = (saleToPrint.paymentHistory || []).reduce((sum, p) => sum + p.amount, 0);
@@ -1094,7 +1094,7 @@ export function bindSalesTabListeners(state, root, initAdminTab, addAuditLog, re
 
               <div class="footer">
                 <p>All payments must be made to verified Escrow Bank Account detail:<br>Bank: <b>${escrowBank}</b> | Account Name: <b>${escrowName}</b> | Account Number: <b>${escrowNumber}</b></p>
-                <p style="text-align: center; margin-top: 15px; font-size: 10px;">Generated officially by Blueskye City Homes Ltd Billing registries. Thank you for your custom.</p>
+                <p style="text-align: center; margin-top: 15px; font-size: 10px;">Generated officially by BlueSky City Homes Ltd Billing registries. Thank you for your custom.</p>
               </div>
             </div>
             

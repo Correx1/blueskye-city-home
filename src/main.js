@@ -47,6 +47,7 @@ import termsHtml from './components/terms-view.html?raw';
 // --- Admin Dashboard Layout Template ---
 import adminHtml from './admin/admin-view.html?raw';
 import { renderAdminTabContent, bindAdminTabListeners } from './admin/admin-subviews.js';
+import { ensureSettingsState } from './admin/js/settings.js';
 
 // --- Customer Portal Layout Template ---
 import customerHtml from './customer/customer-view.html?raw';
@@ -159,8 +160,14 @@ const state = {
       settings: false
     },
     staffName: 'Amina Bello',
-    staffRole: 'Administrator',
+    staffRole: 'Super Admin',
     theme: localStorage.getItem('blueskye_admin_theme') || 'light',
+    notificationsList: [
+      { id: 1, title: 'New Customer Registered', desc: 'Amina Yusuf registered a new client profile.', date: '2h ago', isRead: false, tab: 'customers' },
+      { id: 2, title: 'Withdrawal Request #1029', desc: '₦350,000 Zenith payout requested by Kelechi Nnamdi.', date: '4h ago', isRead: false, tab: 'finance' },
+      { id: 3, title: 'Compliance Document Uploaded', desc: 'Govt ID uploaded for Kelechi Nnamdi is pending review.', date: '1d ago', isRead: true, tab: 'partners' },
+      { id: 4, title: 'Property Stage Allocated', desc: 'Magnolia Diplomat Mansion allocated Plots updated.', date: '2d ago', isRead: true, tab: 'properties' }
+    ],
     
     // Mock databases
     kycQueue: [
@@ -257,7 +264,7 @@ const state = {
       { id: 2, time: '2026-07-07 08:00', staff: 'Amina Bello', action: 'Log in successful', component: 'Authentication' }
     ],
     settings: {
-      companyName: 'Blueskye City Home',
+      companyName: 'BlueSky City Homes',
       companyLogo: '/image/blueskye logo.png',
       companyAddress: 'Plot 15, Lekki Phase 1, Lagos, Nigeria',
       companyPhone: '+234 1 234 5678',
@@ -268,7 +275,7 @@ const state = {
       cookieLifespanDays: 90,
       
       escrowBankName: 'Zenith Bank PLC',
-      escrowAccountName: 'Blueskye Escrow Shield Ltd',
+      escrowAccountName: 'BlueSky Escrow Shield Ltd',
       escrowAccountNumber: '1012345678',
       escrowSwiftCode: 'ZENINGLA'
     }
@@ -278,67 +285,67 @@ const state = {
 // --- Route Definitions ---
 const routes = {
   'home': { 
-    title: 'Blueskye City Home | Premium Luxury Real Estate & Properties',
-    description: 'Discover exquisite villas, modern penthouses, and premium apartments. Blueskye City Home offers the finest selection of curated luxury properties.' 
+    title: 'BlueSky City Homes | Premium Luxury Real Estate & Properties',
+    description: 'Discover exquisite villas, modern penthouses, and premium apartments. BlueSky City Homes offers the finest selection of curated luxury properties.' 
   },
   'properties': { 
-    title: 'Vetted Premium Properties | Blueskye City Home',
+    title: 'Vetted Premium Properties | BlueSky City Homes',
     description: 'Browse and search our catalog of premium real estate, luxury duplexes, and serviced land portfolios in Lagos and Abuja.' 
   },
   'property-detail': { 
-    title: 'Property Detail | Blueskye City Home',
+    title: 'Property Detail | BlueSky City Homes',
     description: 'Acquire vetted properties with secure escrow transaction portals and premium finishes.' 
   },
   'about': { 
-    title: 'About Our Elite Firm | Blueskye City Home',
+    title: 'About Our Elite Firm | BlueSky City Homes',
     description: 'Learn about our development timeline, institutional JV partnerships, and our commitment to architectural excellence in Nigeria.' 
   },
   'projects': { 
-    title: 'Landmark Development Projects | Blueskye City Home',
+    title: 'Landmark Development Projects | BlueSky City Homes',
     description: 'Preview master-planned communities, high-fidelity urban layouts, and pre-construction investment opportunities.' 
   },
   'project-detail': { 
-    title: 'Project Detail | Blueskye City Home',
+    title: 'Project Detail | BlueSky City Homes',
     description: 'Invest in serviced plots with road networks, solar grid configurations, and smart surveillance.' 
   },
   'blogs': { 
-    title: 'The Blueskye Journal | Luxury Real Estate Insights',
+    title: 'The BlueSky Journal | Luxury Real Estate Insights',
     description: 'Read expert opinions, luxury design reviews, real estate investment guides, and global market updates.' 
   },
   'blog-detail': { 
-    title: 'Blog Detail | The Blueskye Journal',
-    description: 'Read detailed expert opinions, design guides, and market updates from the official Blueskye Journal.' 
+    title: 'Blog Detail | The BlueSky Journal',
+    description: 'Read detailed expert opinions, design guides, and market updates from the official BlueSky Journal.' 
   },
   'contact': { 
-    title: 'Connect With Our Advisor Team | Blueskye City Home',
+    title: 'Connect With Our Advisor Team | BlueSky City Homes',
     description: 'Schedule site inspections, perfect deed queries, or arrange milestone escrows with our client advisors.' 
   },
   'auth': { 
-    title: 'Client Portal Login & Registration | Blueskye City Home',
+    title: 'Client Portal Login & Registration | BlueSky City Homes',
     description: 'Access your premium real estate dashboard, track active site inspection requests, and monitor escrow perfection milestones.' 
   },
   'affiliate': { 
-    title: 'Elite Affiliate Partner Program | Blueskye City Home',
+    title: 'Elite Affiliate Partner Program | BlueSky City Homes',
     description: 'Join the most elite real estate partnership network in Nigeria. Earn 10% direct commissions and 5% passive override commissions.' 
   },
   'privacy': {
-    title: 'Privacy Policy | Blueskye City Home',
+    title: 'Privacy Policy | BlueSky City Homes',
     description: 'Read our client data handling policies, encryption protocols, and affiliate referral cookies configuration.'
   },
   'terms': {
-    title: 'Terms & Conditions | Blueskye City Home',
+    title: 'Terms & Conditions | BlueSky City Homes',
     description: 'Review our premium purchase terms, milestone payments guidelines, and site tour booking guidelines.'
   },
   'admin': {
-    title: 'Admin Console | Blueskye City Home',
+    title: 'Admin Console | BlueSky City Homes',
     description: 'Internal console for property management, customer audits, commission payouts, and settings.'
   },
   'customer': {
-    title: 'Customer Portal | Blueskye City Home',
+    title: 'Customer Portal | BlueSky City Homes',
     description: 'Manage your property portfolios, check payment status ledger, and submit KYC documents.'
   },
   'affiliate-portal': {
-    title: 'Affiliate Portal Console | Blueskye City Home',
+    title: 'Affiliate Portal Console | BlueSky City Homes',
     description: 'Track commission overrides, manage downlines network hierarchy, and trigger withdrawals.'
   }
 };
@@ -487,7 +494,7 @@ function handleRoute() {
       state.selectedImageIndex = 0;
       state.activeRoute = 'property-detail';
       
-      const title = `${state.selectedProperty.title} | Blueskye City Home`;
+      const title = `${state.selectedProperty.title} | BlueSky City Homes`;
       const desc = `${state.selectedProperty.description || ''} Vetted land deeds, secure escrow transaction portals, and premium finishes in ${state.selectedProperty.city || 'Nigeria'}.`;
       updateMetaTags(title, desc);
       
@@ -506,7 +513,7 @@ function handleRoute() {
       state.selectedImageIndex = 0;
       state.activeRoute = 'project-detail';
       
-      const title = `${state.selectedProject.title} Development | Blueskye City Home`;
+      const title = `${state.selectedProject.title} Development | BlueSky City Homes`;
       const desc = `${state.selectedProject.description || ''} Invest in serviced plot developments in ${state.selectedProject.city || 'Nigeria'}. Centralized grids and utilities.`;
       updateMetaTags(title, desc);
       
@@ -524,7 +531,7 @@ function handleRoute() {
     if (state.selectedBlog) {
       state.activeRoute = 'blog-detail';
       
-      const title = `${state.selectedBlog.title} | The Blueskye Journal`;
+      const title = `${state.selectedBlog.title} | The BlueSky Journal`;
       const desc = state.selectedBlog.excerpt || '';
       updateMetaTags(title, desc);
       
@@ -892,7 +899,7 @@ function renderAdminLoginView() {
         
         <!-- Logo -->
         <div class="text-center space-y-2">
-          <img src="/image/blueskye logo.png" alt="Blueskye Logo" class="h-16 w-auto mx-auto object-contain mb-3" />
+          <img src="/image/blueskye logo.png" alt="BlueSky Logo" class="h-16 w-auto mx-auto object-contain mb-3" />
           <span class="text-primary-650 dark:text-primary-400 uppercase tracking-[0.25em] text-[9px] font-black">Security Console</span>
           <h2 class="font-display font-extrabold text-xl text-slate-900 dark:text-white leading-tight">Admin Console Log In</h2>
           <p class="text-[10px] text-slate-450 dark:text-slate-500 font-light">Verification required for employee network access.</p>
@@ -975,7 +982,206 @@ function getTabFriendlyTitle(tabName) {
   }
 }
 
+function getTabModule(tabName) {
+  switch (tabName) {
+    case 'overview':
+      return null;
+    case 'properties-list':
+    case 'projects-list':
+    case 'properties-mapping':
+    case 'properties-add':
+      return 'Properties & Projects';
+    case 'customers':
+      return 'Customer Database';
+    case 'sales-list':
+      return 'Sales & Invoicing';
+    case 'partners-directory':
+      return 'Affiliate Management';
+    case 'commission-ledger':
+    case 'withdrawal-requests':
+      return 'Commission & Withdrawals';
+    case 'payments-list':
+      return 'Payments';
+    case 'invoices-list':
+      return 'Sales & Invoicing';
+    case 'clients-bookings':
+    case 'inspections-calendar':
+      return 'Site Inspections';
+    case 'blog-write':
+      return 'Content & Blog';
+    case 'blog-subscribers':
+      return 'Newsletter';
+    case 'clients-messages':
+    case 'support-helpdesk':
+      return 'Support/Helpdesk';
+    case 'reports-sales':
+    case 'reports-commissions':
+    case 'reports-inspections':
+    case 'reports-properties':
+      return 'Reports & Analytics';
+    case 'settings-hub':
+    case 'settings-staff':
+    case 'settings-affiliate':
+    case 'settings-bank':
+    case 'settings-audit':
+      return 'Settings';
+    default:
+      return null;
+  }
+}
+
+function getPermission(state, tabName) {
+  const role = state.admin.staffRole || 'Super Admin';
+  const moduleName = getTabModule(tabName);
+  if (!moduleName) return 'Full Access';
+  const perms = state.admin.rolePermissions || {};
+  const rolePerms = perms[role] || {};
+  return rolePerms[moduleName] || 'No Access';
+}
+
+function applyRoleBasedSidebarAccess(state) {
+  const sidebar = document.querySelector('#admin-sidebar');
+  if (!sidebar) return;
+
+  const role = state.admin.staffRole || 'Super Admin';
+  const perms = state.admin.rolePermissions || {};
+  const rolePerms = perms[role] || {};
+
+  const getPerm = (module) => rolePerms[module] || 'No Access';
+
+  const toggleEl = (el, show) => {
+    if (!el) return;
+    if (show) {
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  };
+
+  // 1. Overview
+  // 2. Properties Group
+  const hasPropertiesAccess = getPerm('Properties & Projects') !== 'No Access';
+  const propGroupBtn = sidebar.querySelector('[data-toggle="properties"]');
+  const propGroupDiv = sidebar.querySelector('#group-properties');
+  toggleEl(propGroupBtn?.parentElement, hasPropertiesAccess);
+  if (propGroupDiv) {
+    toggleEl(propGroupDiv.querySelector('[data-tab="properties-list"]'), getPerm('Properties & Projects') !== 'No Access');
+    toggleEl(propGroupDiv.querySelector('[data-tab="projects-list"]'), getPerm('Properties & Projects') !== 'No Access');
+    toggleEl(propGroupDiv.querySelector('[data-tab="properties-mapping"]'), getPerm('Properties & Projects') !== 'No Access');
+  }
+
+  // 3. Customer Database
+  const customerBtn = sidebar.querySelector('[data-tab="customers"]');
+  toggleEl(customerBtn, getPerm('Customer Database') !== 'No Access');
+
+  // 4. Sales Records
+  const salesBtn = sidebar.querySelector('[data-tab="sales-list"]');
+  toggleEl(salesBtn, getPerm('Sales & Invoicing') !== 'No Access');
+
+  // 5. Affiliates & Comm Group
+  const hasAffDirectoryAccess = getPerm('Affiliate Management') !== 'No Access';
+  const hasCommWithdrawalsAccess = getPerm('Commission & Withdrawals') !== 'No Access';
+  const affGroupBtn = sidebar.querySelector('[data-toggle="affiliates"]');
+  const affGroupDiv = sidebar.querySelector('#group-affiliates');
+  toggleEl(affGroupBtn?.parentElement, hasAffDirectoryAccess || hasCommWithdrawalsAccess);
+  if (affGroupDiv) {
+    toggleEl(affGroupDiv.querySelector('[data-tab="partners-directory"]'), hasAffDirectoryAccess);
+    toggleEl(affGroupDiv.querySelector('[data-tab="commission-ledger"]'), hasCommWithdrawalsAccess);
+    toggleEl(affGroupDiv.querySelector('[data-tab="withdrawal-requests"]'), hasCommWithdrawalsAccess);
+  }
+
+  // 6. Payments & Invoices Group
+  const hasPaymentsAccess = getPerm('Payments') !== 'No Access';
+  const hasInvoicesAccess = getPerm('Sales & Invoicing') !== 'No Access';
+  const billingGroupBtn = sidebar.querySelector('[data-toggle="billing"]');
+  const billingGroupDiv = sidebar.querySelector('#group-billing');
+  toggleEl(billingGroupBtn?.parentElement, hasPaymentsAccess || hasInvoicesAccess);
+  if (billingGroupDiv) {
+    toggleEl(billingGroupDiv.querySelector('[data-tab="payments-list"]'), hasPaymentsAccess);
+    toggleEl(billingGroupDiv.querySelector('[data-tab="invoices-list"]'), hasInvoicesAccess);
+  }
+
+  // 7. Site Inspections Group
+  const hasInspectionsAccess = getPerm('Site Inspections') !== 'No Access';
+  const inspectionsGroupBtn = sidebar.querySelector('[data-toggle="inspections"]');
+  const inspectionsGroupDiv = sidebar.querySelector('#group-inspections');
+  toggleEl(inspectionsGroupBtn?.parentElement, hasInspectionsAccess);
+  if (inspectionsGroupDiv) {
+    toggleEl(inspectionsGroupDiv.querySelector('[data-tab="clients-bookings"]'), hasInspectionsAccess);
+    toggleEl(inspectionsGroupDiv.querySelector('[data-tab="inspections-calendar"]'), hasInspectionsAccess);
+  }
+
+  // 8. Blog & CMS Group
+  const hasBlogAccess = getPerm('Content & Blog') !== 'No Access';
+  const hasNewsletterAccess = getPerm('Newsletter') !== 'No Access';
+  const hasHelpdeskAccess = getPerm('Support/Helpdesk') !== 'No Access';
+  const blogGroupBtn = sidebar.querySelector('[data-toggle="blog"]');
+  const blogGroupDiv = sidebar.querySelector('#group-blog');
+  toggleEl(blogGroupBtn?.parentElement, hasBlogAccess || hasNewsletterAccess || hasHelpdeskAccess);
+  if (blogGroupDiv) {
+    toggleEl(blogGroupDiv.querySelector('[data-tab="blog-write"]'), hasBlogAccess);
+    toggleEl(blogGroupDiv.querySelector('[data-tab="blog-subscribers"]'), hasNewsletterAccess);
+    toggleEl(blogGroupDiv.querySelector('[data-tab="clients-messages"]'), hasHelpdeskAccess);
+  }
+
+  // 9. Reports & Analytics
+  const reportsBtn = sidebar.querySelector('[data-tab="reports-sales"]');
+  toggleEl(reportsBtn, getPerm('Reports & Analytics') !== 'No Access');
+
+  // 10. Support & Helpdesk
+  const supportBtn = sidebar.querySelector('[data-tab="support-helpdesk"]');
+  toggleEl(supportBtn, getPerm('Support/Helpdesk') !== 'No Access');
+
+  // 11. System Settings
+  const settingsBtn = sidebar.querySelector('[data-tab="settings-hub"]');
+  toggleEl(settingsBtn, getPerm('Settings') !== 'No Access');
+}
+
+function applyViewOnlyRestriction(viewport) {
+  // Disable form inputs
+  const inputs = viewport.querySelectorAll('input, select, textarea');
+  inputs.forEach(el => {
+    el.disabled = true;
+    el.classList.add('opacity-70', 'cursor-not-allowed');
+  });
+
+  // Hide action buttons
+  const buttons = viewport.querySelectorAll('button, a.btn, input[type="submit"]');
+  buttons.forEach(btn => {
+    const text = (btn.textContent || btn.value || '').toLowerCase();
+    const isNavigation = btn.closest('.tab-navigation') || btn.classList.contains('tab-btn') || btn.id?.includes('tab-') || text.includes('view') || text.includes('export') || text.includes('download') || text.includes('close') || text.includes('cancel');
+    
+    if (!isNavigation) {
+      if (text.includes('add') || text.includes('new') || text.includes('create') || text.includes('edit') || text.includes('delete') || text.includes('remove') || text.includes('approve') || text.includes('reject') || text.includes('confirm') || text.includes('save') || text.includes('update') || text.includes('publish') || text.includes('submit') || text.includes('post report')) {
+        btn.style.setProperty('display', 'none', 'important');
+      } else {
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    }
+  });
+
+  // Hide inline action items in tables
+  const inlineActions = viewport.querySelectorAll('.table-actions, .actions-cell, td.flex, td .flex, .btn-action, [class*="action"], a, span');
+  inlineActions.forEach(el => {
+    const text = (el.textContent || '').trim().toLowerCase();
+    const hasIcons = el.querySelector && el.querySelector('.bx-edit, .bx-trash, .bx-check, .bx-x');
+    if (hasIcons || text === 'edit' || text === 'delete' || text === 'approve' || text === 'reject' || text === 'confirm') {
+      el.style.setProperty('display', 'none', 'important');
+    }
+  });
+}
+
 function initAdminTab(tabName) {
+  ensureSettingsState(state);
+
+  // Validate active tab access. If no access, default to overview
+  const permission = getPermission(state, tabName);
+  if (permission === 'No Access' && tabName !== 'overview') {
+    tabName = 'overview';
+    state.admin.activeTab = 'overview';
+  }
+
   const titleEl = document.querySelector('#admin-header-title');
   const viewport = document.querySelector('#admin-viewport');
   if (!viewport) return;
@@ -983,6 +1189,9 @@ function initAdminTab(tabName) {
   if (titleEl) {
     titleEl.innerText = getTabFriendlyTitle(tabName);
   }
+
+  // Adjust sidebar items visibility based on permissions
+  applyRoleBasedSidebarAccess(state);
 
   // Sync active classes in sidebar navigation menu
   document.querySelectorAll('#admin-sidebar-menu button').forEach(btn => {
@@ -995,7 +1204,6 @@ function initAdminTab(tabName) {
           parentDiv.classList.remove('hidden');
           const groupName = parentDiv.id.replace('group-', '');
           state.admin.expandedGroups[groupName] = true;
-          const toggleBtn = parentDiv.parentElement.querySelector('[data-toggle]');
           const chevron = document.querySelector(`#chevron-${groupName}`);
           if (chevron) chevron.className = 'bx bx-chevron-up text-xs transition-transform duration-200 text-white/60';
         }
@@ -1021,6 +1229,11 @@ function initAdminTab(tabName) {
   // Render tab HTML content
   viewport.innerHTML = renderAdminTabContent(tabName, state, properties, projects, blogs);
 
+  // If View Only, restrict actions
+  if (permission === 'View Only') {
+    applyViewOnlyRestriction(viewport);
+  }
+
   // Sync avatar and name elements on header topbar
   const avatarEl = document.querySelector('#admin-header-avatar');
   const nameEl = document.querySelector('#admin-header-name');
@@ -1031,6 +1244,31 @@ function initAdminTab(tabName) {
   }
   if (nameEl) nameEl.innerText = state.admin.staffName;
   if (roleEl) roleEl.innerText = state.admin.staffRole;
+
+  // Bind dev role switcher
+  const devRoleSwitcher = document.querySelector('#dev-role-switcher');
+  if (devRoleSwitcher) {
+    if (devRoleSwitcher.children.length === 0) {
+      devRoleSwitcher.innerHTML = state.admin.rolesList.map(r => `
+        <option value="${r.name}" class="bg-[#1e3a8a] text-white dark:bg-[#0b1329]" ${state.admin.staffRole === r.name ? 'selected' : ''}>${r.name}</option>
+      `).join('');
+    }
+    devRoleSwitcher.value = state.admin.staffRole;
+    devRoleSwitcher.onchange = (e) => {
+      const newRole = e.target.value;
+      state.admin.staffRole = newRole;
+      const match = state.admin.staffMembers.find(m => m.role === newRole);
+      if (match) {
+        state.admin.staffName = match.name;
+      }
+      
+      const newAccess = getPermission(state, state.admin.activeTab);
+      if (newAccess === 'No Access') {
+        state.admin.activeTab = 'overview';
+      }
+      initAdminTab(state.admin.activeTab);
+    };
+  }
 
   // Restore dashboard isolated dark theme state
   const container = document.querySelector('#admin-root-container');
@@ -1048,6 +1286,228 @@ function initAdminTab(tabName) {
 
   // Bind sub-component interactive controls (CRUD listeners, CMS clicks, settings inputs)
   bindAdminTabListeners(tabName, state, properties, projects, blogs, renderApp, initAdminTab);
+  
+  // Wire up administrative notification bell popovers
+  setupAdminNotifications(state, initAdminTab);
+  
+  // Wire up staff user avatar dropdown popovers
+  setupAdminAvatarDropdown(state, initAdminTab);
+}
+
+function setupAdminAvatarDropdown(state, initAdminTab) {
+  const avatarBtn = document.querySelector('#admin-avatar-btn');
+  const avatarDropdown = document.querySelector('#admin-avatar-dropdown');
+  const avatarChevron = document.querySelector('#admin-avatar-chevron');
+  
+  const dpAvatar = document.querySelector('#admin-dropdown-avatar');
+  const dpName = document.querySelector('#admin-dropdown-name');
+  const dpEmail = document.querySelector('#admin-dropdown-email');
+  const dpBadge = document.querySelector('#admin-dropdown-badge');
+
+  if (!avatarBtn || !avatarDropdown) return;
+
+  // Toggle dropdown menu
+  avatarBtn.onclick = (e) => {
+    e.stopPropagation();
+    avatarDropdown.classList.toggle('hidden');
+    document.querySelector('#admin-notif-dropdown')?.classList.add('hidden');
+    avatarChevron?.classList.toggle('rotate-180');
+
+    // Populate data
+    if (dpName) dpName.innerText = state.admin.staffName;
+    if (dpEmail) dpEmail.innerText = state.admin.staffName.toLowerCase().replace(/\s+/g, '') + '@blueskyecityhome.com';
+    if (dpBadge) dpBadge.innerText = state.admin.staffRole;
+    if (dpAvatar) {
+      dpAvatar.innerText = state.admin.staffName.split(' ').map(n => n[0]).join('').substring(0, 2);
+    }
+  };
+
+  // Profile link action
+  document.querySelector('#admin-dropdown-profile')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    avatarDropdown.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    state.admin.activeTab = 'settings-hub';
+    state.admin.settingsActiveTab = 'profile';
+    initAdminTab('settings-hub');
+  });
+
+  // Preferences link action
+  document.querySelector('#admin-dropdown-preferences')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    avatarDropdown.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    state.admin.activeTab = 'settings-hub';
+    state.admin.settingsActiveTab = 'notifications';
+    initAdminTab('settings-hub');
+  });
+
+  // Settings hub shortcut
+  document.querySelector('#admin-dropdown-settings')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    avatarDropdown.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    state.admin.activeTab = 'settings-hub';
+    initAdminTab('settings-hub');
+  });
+
+  // Logout actions & modals
+  const logoutModal = document.querySelector('#admin-logout-confirm-modal');
+  const logoutModalCancel = document.querySelector('#admin-logout-cancel');
+  const logoutModalConfirm = document.querySelector('#admin-logout-confirm');
+
+  document.querySelector('#admin-dropdown-logout')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    avatarDropdown.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    logoutModal?.classList.remove('hidden');
+  });
+
+  // Sidebar logout widget sync
+  document.querySelector('#admin-logout-btn')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    logoutModal?.classList.remove('hidden');
+  });
+
+  logoutModalCancel?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutModal?.classList.add('hidden');
+  });
+
+  logoutModalConfirm?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutModal?.classList.add('hidden');
+    state.admin.isAuthenticated = false;
+    renderApp();
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    if (!avatarDropdown.contains(e.target) && !avatarBtn.contains(e.target)) {
+      avatarDropdown.classList.add('hidden');
+      avatarChevron?.classList.remove('rotate-180');
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      avatarDropdown.classList.add('hidden');
+      avatarChevron?.classList.remove('rotate-180');
+      logoutModal?.classList.add('hidden');
+    }
+  });
+}
+
+function setupAdminNotifications(state, initAdminTab) {
+  const notifBtn = document.querySelector('#admin-notif-btn');
+  const notifDropdown = document.querySelector('#admin-notif-dropdown');
+  const notifBadge = document.querySelector('#admin-notif-badge');
+  const notifList = document.querySelector('#admin-notif-list');
+  const markAllBtn = document.querySelector('#admin-notif-clear-btn');
+  const viewAllBtn = document.querySelector('#admin-notif-view-all');
+
+  if (!notifBtn || !notifDropdown) return;
+
+  // Update badge count
+  const unreadCount = state.admin.notificationsList.filter(n => !n.isRead).length;
+  if (unreadCount > 0) {
+    if (notifBadge) {
+      notifBadge.innerText = unreadCount > 9 ? '9+' : unreadCount;
+      notifBadge.classList.remove('hidden');
+    }
+  } else {
+    if (notifBadge) notifBadge.classList.add('hidden');
+  }
+
+  // Toggle dropdown
+  notifBtn.onclick = (e) => {
+    e.stopPropagation();
+    notifDropdown.classList.toggle('hidden');
+    document.querySelector('#admin-profile-dropdown')?.classList.add('hidden');
+    renderNotifList();
+  };
+
+  function renderNotifList() {
+    if (!notifList) return;
+    const notices = state.admin.notificationsList.slice(0, 15);
+    if (notices.length === 0) {
+      notifList.innerHTML = `<div class="text-[10px] text-slate-400 italic text-center py-4">No system alerts logs.</div>`;
+      return;
+    }
+
+    notifList.innerHTML = notices.map(n => `
+      <div data-admin-notif-id="${n.id}" class="py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all flex items-start gap-2.5 ${!n.isRead ? 'bg-blue-50/20 dark:bg-blue-955/15 font-bold border-l-2 border-blue-500' : 'opacity-70'}">
+        <span class="h-2 w-2 rounded-full mt-1.5 shrink-0 ${!n.isRead ? 'bg-blue-500' : 'bg-slate-350'}"></span>
+        <div class="flex-1 min-w-0 text-left">
+          <div class="flex justify-between items-baseline gap-1">
+            <h4 class="text-[10px] truncate text-slate-900 dark:text-white font-extrabold">${n.title}</h4>
+            <span class="text-[7.5px] text-slate-400 font-normal shrink-0">${n.date}</span>
+          </div>
+          <p class="text-[9px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed font-normal">${n.desc}</p>
+        </div>
+      </div>
+    `).join('');
+
+    // Bind click events to each notification item
+    notifList.querySelectorAll('[data-admin-notif-id]').forEach(el => {
+      el.onclick = (e) => {
+        e.stopPropagation();
+        const id = parseInt(el.getAttribute('data-admin-notif-id'));
+        const notice = state.admin.notificationsList.find(x => x.id === id);
+        if (notice) {
+          notice.isRead = true;
+          const newUnread = state.admin.notificationsList.filter(n => !n.isRead).length;
+          if (newUnread > 0) {
+            notifBadge.innerText = newUnread > 9 ? '9+' : newUnread;
+            notifBadge.classList.remove('hidden');
+          } else {
+            notifBadge.classList.add('hidden');
+          }
+          notifDropdown.classList.add('hidden');
+          
+          state.admin.activeTab = notice.tab;
+          initAdminTab(notice.tab);
+        }
+      };
+    });
+  }
+
+  // Mark all read click
+  if (markAllBtn) {
+    markAllBtn.onclick = (e) => {
+      e.stopPropagation();
+      state.admin.notificationsList.forEach(n => n.isRead = true);
+      if (notifBadge) notifBadge.classList.add('hidden');
+      renderNotifList();
+    };
+  }
+
+  // View All / View Audit Trail click
+  if (viewAllBtn) {
+    viewAllBtn.onclick = (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.add('hidden');
+      state.admin.activeTab = 'settings-hub';
+      state.admin.settingsActiveTab = 'audit';
+      initAdminTab('settings-hub');
+    };
+  }
+
+  // Close on outside click
+  document.onclick = (e) => {
+    if (!notifDropdown.contains(e.target) && !notifBtn.contains(e.target)) {
+      notifDropdown.classList.add('hidden');
+    }
+  };
+
+  // Close on Escape key
+  document.onkeydown = (e) => {
+    if (e.key === 'Escape') {
+      notifDropdown.classList.add('hidden');
+    }
+  };
 }
 
 function AffiliateViewTemplate() {
@@ -2074,7 +2534,7 @@ function setupEventListeners() {
           </div>
           <div class="p-8 overflow-y-auto space-y-6 bg-slate-50 font-serif text-slate-600 leading-relaxed text-[11px] select-none relative">
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none rotate-45">
-              <span class="text-5xl font-sans font-bold uppercase tracking-widest text-slate-800">Blueskye Escrow</span>
+              <span class="text-5xl font-sans font-bold uppercase tracking-widest text-slate-800">BlueSky Escrow</span>
             </div>
             
             <div class="text-center space-y-2 font-sans">
@@ -2091,7 +2551,7 @@ function setupEventListeners() {
                 <span>Date Filed: 12/04/2025</span>
               </div>
               <p class="text-center font-bold uppercase tracking-wider text-xs font-sans">OFFICIAL DEED OF CERTIFICATE</p>
-              <p>THIS CERTIFIES THAT the leasehold property situated at <strong>${prop.location}, ${prop.city}</strong> has been registered under the Lands Act, with all titles matching survey plan and registered covenants verified by Blueskye Escrow Services.</p>
+              <p>THIS CERTIFIES THAT the leasehold property situated at <strong>${prop.location}, ${prop.city}</strong> has been registered under the Lands Act, with all titles matching survey plan and registered covenants verified by BlueSky Escrow Services.</p>
               <p>THE LEASEHOLDER hereby enjoys rights of absolute ownership under the registered C of O provisions. Blueskye Shield Escrow confirms zero liens, zero encumbrances, and fully settled property taxes on the deed.</p>
             </div>
 
@@ -2101,7 +2561,7 @@ function setupEventListeners() {
                 <span class="text-[7px] text-slate-400 font-bold block uppercase">Ministry of Lands</span>
               </div>
               <div class="text-center space-y-1">
-                <div class="font-serif italic text-primary-600 text-[10px] tracking-wider font-bold">Blueskye Escrows</div>
+                <div class="font-serif italic text-primary-600 text-[10px] tracking-wider font-bold">BlueSky Escrows</div>
                 <span class="text-[7px] text-slate-400 font-bold block uppercase">Registrar of Deeds</span>
               </div>
             </div>
@@ -2437,15 +2897,23 @@ function setupEventListeners() {
       e.preventDefault();
       const email = document.querySelector('#admin-email').value.trim();
       
-      if (email.toLowerCase().includes('site')) {
+      ensureSettingsState(state);
+      const emailLower = email.toLowerCase();
+      if (emailLower.includes('site')) {
+        state.admin.staffName = 'Adekunle Johnson';
+        state.admin.staffRole = 'Site Manager';
+      } else if (emailLower.includes('sales')) {
         state.admin.staffName = 'Aliyu Bello';
-        state.admin.staffRole = 'Site Inspector Manager';
-      } else if (email.toLowerCase().includes('editor') || email.toLowerCase().includes('blog')) {
+        state.admin.staffRole = 'Sales Manager';
+      } else if (emailLower.includes('marketing')) {
         state.admin.staffName = 'Chidi Okafor';
-        state.admin.staffRole = 'Blog Editor';
+        state.admin.staffRole = 'Marketing Manager';
+      } else if (emailLower.includes('finance') || emailLower.includes('account')) {
+        state.admin.staffName = 'Florence Nduka';
+        state.admin.staffRole = 'Finance/Accounts';
       } else {
         state.admin.staffName = 'Amina Bello';
-        state.admin.staffRole = 'Administrator';
+        state.admin.staffRole = 'Super Admin';
       }
 
       const code = prompt("2FA SECURE CODE\n\nEnter the 6-digit security code from your authentication token (e.g. Google Authenticator) to verify identity:");
@@ -2623,7 +3091,7 @@ function debounce(func, delay) {
 // Testimonials data
 const TestimonialsData = [
   {
-    quote: "Working with Blueskye City Home was a masterclass in elegance. Chidi Okafor sourced our lagoon-front villa in Banana Island before it even hit the public catalogs. The transaction was private and flawless.",
+    quote: "Working with BlueSky City Homes was a masterclass in elegance. Chidi Okafor sourced our lagoon-front villa in Banana Island before it even hit the public catalogs. The transaction was private and flawless.",
     author: "Alexandra Vane",
     title: "Venture Partner, Sequoia Group",
     image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"

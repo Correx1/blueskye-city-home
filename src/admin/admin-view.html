@@ -15,7 +15,7 @@
 
       <!-- Big Logo -->
       <a href="#home" class="flex items-center">
-        <img src="/image/footer-logo.png" alt="Blueskye Logo" class="h-16 sm:h-20 w-auto object-contain transition-transform hover:scale-102" />
+        <img src="/image/footer-logo.png" alt="BlueSky Logo" class="h-16 sm:h-20 w-auto object-contain transition-transform hover:scale-102" />
       </a>
     </div>
 
@@ -41,11 +41,24 @@
       </a>
 
       <!-- Notifications Bell Widget -->
-      <div class="relative cursor-pointer hover:text-white transition-colors" title="System Alerts">
-        <i class="bx bx-bell text-lg"></i>
-        <span class="absolute -top-1.5 -right-1.5 h-4 w-4 bg-orange-500 text-white text-[8px] font-black rounded-full flex items-center justify-center border border-[#1e3a8a]">
-          9+
-        </span>
+      <div class="relative">
+        <button id="admin-notif-btn" class="hover:text-white transition-colors cursor-pointer relative flex items-center justify-center" title="System Alerts">
+          <i class="bx bx-bell text-lg"></i>
+          <span id="admin-notif-badge" class="absolute -top-1.5 -right-1.5 h-4 w-4 bg-orange-500 text-white text-[8px] font-black rounded-full flex items-center justify-center border border-[#1e3a8a] hidden">
+            0
+          </span>
+        </button>
+        <!-- Dynamic Dropdown Panel -->
+        <div id="admin-notif-dropdown" class="absolute right-0 mt-2 w-80 dropdown-panel text-xs font-semibold hidden animate-scale-up z-50">
+          <div class="flex items-center justify-between border-b border-slate-200/50 dark:border-slate-800 pb-1.5 mb-2">
+            <span class="font-bold text-slate-900 dark:text-white">System Alerts</span>
+            <button id="admin-notif-clear-btn" class="text-[9.5px] text-blue-600 dark:text-blue-400 hover:underline uppercase font-extrabold tracking-wider">Mark all read</button>
+          </div>
+          <div class="divide-y divide-slate-150/50 dark:divide-slate-800 max-h-64 overflow-y-auto space-y-1" id="admin-notif-list">
+            <!-- Dynamic alerts go here -->
+          </div>
+          <button id="admin-notif-view-all" class="w-full text-center py-1.5 mt-2 text-[9px] text-blue-600 dark:text-blue-400 font-extrabold border-t border-slate-200/50 dark:border-slate-800 pt-2 hover:underline tracking-wider uppercase block">View Audit Trail</button>
+        </div>
       </div>
 
       <!-- Settings Wrench Widget (Hidden on Mobile) -->
@@ -58,25 +71,74 @@
         <i class="bx bx-moon text-lg" id="admin-theme-icon"></i>
       </button>
 
+      <!-- DEV ROLE SWITCHER (Testing Aid) -->
+      <div class="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-md border border-white/20 text-white select-none">
+        <label for="dev-role-switcher" class="text-[8.5px] font-black uppercase text-white/60 tracking-wider">DEV PREVIEW:</label>
+        <select id="dev-role-switcher" class="bg-transparent border-none text-white text-xs font-bold focus:outline-none cursor-pointer">
+          <!-- Dynamically populated options -->
+        </select>
+      </div>
+
       <!-- Vertical Divider (Hidden on xs screens) -->
       <div class="h-5 w-px bg-white/25 hidden xs:block"></div>
 
-      <!-- User Admin Profile Widget -->
-      <div class="flex items-center gap-2">
-        <div class="relative">
-          <div class="h-8 w-8 rounded-full bg-white text-[#1e3a8a] flex items-center justify-center font-bold text-xs uppercase" id="admin-header-avatar">
-            AD
+      <!-- User Admin Profile Widget with Dropdown Popover -->
+      <div class="relative">
+        <button id="admin-avatar-btn" class="flex items-center gap-2 focus:outline-none" title="Staff account profile menu">
+          <div class="relative flex items-center">
+            <div class="h-8 w-8 rounded-full bg-white text-[#1e3a8a] flex items-center justify-center font-bold text-xs uppercase" id="admin-header-avatar">
+              AD
+            </div>
+            <!-- Verified check circle badge -->
+            <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 text-white text-[8px] rounded-full flex items-center justify-center border-2 border-[#1e3a8a]">
+              <i class="bx bx-check"></i>
+            </span>
           </div>
-          <!-- Verified check circle badge -->
-          <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 text-white text-[8px] rounded-full flex items-center justify-center border-2 border-[#1e3a8a]">
-            <i class="bx bx-check"></i>
-          </span>
+          <div class="hidden sm:block text-left leading-none">
+            <span class="block text-xs font-extrabold text-white" id="admin-header-name">admin</span>
+            <span class="block text-[8px] text-white/70 font-bold uppercase tracking-wider mt-0.5" id="admin-header-role">Administrator</span>
+          </div>
+          <i class="bx bx-chevron-down text-white/50 text-xs hidden sm:block transition-transform duration-200" id="admin-avatar-chevron"></i>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="admin-avatar-dropdown" class="absolute right-0 mt-2 w-56 dropdown-panel text-xs font-semibold hidden animate-scale-up z-50">
+          <!-- Non-clickable header block -->
+          <div class="p-3 text-left space-y-2">
+            <div class="flex items-center gap-2">
+              <div class="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold text-xs uppercase" id="admin-dropdown-avatar">
+                AD
+              </div>
+              <div class="min-w-0 flex-1">
+                <span class="block text-[11px] font-extrabold text-slate-900 dark:text-white truncate" id="admin-dropdown-name">Admin User</span>
+                <span class="block text-[8px] text-slate-400 dark:text-slate-500 font-mono truncate" id="admin-dropdown-email">admin@blueskyecityhome.com</span>
+              </div>
+            </div>
+            <span class="inline-block text-[8px] font-black uppercase tracking-wider bg-blue-105 dark:bg-blue-950/40 text-blue-750 dark:text-blue-400 px-2 py-0.5 rounded" id="admin-dropdown-badge">
+              Super Admin
+            </span>
+          </div>
+          
+          <div class="border-t border-slate-150/50 dark:border-slate-800 my-1"></div>
+          
+          <!-- Actions -->
+          <button id="admin-dropdown-profile" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 flex items-center gap-2 text-slate-700 dark:text-slate-350">
+            <i class="bx bx-user-circle text-base text-slate-400"></i> My Profile
+          </button>
+          <button id="admin-dropdown-preferences" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 flex items-center gap-2 text-slate-700 dark:text-slate-350">
+            <i class="bx bx-cog text-base text-slate-400"></i> Preferences
+          </button>
+          <button id="admin-dropdown-settings" class="w-full text-left py-2 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 flex items-center gap-2 text-slate-700 dark:text-slate-350">
+            <i class="bx bx-slider-alt text-base text-slate-400"></i> Settings Hub
+          </button>
+          
+          <div class="border-t border-slate-150/50 dark:border-slate-800 my-1"></div>
+          
+          <!-- Logout Action (danger styled) -->
+          <button id="admin-dropdown-logout" class="w-full text-left py-2 px-3 hover:bg-rose-50 dark:hover:bg-rose-955/20 flex items-center gap-2 text-rose-600 font-bold">
+            <i class="bx bx-log-out text-base"></i> Log Out
+          </button>
         </div>
-        <div class="hidden sm:block text-left leading-none cursor-pointer">
-          <span class="block text-xs font-extrabold text-white" id="admin-header-name">admin</span>
-          <span class="block text-[8px] text-white/70 font-bold uppercase tracking-wider mt-0.5" id="admin-header-role">Administrator</span>
-        </div>
-        <i class="bx bx-chevron-down text-white/50 text-xs hidden sm:block"></i>
       </div>
 
     </div>
@@ -276,6 +338,25 @@
       <!-- Dynamic tab templates rendered via JS -->
     </main>
 
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div id="admin-logout-confirm-modal" class="fixed inset-0 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-xs flex items-center justify-center hidden z-[100] animate-fade-in">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-6 shadow-xl max-w-sm w-full space-y-4 text-xs font-semibold mx-4 animate-scale-up">
+      <div class="flex items-center gap-3 text-rose-600 dark:text-rose-500 text-left">
+        <div class="h-10 w-10 bg-rose-500/10 rounded-full flex items-center justify-center text-lg shrink-0">
+          <i class="bx bx-log-out"></i>
+        </div>
+        <div>
+          <h3 class="font-display font-extrabold text-sm text-slate-900 dark:text-white leading-tight">Confirm Logout</h3>
+          <p class="text-[10px] text-slate-450 dark:text-slate-500 font-normal mt-1">Are you sure you want to terminate your staff admin session?</p>
+        </div>
+      </div>
+      <div class="flex gap-2 justify-end pt-2">
+        <button id="admin-logout-cancel" class="btn-secondary px-4 py-2">Cancel</button>
+        <button id="admin-logout-confirm" class="btn-danger px-4 py-2 bg-rose-600 text-white font-bold rounded hover:bg-rose-700">Log Out</button>
+      </div>
+    </div>
   </div>
 
 </div>

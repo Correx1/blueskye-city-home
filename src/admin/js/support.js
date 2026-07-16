@@ -152,13 +152,13 @@ export function bindSupportTabListeners(state, root, addAuditLog, initAdminTab, 
         const selectClass = isSelected ? 'bg-indigo-50/50 dark:bg-slate-850/40 border-l-4 border-indigo-600' : 'hover:bg-slate-50 dark:hover:bg-slate-850/10';
         
         let priorityClass = 'bg-slate-100 text-slate-655';
-        if (t.priority === 'High' || t.priority === 'Urgent') priorityClass = 'bg-rose-500/10 text-rose-650';
+        if (t.priority === 'High' || t.priority === 'Urgent') priorityClass = 'badge-base badge-danger';
         else if (t.priority === 'Medium') priorityClass = 'bg-amber-500/10 text-amber-600';
 
         let statusClass = 'bg-slate-100 text-slate-550';
-        if (t.status === 'Open') statusClass = 'bg-blue-500/10 text-blue-650';
+        if (t.status === 'Open') statusClass = 'badge-base badge-info';
         else if (t.status === 'Pending') statusClass = 'bg-purple-500/10 text-purple-600';
-        else if (t.status === 'Resolved') statusClass = 'bg-emerald-500/10 text-emerald-650';
+        else if (t.status === 'Resolved') statusClass = 'badge-base badge-success';
 
         const lastMsg = t.messages[t.messages.length - 1]?.text || '';
         const preview = lastMsg.length > 50 ? lastMsg.substring(0, 50) + '...' : lastMsg;

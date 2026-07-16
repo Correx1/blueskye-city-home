@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./design-tokens.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -249,43 +250,51 @@ body.dark {
 }
 
 /* --- Admin Dashboard Custom Sidebar Styles (White and Big Texts) --- */
-.admin-menu-btn, .admin-menu-group-btn, .admin-submenu-btn {
+.admin-menu-btn, .admin-menu-group-btn, .admin-submenu-btn,
+.affiliate-menu-btn, .affiliate-submenu-btn {
   position: relative;
   transition: all 0.2s ease-in-out;
   color: rgba(255, 255, 255, 0.85) !important;
 }
 
-.admin-menu-btn, .admin-menu-group-btn {
+.admin-menu-btn, .admin-menu-group-btn,
+.affiliate-menu-btn {
   font-size: 14.5px !important;
   font-weight: 600 !important;
 }
 
-.admin-submenu-btn {
+.admin-submenu-btn,
+.affiliate-submenu-btn {
   font-size: 13.5px !important;
   font-weight: 500 !important;
   padding-left: 2rem !important; /* Indent submenus slightly */
 }
 
-.admin-menu-btn i, .admin-menu-group-btn i, .admin-submenu-btn i {
+.admin-menu-btn i, .admin-menu-group-btn i, .admin-submenu-btn i,
+.affiliate-menu-btn i, .affiliate-submenu-btn i {
   color: rgba(255, 255, 255, 0.7) !important;
   font-size: 17px !important;
 }
 
-.admin-menu-btn.active, .admin-menu-group-btn.active, .admin-submenu-btn.active {
+.admin-menu-btn.active, .admin-menu-group-btn.active, .admin-submenu-btn.active,
+.affiliate-menu-btn.active, .affiliate-submenu-btn.active {
   color: #ffffff !important;
   background-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-.admin-menu-btn.active i, .admin-menu-group-btn.active i, .admin-submenu-btn.active i {
+.admin-menu-btn.active i, .admin-menu-group-btn.active i, .admin-submenu-btn.active i,
+.affiliate-menu-btn.active i, .affiliate-submenu-btn.active i {
   color: #ffffff !important;
 }
 
-.admin-menu-btn:hover, .admin-menu-group-btn:hover, .admin-submenu-btn:hover {
+.admin-menu-btn:hover, .admin-menu-group-btn:hover, .admin-submenu-btn:hover,
+.affiliate-menu-btn:hover, .affiliate-submenu-btn:hover {
   color: #ffffff !important;
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-.admin-menu-btn:hover i, .admin-menu-group-btn:hover i, .admin-submenu-btn:hover i {
+.admin-menu-btn:hover i, .admin-menu-group-btn:hover i, .admin-submenu-btn:hover i,
+.affiliate-menu-btn:hover i, .affiliate-submenu-btn:hover i {
   color: #ffffff !important;
 }
 

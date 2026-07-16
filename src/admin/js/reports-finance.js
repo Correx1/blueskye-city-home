@@ -19,7 +19,21 @@ function fmtNGN(val) {
 
 // 1. MASTER ROUTER
 export function renderSalesSummaryReportTab(state) {
-  if (!state.admin.reportsTabActive) state.admin.reportsTabActive = 'sales';
+  const role = state.admin.staffRole || 'Super Admin';
+  const allowedReportsMap = {
+    'Super Admin': ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections'],
+    'Site Manager': ['property', 'inspections'],
+    'Sales Manager': ['sales', 'customers', 'property'],
+    'Marketing Manager': ['commissions', 'performance', 'customers'],
+    'Finance/Accounts': ['sales', 'commissions'],
+    'Administrator': ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections']
+  };
+
+  const allowedReports = allowedReportsMap[role] || ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections'];
+
+  if (!state.admin.reportsTabActive || !allowedReports.includes(state.admin.reportsTabActive)) {
+    state.admin.reportsTabActive = allowedReports[0] || 'sales';
+  }
   
   let html = getSection('reports-hub-template');
   
@@ -43,17 +57,35 @@ export function renderPerformanceAnalyticsTab(state) { return renderSalesSummary
 
 // --- Bind Hub Events Listeners ---
 export function bindReportsFinanceTabListeners(state, root, addAuditLog, initAdminTab) {
-  if (!state.admin.reportsTabActive) state.admin.reportsTabActive = 'sales';
+  const role = state.admin.staffRole || 'Super Admin';
+  const allowedReportsMap = {
+    'Super Admin': ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections'],
+    'Site Manager': ['property', 'inspections'],
+    'Sales Manager': ['sales', 'customers', 'property'],
+    'Marketing Manager': ['commissions', 'performance', 'customers'],
+    'Finance/Accounts': ['sales', 'commissions'],
+    'Administrator': ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections']
+  };
+  const allowedReports = allowedReportsMap[role] || ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections'];
+
+  if (!state.admin.reportsTabActive || !allowedReports.includes(state.admin.reportsTabActive)) {
+    state.admin.reportsTabActive = allowedReports[0] || 'sales';
+  }
   const tab = state.admin.reportsTabActive;
 
-  // Render Subtabs style highlights
+  // Render Subtabs style highlights & visibility
   ['sales', 'commissions', 'customers', 'performance', 'property', 'inspections'].forEach(t => {
     const el = document.querySelector(`#rep-btn-${t}`);
     if (el) {
-      if (t === tab) {
-        el.className = "pb-2 border-b-2 border-blue-600 text-blue-605 uppercase font-display tracking-wider";
+      if (!allowedReports.includes(t)) {
+        el.style.setProperty('display', 'none', 'important');
       } else {
-        el.className = "pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-650 uppercase font-display tracking-wider";
+        el.style.removeProperty('display');
+        if (t === tab) {
+          el.className = "pb-2 border-b-2 border-blue-600 text-blue-605 uppercase font-display tracking-wider";
+        } else {
+          el.className = "pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-650 uppercase font-display tracking-wider";
+        }
       }
     }
   });

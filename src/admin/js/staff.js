@@ -105,7 +105,7 @@ export function bindStaffTabListeners(state, root, addAuditLog, initAdminTab, re
       }
 
       tbody.innerHTML = filtered.map(s => {
-        const badgeClass = s.status === 'Active' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450' : 'bg-rose-500/10 text-rose-650';
+        const badgeClass = s.status === 'Active' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450' : 'badge-base badge-danger';
         const actionBtn = s.status === 'Active' 
           ? `<button data-suspend-staff="${s.id}" class="text-rose-600 hover:underline font-bold text-xs">Suspend</button>` 
           : `<button data-activate-staff="${s.id}" class="text-emerald-600 hover:underline font-bold text-xs">Activate</button>`;

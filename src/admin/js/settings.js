@@ -13,7 +13,7 @@ function getSection(name) {
   return settingsTemplates.slice(divStart, closingDiv + 6);
 }
 
-function ensureSettingsState(state) {
+export function ensureSettingsState(state) {
   if (!state.admin.settings) state.admin.settings = {};
   const s = state.admin.settings;
 
@@ -292,15 +292,15 @@ export function bindSettingsHubListeners(state, root, addAuditLog, initAdminTab,
       if (!tbody) return;
 
       tbody.innerHTML = staff.map(x => `
-        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 transition-colors text-xs font-semibold">
+        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 transition-colors text-body font-semibold">
           <td class="p-3 text-slate-900 dark:text-white font-extrabold">${x.name}</td>
-          <td class="p-3 font-mono text-slate-450">${x.email}</td>
+          <td class="p-3 font-mono text-slate-500 dark:text-slate-400">${x.email}</td>
           <td class="p-3">
-            <button data-link-to-role="${x.role}" class="bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded text-[10px] font-extrabold hover:underline transition-all">
+            <button data-link-to-role="${x.role}" class="bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded text-caption font-extrabold hover:underline transition-all">
               ${x.role}
             </button>
           </td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${x.status === 'Active' ? 'bg-emerald-500/10 text-emerald-650' : 'bg-rose-500/10 text-rose-650'}">${x.status}</span></td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-caption font-bold uppercase tracking-wider ${x.status === 'Active' ? 'badge-base badge-success' : 'badge-base badge-danger'}">${x.status}</span></td>
           <td class="p-3 font-mono text-slate-400">${x.date}</td>
           <td class="p-3 text-right space-x-1">
             <button data-edit-staff-id="${x.id}" class="text-indigo-650 hover:underline">Edit</button>
@@ -484,14 +484,14 @@ export function bindSettingsHubListeners(state, root, addAuditLog, initAdminTab,
         const staffCount = state.admin.staffMembers.filter(s => s.role === r.name).length;
 
         return `
-          <div data-role-id="${r.id}" class="p-3 cursor-pointer border-b border-slate-100 dark:border-slate-850 transition-all ${selectClass}">
+          <div data-role-id="${r.id}" class="p-4.5 cursor-pointer border-b border-slate-100 dark:border-slate-850 transition-all ${selectClass}">
             <div class="flex items-center justify-between">
-              <span class="font-extrabold text-slate-900 dark:text-white">${r.name}</span>
-              <span class="text-[10px] text-slate-450">${staffCount} Members</span>
+              <span class="font-extrabold text-slate-900 dark:text-white text-body">${r.name}</span>
+              <span class="text-caption text-slate-400 font-bold">${staffCount} Members</span>
             </div>
-            <p class="text-[10px] text-slate-400 font-normal mt-0.5">${r.desc}</p>
-            <div class="flex justify-end gap-2 mt-2">
-              <button data-delete-role-id="${r.id}" class="text-rose-600 text-[10px] hover:underline font-bold">Delete</button>
+            <p class="text-caption text-slate-400 font-normal mt-1">${r.desc}</p>
+            <div class="flex justify-end gap-3 mt-2.5">
+              <button data-delete-role-id="${r.id}" class="text-rose-650 text-caption hover:underline font-bold">Delete</button>
             </div>
           </div>
         `;
@@ -521,10 +521,10 @@ export function bindSettingsHubListeners(state, root, addAuditLog, initAdminTab,
         tbody.innerHTML = modules.map(m => {
           const currentLevel = perms[m] || 'No Access';
           return `
-            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 text-xs font-semibold">
-              <td class="p-2.5 font-bold text-slate-900 dark:text-white">${m}</td>
-              <td class="p-2.5 text-right w-44">
-                <select data-perm-module="${m}" class="form-input text-[11px] bg-slate-50 dark:bg-slate-955 py-1 w-full text-slate-700 font-semibold">
+            <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 text-body font-semibold">
+              <td class="p-3 font-bold text-slate-900 dark:text-white">${m}</td>
+              <td class="p-3 text-right w-44">
+                <select data-perm-module="${m}" class="input-base text-caption bg-slate-50 dark:bg-slate-955 py-1 w-full text-slate-700 dark:text-slate-300 font-semibold">
                   <option value="Full Access" ${currentLevel === 'Full Access' ? 'selected' : ''}>Full Access</option>
                   <option value="Partial" ${currentLevel === 'Partial' ? 'selected' : ''}>Partial</option>
                   <option value="View Only" ${currentLevel === 'View Only' ? 'selected' : ''}>View Only</option>
@@ -656,13 +656,12 @@ export function bindSettingsHubListeners(state, root, addAuditLog, initAdminTab,
 
     function renderBanks() {
       if (!tbody) return;
-      tbody.innerHTML = banks.map(b => `
-        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 text-xs font-semibold">
-          <td class="p-2"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-slate-100 text-slate-500">${b.label}</span></td>
-          <td class="p-2 text-slate-900 dark:text-white font-extrabold">${b.name}</td>
-          <td class="p-2 font-normal">${b.bank}</td>
-          <td class="p-2 font-mono text-slate-450">${b.number}</td>
-          <td class="p-2 text-right"><button data-delete-set-bank="${b.id}" class="text-rose-600 hover:underline">Remove</button></td>
+      tbody.innerHTML = banks.map(b => `        <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 text-body font-semibold">
+          <td class="p-2.5"><span class="px-2 py-0.5 rounded text-caption font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">${b.label}</span></td>
+          <td class="p-2.5 text-slate-900 dark:text-white font-extrabold">${b.name}</td>
+          <td class="p-2.5 font-normal">${b.bank}</td>
+          <td class="p-2.5 font-mono text-slate-500 dark:text-slate-400">${b.number}</td>
+          <td class="p-2.5 text-right"><button data-delete-set-bank="${b.id}" class="text-rose-600 hover:underline font-bold text-caption uppercase">Remove</button></td>
         </tr>
       `).join('');
     }
@@ -895,24 +894,24 @@ export function bindSettingsHubListeners(state, root, addAuditLog, initAdminTab,
       });
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-xs text-slate-400 italic">No activity logs matched search criteria.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-body text-slate-400 italic">No activity logs matched search criteria.</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.map(l => {
         let typeBadge = 'bg-slate-100 text-slate-655';
-        if (l.action.includes('Created') || l.action.includes('Add')) typeBadge = 'bg-emerald-500/10 text-emerald-650';
-        else if (l.action.includes('Updated') || l.action.includes('Modified') || l.action.includes('Replied')) typeBadge = 'bg-blue-500/10 text-blue-650';
+        if (l.action.includes('Created') || l.action.includes('Add')) typeBadge = 'badge-base badge-success';
+        else if (l.action.includes('Updated') || l.action.includes('Modified') || l.action.includes('Replied')) typeBadge = 'badge-base badge-info';
         else if (l.action.includes('Deleted') || l.action.includes('Removed') || l.action.includes('Suspended')) typeBadge = 'bg-rose-500/10 text-rose-655';
         else if (l.action.includes('Approved') || l.action.includes('Resolved')) typeBadge = 'bg-emerald-600/15 text-emerald-750';
         else if (l.action.includes('Rejected') || l.action.includes('Closed')) typeBadge = 'bg-amber-500/10 text-amber-600';
         else if (l.action.includes('Confirmed')) typeBadge = 'bg-indigo-500/10 text-indigo-650';
 
         return `
-          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 transition-colors text-xs font-semibold">
+          <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 transition-colors text-body font-semibold">
             <td class="p-3 text-slate-900 dark:text-white font-extrabold">${l.staff}</td>
-            <td class="p-3"><span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${typeBadge}">${l.component}</span></td>
-            <td class="p-3 text-slate-550 font-normal">${l.component}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-caption font-bold uppercase tracking-wider ${typeBadge}">${l.component}</span></td>
+            <td class="p-3 text-slate-550 dark:text-slate-400 font-normal">${l.component}</td>
             <td class="p-3 text-slate-655 dark:text-slate-350 font-normal leading-relaxed max-w-sm truncate">${l.action}</td>
             <td class="p-3 font-mono text-slate-400">${l.time}</td>
           </tr>

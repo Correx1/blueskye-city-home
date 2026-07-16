@@ -448,7 +448,7 @@ export function bindPaymentsTabListeners(state, root, initAdminTab, addAuditLog,
         const totalPaid = (order.paymentHistory || []).reduce((sum, h) => sum + h.amount, 0);
         const outstandingBal = Math.max(0, (order.price || 0) - totalPaid);
         
-        const companyName = state.admin.settings?.companyName || 'BLUESKYE CITY HOME';
+        const companyName = state.admin.settings?.companyName || 'BLUESKY CITY HOMES';
         const companyAddress = state.admin.settings?.companyAddress || 'Plot 15, Lekki Phase 1, Lagos';
         const companyEmail = state.admin.settings?.companyEmail || 'advisors@blueskyecityhome.com';
 

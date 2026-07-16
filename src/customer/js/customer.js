@@ -214,11 +214,21 @@ export function bindCustomerListeners(state, root, renderApp) {
     const regForm = document.querySelector('#cust-register-form');
     regForm?.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.querySelector('#cust-reg-name').value.trim();
       
-      alert(`Thank you ${name}! Your customer registration request has been submitted. Registration is finalized following post-order or administrative approval. You will receive an email notice when activated.`);
-      regForm.reset();
-      applyAuthTab('login');
+      // Hide tabs and inputs, show success view
+      document.querySelector('#cust-auth-tabs')?.classList.add('hidden');
+      document.querySelector('#cust-register-interface')?.classList.add('hidden');
+      const successView = document.querySelector('#cust-register-success-interface');
+      if (successView) successView.classList.remove('hidden');
+
+      // Bind Back to Login
+      document.querySelector('#cust-success-login-btn')?.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        regForm.reset();
+        successView?.classList.add('hidden');
+        document.querySelector('#cust-auth-tabs')?.classList.remove('hidden');
+        applyAuthTab('login');
+      }, { once: true });
     });
 
     applyAuthTab(c.authSubTab);
@@ -245,25 +255,87 @@ export function bindCustomerListeners(state, root, renderApp) {
     sidebar?.classList.toggle('-translate-x-full');
   });
 
-  // Toggle notification popover dropdown list
+  // Dynamic Notifications Setup
   const notifBtn = document.querySelector('#cust-notif-btn');
   const notifDropdown = document.querySelector('#cust-notif-dropdown');
+  const notifBadge = document.querySelector('#cust-notif-badge');
+  const notifList = document.querySelector('#cust-notif-list');
+  const clearBtn = document.querySelector('#cust-notif-clear-btn');
+  const viewAllBtn = document.querySelector('#cust-notif-view-all');
+
+  function updateNotifBadge() {
+    const unreadCount = c.notificationsList.filter(n => !n.isRead).length;
+    if (unreadCount > 0) {
+      if (notifBadge) {
+        notifBadge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+        notifBadge.classList.remove('hidden');
+      }
+    } else {
+      if (notifBadge) notifBadge.classList.add('hidden');
+    }
+  }
+
+  // Initial sync
+  updateNotifBadge();
+
   notifBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     notifDropdown?.classList.toggle('hidden');
     avatarDropdown?.classList.add('hidden');
+    renderNotifList();
   });
 
-  document.querySelector('#cust-notif-clear-btn')?.addEventListener('click', (e) => {
+  function renderNotifList() {
+    if (!notifList) return;
+    const notices = c.notificationsList.slice(0, 15);
+    if (notices.length === 0) {
+      notifList.innerHTML = `<div class="text-[10px] text-slate-400 italic py-4 text-center">No new notifications.</div>`;
+      return;
+    }
+
+    notifList.innerHTML = notices.map(n => `
+      <div data-cust-notif-id="${n.id}" class="py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-all flex items-start gap-2.5 ${!n.isRead ? 'bg-blue-50/20 dark:bg-blue-955/15 font-bold border-l-2 border-blue-500' : 'opacity-70'}">
+        <span class="h-2 w-2 rounded-full mt-1.5 shrink-0 ${!n.isRead ? 'bg-blue-500' : 'bg-slate-300'}"></span>
+        <div class="flex-1 min-w-0">
+          <div class="flex justify-between items-baseline gap-1">
+            <h4 class="text-[10px] truncate text-slate-900 dark:text-white font-extrabold">${n.title}</h4>
+            <span class="text-[7.5px] text-slate-400 font-normal shrink-0">${n.date}</span>
+          </div>
+          <p class="text-[9px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed font-normal">${n.desc}</p>
+        </div>
+      </div>
+    `).join('');
+
+    notifList.querySelectorAll('[data-cust-notif-id]').forEach(el => {
+      el.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const id = parseInt(el.getAttribute('data-cust-notif-id'));
+        const notice = c.notificationsList.find(x => x.id === id);
+        if (notice) {
+          notice.isRead = true;
+          updateNotifBadge();
+          notifDropdown?.classList.add('hidden');
+          c.activeTab = notice.tab || 'dashboard';
+          renderViewport();
+        }
+      });
+    });
+  }
+
+  clearBtn?.addEventListener('click', (e) => {
     e.preventDefault();
-    const unreadCount = document.querySelector('#cust-notif-btn span');
-    if (unreadCount) unreadCount.classList.add('hidden');
-    notifDropdown?.classList.add('hidden');
-    alert('Notifications marked as read.');
+    e.stopPropagation();
+    c.notificationsList.forEach(n => n.isRead = true);
+    updateNotifBadge();
+    renderNotifList();
+    if (c.activeTab === 'notifications') {
+      renderViewport();
+    }
   });
 
-  document.querySelector('#cust-notif-view-all')?.addEventListener('click', (e) => {
+  viewAllBtn?.addEventListener('click', (e) => {
     e.preventDefault();
+    e.stopPropagation();
     c.activeTab = 'notifications';
     notifDropdown?.classList.add('hidden');
     renderViewport();
@@ -274,23 +346,56 @@ export function bindCustomerListeners(state, root, renderApp) {
   const avatarDropdown = document.querySelector('#cust-avatar-dropdown');
   const avatarChevron = document.querySelector('#cust-avatar-chevron');
 
+  const dpAvatar = document.querySelector('#cust-dropdown-avatar');
+  const dpName = document.querySelector('#cust-dropdown-name');
+  const dpEmail = document.querySelector('#cust-dropdown-email');
+
   avatarBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     avatarDropdown?.classList.toggle('hidden');
     notifDropdown?.classList.add('hidden');
     avatarChevron?.classList.toggle('rotate-180');
+
+    // Populate data dynamically
+    if (dpName) dpName.textContent = c.profile.name;
+    if (dpEmail) dpEmail.textContent = c.profile.email;
+    if (dpAvatar) dpAvatar.src = c.profile.avatar;
   });
 
   // Body clicks dismiss popovers
-  document.body.addEventListener('click', () => {
-    notifDropdown?.classList.add('hidden');
-    avatarDropdown?.classList.add('hidden');
-    avatarChevron?.classList.remove('rotate-180');
+  document.addEventListener('click', (e) => {
+    if (notifDropdown && !notifDropdown.contains(e.target) && !notifBtn?.contains(e.target)) {
+      notifDropdown.classList.add('hidden');
+    }
+    if (avatarDropdown && !avatarDropdown.contains(e.target) && !avatarBtn?.contains(e.target)) {
+      avatarDropdown.classList.add('hidden');
+      avatarChevron?.classList.remove('rotate-180');
+    }
+  });
+
+  // Escape key closes popovers
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      notifDropdown?.classList.add('hidden');
+      avatarDropdown?.classList.add('hidden');
+      avatarChevron?.classList.remove('rotate-180');
+      logoutModal?.classList.add('hidden');
+    }
   });
 
   // Dropdown actions profile settings / logout
-  document.querySelector('#cust-dropdown-settings')?.addEventListener('click', (e) => {
+  document.querySelector('#cust-dropdown-profile')?.addEventListener('click', (e) => {
     e.preventDefault();
+    avatarDropdown?.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    c.activeTab = 'profile-settings';
+    renderViewport();
+  });
+
+  document.querySelector('#cust-dropdown-preferences')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    avatarDropdown?.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
     c.activeTab = 'profile-settings';
     renderViewport();
   });
@@ -301,11 +406,29 @@ export function bindCustomerListeners(state, root, renderApp) {
     renderViewport();
   });
 
+  // Logout actions & modals
+  const logoutModal = document.querySelector('#cust-logout-confirm-modal');
+  const logoutModalCancel = document.querySelector('#cust-logout-cancel');
+  const logoutModalConfirm = document.querySelector('#cust-logout-confirm');
+
   document.querySelector('#cust-dropdown-logout')?.addEventListener('click', (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    avatarDropdown?.classList.add('hidden');
+    avatarChevron?.classList.remove('rotate-180');
+    logoutModal?.classList.remove('hidden');
+  });
+
+  logoutModalCancel?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutModal?.classList.add('hidden');
+  });
+
+  logoutModalConfirm?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    logoutModal?.classList.add('hidden');
     c.isAuthenticated = false;
     c.activeTab = 'dashboard';
-    alert('Logged out successfully.');
     renderApp();
   });
 
@@ -345,15 +468,15 @@ export function bindCustomerListeners(state, root, renderApp) {
           let kycBadgeHtml = '';
           const kycStat = c.profile.kycStatus;
           if (kycStat === 'Verified') {
-            kycBadgeHtml = `<span class="bg-emerald-500/10 text-emerald-650 text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-check-double"></i> Verified</span>`;
+            kycBadgeHtml = `<span class="badge-base badge-success text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-check-double"></i> Verified</span>`;
           } else if (kycStat === 'Pending') {
-            kycBadgeHtml = `<span class="bg-amber-500/10 text-amber-650 text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-time-five"></i> Pending Review</span>`;
+            kycBadgeHtml = `<span class="badge-base badge-warning text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-time-five"></i> Pending Review</span>`;
           } else {
             kycBadgeHtml = `
               <div class="space-y-1.5 text-left">
-                <span class="bg-rose-500/10 text-rose-650 text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-error-circle"></i> Rejected</span>
+                <span class="badge-base badge-danger text-[10px] px-2 py-0.5 rounded font-extrabold flex items-center gap-0.5 w-fit"><i class="bx bx-error-circle"></i> Rejected</span>
                 <p class="text-[9px] text-rose-600 font-normal leading-relaxed">Reason: ${c.profile.kycRejectReason}</p>
-                <button data-link-to-tab="kyc" class="bg-rose-650 hover:bg-rose-700 text-white text-[9px] font-bold py-1 px-2.5 rounded flex items-center gap-0.5 active:scale-98 transition-all"><i class="bx bx-upload"></i> Re-upload Documents</button>
+                <button data-link-to-tab="kyc" class="btn-danger text-[9px] py-1 px-2.5 flex items-center gap-0.5"><i class="bx bx-upload"></i> Re-upload Documents</button>
               </div>
             `;
           }
@@ -403,15 +526,15 @@ export function bindCustomerListeners(state, root, renderApp) {
           let kycCardHtml = '';
           const kycStat = c.profile.kycStatus;
           if (kycStat === 'Verified') {
-            kycCardHtml = `<span class="bg-emerald-500/10 text-emerald-650 text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-check-double text-xs"></i> Verified</span>`;
+            kycCardHtml = `<span class="badge-base badge-success text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-check-double text-xs"></i> Verified</span>`;
           } else if (kycStat === 'Pending') {
-            kycCardHtml = `<span class="bg-amber-500/10 text-amber-650 text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-time-five text-xs"></i> Pending Review</span>`;
+            kycCardHtml = `<span class="badge-base badge-warning text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-time-five text-xs"></i> Pending Review</span>`;
           } else {
             kycCardHtml = `
               <div class="space-y-1 text-left">
-                <span class="bg-rose-500/10 text-rose-650 text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-error-circle text-xs"></i> Rejected</span>
+                <span class="badge-base badge-danger text-[10px] font-extrabold px-2.5 py-1 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-error-circle text-xs"></i> Rejected</span>
                 <p class="text-[9px] text-rose-600 font-normal leading-relaxed">Reason: ${c.profile.kycRejectReason}</p>
-                <button data-link-to-tab="kyc" class="bg-rose-600 hover:bg-rose-700 text-white text-[9px] font-bold py-1 px-3 rounded flex items-center gap-0.5 mt-1.5 active:scale-98 transition-all shadow-xs"><i class="bx bx-upload"></i> Re-upload Documents</button>
+                <button data-link-to-tab="kyc" class="btn-danger text-[9px] py-1 px-3 mt-1.5"><i class="bx bx-upload"></i> Re-upload Documents</button>
               </div>
             `;
           }
@@ -419,10 +542,10 @@ export function bindCustomerListeners(state, root, renderApp) {
           // Build Recent Activity lists
           const activityRows = c.activities.map(act => {
             let iconClass = 'bx bx-info-circle text-slate-450 bg-slate-100 dark:bg-slate-800';
-            if (act.type === 'payment') iconClass = 'bx bx-credit-card text-emerald-650 bg-emerald-50 dark:bg-emerald-950/20';
+            if (act.type === 'payment') iconClass = 'bx bx-credit-card badge-base badge-success dark:bg-emerald-950/20';
             else if (act.type === 'kyc') iconClass = 'bx bx-shield-check text-blue-650 bg-blue-50 dark:bg-blue-950/20';
             else if (act.type === 'inspection') iconClass = 'bx bx-calendar text-indigo-650 bg-indigo-50 dark:bg-indigo-950/20';
-            else if (act.type === 'referral') iconClass = 'bx bx-share-alt text-amber-650 bg-amber-50 dark:bg-amber-950/20';
+            else if (act.type === 'referral') iconClass = 'bx bx-share-alt badge-base badge-warning dark:bg-amber-950/20';
             else if (act.type === 'support') iconClass = 'bx bx-message-rounded-check text-slate-655 bg-slate-50 dark:bg-slate-850';
 
             return `
@@ -511,8 +634,8 @@ export function bindCustomerListeners(state, root, renderApp) {
             `;
           } else {
             const cardsHtml = c.properties.map(p => {
-              let badgeColor = 'bg-blue-500/10 text-blue-650';
-              if (p.status === 'Fully Paid') badgeColor = 'bg-emerald-500/10 text-emerald-650';
+              let badgeColor = 'badge-base badge-info';
+              if (p.status === 'Fully Paid') badgeColor = 'badge-base badge-success';
               else if (p.status === 'Active') badgeColor = 'bg-indigo-500/10 text-indigo-650';
 
               return `
@@ -586,7 +709,7 @@ export function bindCustomerListeners(state, root, renderApp) {
             const isLocked = doc.status === 'Locked';
             const statusBadge = isLocked 
               ? `<span class="bg-slate-100 text-slate-450 dark:bg-slate-800 dark:text-slate-500 text-[8px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-lock-alt"></i> Locked</span>`
-              : `<span class="bg-emerald-500/10 text-emerald-650 text-[8px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-check-circle"></i> Ready</span>`;
+              : `<span class="badge-base badge-success text-[8px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-0.5 w-fit uppercase"><i class="bx bx-check-circle"></i> Ready</span>`;
             
             const actionBtn = isLocked
               ? `<span class="text-[9px] text-slate-400 font-normal">${doc.reason}</span>`
@@ -607,7 +730,7 @@ export function bindCustomerListeners(state, root, renderApp) {
               <!-- Back Header -->
               <div class="flex items-center justify-between border-b border-slate-200/50 dark:border-slate-850 pb-3">
                 <button id="btn-back-to-properties" class="text-slate-500 hover:text-slate-800 dark:hover:text-white font-bold flex items-center gap-0.5 text-xs"><i class="bx bx-arrow-back text-sm"></i> Back to holdings</button>
-                <span class="px-2.5 py-0.5 bg-blue-500/10 text-blue-650 rounded text-[10px] font-extrabold uppercase tracking-wider">${p.plot}</span>
+                <span class="px-2.5 py-0.5 badge-base badge-info rounded text-[10px] font-extrabold uppercase tracking-wider">${p.plot}</span>
               </div>
 
               <!-- Main Split: Top Overview Details Card + Image plot map -->
@@ -739,8 +862,8 @@ export function bindCustomerListeners(state, root, renderApp) {
 
           // History Rows
           const historyRows = c.paymentsHistory.map(h => {
-            let statusBadge = 'bg-emerald-500/10 text-emerald-650';
-            if (h.status === 'Pending Confirmation') statusBadge = 'bg-amber-500/10 text-amber-650 animate-pulse';
+            let statusBadge = 'badge-base badge-success';
+            if (h.status === 'Pending Confirmation') statusBadge = 'badge-base badge-warning animate-pulse';
             
             return `
               <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 text-xs font-semibold">
@@ -1028,8 +1151,8 @@ export function bindCustomerListeners(state, root, renderApp) {
 
         // Render scheduled tours HTML
         const scheduledHtml = scheduledTours.map(t => {
-          let statusBadge = 'bg-amber-500/10 text-amber-650 animate-pulse';
-          if (t.status === 'Confirmed') statusBadge = 'bg-blue-500/10 text-blue-650';
+          let statusBadge = 'badge-base badge-warning animate-pulse';
+          if (t.status === 'Confirmed') statusBadge = 'badge-base badge-info';
 
           return `
             <div class="p-3 bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg flex justify-between items-center text-xs font-semibold">
@@ -1165,9 +1288,9 @@ export function bindCustomerListeners(state, root, renderApp) {
         // Render slots
         const slotsHtml = Object.entries(c.kycDocs).map(([key, doc]) => {
           let statusBadge = 'bg-slate-100 text-slate-450 dark:bg-slate-800 dark:text-slate-500';
-          if (doc.status === 'Verified') statusBadge = 'bg-emerald-500/10 text-emerald-650';
-          else if (doc.status === 'Pending') statusBadge = 'bg-amber-500/10 text-amber-650 animate-pulse';
-          else if (doc.status === 'Rejected') statusBadge = 'bg-rose-500/10 text-rose-650';
+          if (doc.status === 'Verified') statusBadge = 'badge-base badge-success';
+          else if (doc.status === 'Pending') statusBadge = 'badge-base badge-warning animate-pulse';
+          else if (doc.status === 'Rejected') statusBadge = 'badge-base badge-danger';
 
           const isUploadable = doc.status === 'Rejected' || doc.status === 'Not Submitted';
           
@@ -1275,7 +1398,7 @@ export function bindCustomerListeners(state, root, renderApp) {
         if (c.profile.isAffiliate) {
           affiliateCardHtml = `
             <div class="bg-gradient-to-r from-emerald-500/5 to-teal-500/5 border border-emerald-500/10 p-5 rounded-xl text-left space-y-3">
-              <span class="bg-emerald-500/10 text-emerald-650 text-[9px] px-2 py-0.5 rounded font-black tracking-wider uppercase"><i class="bx bx-check-shield"></i> Registered Affiliate Partner</span>
+              <span class="badge-base badge-success text-[9px] px-2 py-0.5 rounded font-black tracking-wider uppercase"><i class="bx bx-check-shield"></i> Registered Affiliate Partner</span>
               <h4 class="font-extrabold text-xs text-slate-900 dark:text-white">You are an active partner in our Elite Program!</h4>
               <p class="text-[10px] text-slate-450 leading-relaxed font-normal">Monitor your downline hierarchies, check accrued commissions overrides, and launch payout perfect transfers.</p>
               <button id="btn-open-affiliate-portal" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-4 rounded text-[10px] active:scale-98 transition-all flex items-center gap-1 shadow-xs"><i class="bx bx-launch"></i> Open Affiliate Portal</button>

@@ -170,7 +170,7 @@ export function bindBlogTabListeners(state, root, addAuditLog, initAdminTab, blo
         }
 
         tbody.innerHTML = filtered.map(x => {
-          const badgeStyle = x.status === 'Subscribed' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450' : 'bg-rose-500/10 text-rose-650';
+          const badgeStyle = x.status === 'Subscribed' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-450' : 'badge-base badge-danger';
           const sourceBadge = x.source === 'Customer' ? 'bg-blue-500/10 text-blue-605' :
                               x.source === 'Affiliate' ? 'bg-purple-500/10 text-purple-600' : 'bg-slate-100 text-slate-550';
           
@@ -454,8 +454,8 @@ export function bindBlogTabListeners(state, root, addAuditLog, initAdminTab, blo
 
         tbody.innerHTML = camps.map(c => {
           let badge = 'bg-slate-100 text-slate-550';
-          if (c.status === 'Sent') badge = 'bg-emerald-500/10 text-emerald-650';
-          else if (c.status === 'Scheduled') badge = 'bg-blue-500/10 text-blue-650';
+          if (c.status === 'Sent') badge = 'badge-base badge-success';
+          else if (c.status === 'Scheduled') badge = 'badge-base badge-info';
 
           return `
             <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-955/20 transition-colors text-xs font-semibold">
@@ -645,8 +645,8 @@ export function bindBlogTabListeners(state, root, addAuditLog, initAdminTab, blo
 
       tbody.innerHTML = filtered.map(b => {
         let badgeClass = 'bg-slate-100 text-slate-655';
-        if (b.status === 'Published') badgeClass = 'bg-emerald-500/10 text-emerald-650';
-        else if (b.status === 'Scheduled') badgeClass = 'bg-blue-500/10 text-blue-650';
+        if (b.status === 'Published') badgeClass = 'badge-base badge-success';
+        else if (b.status === 'Scheduled') badgeClass = 'badge-base badge-info';
 
         const displayDate = b.status === 'Scheduled' && b.scheduledTime 
           ? `Scheduled: ${b.scheduledTime.replace('T', ' ')}` 
@@ -925,7 +925,7 @@ export function bindBlogTabListeners(state, root, addAuditLog, initAdminTab, blo
       const container = document.querySelector('#blog-form-tags-badges-list');
       if (!container) return;
       container.innerHTML = state.admin.blogSelectedTags.map(tag => `
-        <span class="bg-blue-500/10 text-blue-650 px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
+        <span class="badge-base badge-info px-2 py-0.5 rounded text-[10px] font-bold flex items-center gap-1">
           #${tag}
           <button type="button" data-remove-tag="${tag}" class="text-blue-600 hover:text-blue-800 text-[10px] font-black">×</button>
         </span>
