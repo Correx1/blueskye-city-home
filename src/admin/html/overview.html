@@ -1,0 +1,149 @@
+<div class="space-y-6 animate-fade-in text-slate-800 dark:text-slate-200 text-[14.5px]">
+  
+  <!-- System-wide Dynamic KPI Cards Row -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+    
+    <!-- 1. Total Properties -->
+    <div data-tab="properties-list" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Total Properties</span>
+        <i class="bx bx-building-house text-lg text-blue-600 dark:text-blue-400"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-properties-total">0</p>
+        <span class="text-xs text-slate-500 font-normal block mt-1" id="kpi-properties-breakdown">0 Available · 0 Reserved · 0 Sold</span>
+      </div>
+    </div>
+
+    <!-- 2. Total Customers -->
+    <div data-tab="customers" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Total Customers</span>
+        <i class="bx bx-group text-lg text-emerald-500"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-customers-total">0</p>
+        <span class="text-xs text-slate-500 font-normal block mt-1">Registered clients database</span>
+      </div>
+    </div>
+
+    <!-- 3. Total Sales Value (With Dropdown Period Selector) -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Total Sales Value</span>
+        <select id="sales-period-select" class="text-xs bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white py-0.5 px-1.5 rounded focus:outline-none cursor-pointer">
+          <option value="month">This Month</option>
+          <option value="quarter">This Quarter</option>
+          <option value="all" selected>All Time</option>
+        </select>
+      </div>
+      <div data-tab="sales-list" class="cursor-pointer hover:opacity-80 transition-opacity">
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-sales-value">₦0</p>
+        <span class="text-xs text-slate-500 font-normal block mt-1" id="kpi-sales-subtext">Confirmed sales ledger</span>
+      </div>
+    </div>
+
+    <!-- 4. Total Commissions Owed (Liability) -->
+    <div data-tab="reports-commissions" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Commissions Owed</span>
+        <i class="bx bx-wallet text-lg text-rose-500"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-commissions-owed">₦0</p>
+        <span class="text-xs text-rose-500 font-normal block mt-1">Pending partner payouts</span>
+      </div>
+    </div>
+
+    <!-- 5. Pending KYC Count -->
+    <div data-tab="customers" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Pending KYC</span>
+        <i class="bx bx-shield-quarter text-lg text-amber-500"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-kyc-pending">0</p>
+        <span class="text-xs text-amber-500 font-normal block mt-1" id="kpi-kyc-breakdown">0 Clients · 0 Affiliates</span>
+      </div>
+    </div>
+
+    <!-- 6. Pending Withdrawal Requests -->
+    <div data-tab="reports-commissions" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Pending Withdrawals</span>
+        <i class="bx bx-money-withdraw text-lg text-purple-500"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-withdrawals-count">0 Requests</p>
+        <span class="text-xs text-purple-500 font-normal block mt-1" id="kpi-withdrawals-value">Total: ₦0</span>
+      </div>
+    </div>
+
+    <!-- 7. Inspection Queue -->
+    <div data-tab="clients-bookings" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-2 flex flex-col justify-between cursor-pointer hover:border-[#1e3a8a] dark:hover:border-blue-500 transition-all hover:translate-y-[-1px]">
+      <div class="flex items-center justify-between text-slate-500">
+        <span class="text-xs font-semibold uppercase tracking-wider">Inspection Queue</span>
+        <i class="bx bx-calendar text-lg text-indigo-500"></i>
+      </div>
+      <div>
+        <p class="text-2xl font-semibold text-slate-800 dark:text-white" id="kpi-inspections-count">0 Pending</p>
+        <span class="text-xs text-indigo-500 font-normal block mt-1">Upcoming site tours scheduled</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Upper Grid: Charts & Needs Attention Section -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <!-- Sales Performance Line Chart (Col-Span 2) -->
+    <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-4">
+      <div class="flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white">Sales Revenue & Affiliate Payout Trends</h4>
+        <span class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-500 font-medium" id="overview-chart-period-label">Last 6 Months</span>
+      </div>
+      <div class="h-64 w-full relative">
+        <canvas id="salesOverviewChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Needs Attention list (Col-Span 1) -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-2">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-850 dark:text-white">Needs Attention</h4>
+        <span class="text-xs bg-red-500/10 text-red-500 font-bold px-2 py-0.5 rounded uppercase tracking-wider">Priority Actions</span>
+      </div>
+      
+      <div class="space-y-3.5" id="needs-attention-list">
+        <!-- DYNAMIC ACTION ITEMS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Section: Recent Activity Feed (Full Col) -->
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-none space-y-4 w-full">
+    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-2">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-white">Recent System Activity</h4>
+      <span class="text-xs bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded text-slate-500 font-medium">Latest changes</span>
+    </div>
+    
+    <div class="overflow-x-auto w-full">
+      <table class="w-full text-left text-sm border-collapse">
+        <thead>
+          <tr class="bg-slate-50 dark:bg-slate-950 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-xs">
+            <th class="p-3">Time</th>
+            <th class="p-3">Actor</th>
+            <th class="p-3">Component</th>
+            <th class="p-3">Action performed</th>
+            <th class="p-3 text-right">Link</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 dark:divide-slate-850" id="recent-activity-table-body">
+          <!-- DYNAMIC RECENT ACTIVITIES -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

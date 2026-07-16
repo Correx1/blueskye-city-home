@@ -1,0 +1,670 @@
+<!-- ====== SECTION: write-articles-template ====== -->
+<div data-section="write-articles-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Sub-tab Navigation (Only visible in directory mode) -->
+    <div id="blog-dashboard-header" class="border-b border-slate-200/20 pb-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Blog &amp; Editorial Management</h3>
+        <p class="text-xs text-slate-500 mt-1">Write informational guides, manage categories taxonomies, and schedule public releases.</p>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <div class="border-b border-slate-200/20 flex gap-4 text-xs font-bold mr-4" id="blog-subtabs-nav">
+          <button data-blog-subtab="posts" class="pb-1.5 border-b-2 border-blue-600 text-blue-600 font-display uppercase tracking-wider" id="btn-blog-posts-subtab">Articles list</button>
+          <button data-blog-subtab="taxonomy" class="pb-1.5 border-b-2 border-transparent text-slate-400 hover:text-slate-600 font-display uppercase tracking-wider" id="btn-blog-taxonomy-subtab">Categories &amp; Tags</button>
+        </div>
+        <button id="btn-write-post-trigger" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1">
+          <i class="bx bx-edit text-sm"></i> Write New Post
+        </button>
+      </div>
+    </div>
+
+    <!-- 1. VIEW PORT A: BLOG POSTS LIST -->
+    <div id="viewport-blog-posts-list" class="space-y-4 animate-fade-in">
+      <!-- Filters bar -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+        <div class="relative w-full">
+          <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+          <input type="text" id="blog-search-input" placeholder="Search title or content..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-855" />
+        </div>
+        
+        <select id="filter-blog-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full font-semibold">
+          <option value="all">All Statuses</option>
+          <option value="Draft">Draft</option>
+          <option value="Published">Published</option>
+          <option value="Scheduled">Scheduled</option>
+        </select>
+
+        <select id="filter-blog-category" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full font-semibold">
+          <option value="all">All Categories</option>
+          <!-- DYNAMIC CATEGORIES SELECT -->
+        </select>
+
+        <div class="flex gap-1 w-full md:col-span-2">
+          <input type="date" id="filter-blog-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2 font-mono" />
+          <input type="date" id="filter-blog-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2 font-mono" />
+        </div>
+      </div>
+
+      <!-- Table list -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                <th class="p-3 w-16">Thumbnail</th>
+                <th class="p-3">Post Title</th>
+                <th class="p-3">Category</th>
+                <th class="p-3">Author</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 font-mono">Date</th>
+                <th class="p-3 text-center">Views</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="blog-posts-table-body" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+              <!-- DYNAMIC POSTS ROWS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. VIEW PORT B: ADD/EDIT BLOG POST FORM (Two-Column Layout) -->
+    <div id="viewport-blog-post-form" class="hidden animate-fade-in space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-105/20 pb-3">
+        <button id="btn-blog-editor-back" class="text-blue-650 hover:underline font-bold text-xs flex items-center gap-1"><i class="bx bx-left-arrow-alt text-lg"></i> Back to Directory</button>
+        <span id="blog-editor-title-action" class="text-xs uppercase font-extrabold text-slate-450 tracking-wider">Write New Article</span>
+      </div>
+
+      <form id="blog-editor-composer-form" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Column (Left / Large) -->
+        <div class="lg:col-span-2 space-y-4 bg-white dark:bg-slate-900 border border-slate-250/20 rounded-xl p-5 shadow-sm">
+          
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Article Title *</label>
+            <input type="text" id="blog-form-title" required placeholder="e.g. Navigating Land Title Documents in Nigeria" class="form-input text-sm font-bold bg-slate-50 dark:bg-slate-955 text-slate-950 dark:text-white py-2.5 w-full" />
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Slug / URL path (Auto-generated) *</label>
+            <div class="flex items-center">
+              <span class="bg-slate-100 dark:bg-slate-850 px-3 py-2 border border-r-0 border-slate-200/50 rounded-l text-xs text-slate-450 font-normal">/blog/</span>
+              <input type="text" id="blog-form-slug" required placeholder="navigating-land-titles" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 rounded-r py-2 w-full font-mono" />
+            </div>
+          </div>
+
+          <!-- Rich Text editor toolbar mockup -->
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Article Body Content *</label>
+            <div class="border border-slate-200/50 dark:border-slate-800 rounded-lg overflow-hidden flex flex-col">
+              <!-- Formatting toolbar -->
+              <div class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/50 p-2 flex gap-1.5 items-center flex-wrap">
+                <button type="button" data-edit-tool="bold" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded font-bold text-xs" title="Bold">B</button>
+                <button type="button" data-edit-tool="italic" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded italic text-xs" title="Italic">I</button>
+                <button type="button" data-edit-tool="heading" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded font-extrabold text-[10px]" title="Heading H2">H2</button>
+                <button type="button" data-edit-tool="list" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded text-xs" title="Bullet List">• List</button>
+                <button type="button" data-edit-tool="link" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded text-xs flex items-center" title="Link URL"><i class="bx bx-link text-sm"></i></button>
+                <button type="button" data-edit-tool="image" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded text-xs flex items-center" title="Image URL embed"><i class="bx bx-image text-sm"></i></button>
+              </div>
+              <textarea id="blog-form-content" required rows="10" placeholder="Type article content paragraphs here. Markdown heading keys allowed..." class="w-full p-3 bg-slate-50 dark:bg-slate-950 text-slate-850 dark:text-white border-0 focus:ring-0 text-xs font-normal leading-relaxed resize-y"></textarea>
+            </div>
+          </div>
+
+          <!-- Image upload and preview -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Featured Image *</label>
+              <input type="file" id="blog-form-image-file" accept="image/*" class="w-full form-input py-1.5 text-xs bg-slate-50 dark:bg-slate-955 text-slate-500" />
+              <input type="text" id="blog-form-image-url" placeholder="Or paste image URL link..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full mt-1.5 font-normal" />
+            </div>
+            <!-- Image banner preview -->
+            <div class="border border-dashed border-slate-200/60 dark:border-slate-800 rounded-lg flex items-center justify-center p-2 bg-slate-50/20 max-h-36 overflow-hidden">
+              <img id="blog-form-image-preview" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=300&q=80" alt="Featured image preview" class="max-h-full max-w-full rounded object-cover" />
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Excerpt Synopsis Summary *</label>
+            <textarea id="blog-form-excerpt" rows="2" placeholder="Write a short summary snippet (1-2 sentences) of the article for listings..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-normal"></textarea>
+          </div>
+        </div>
+
+        <!-- Sidebar Settings Column (Right / Narrow) -->
+        <div class="space-y-4">
+          <!-- settings cards options -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-250/20 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1"><i class="bx bx-cog text-sm"></i> Metadata Settings</h4>
+            
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Article Status *</label>
+              <select id="blog-form-status" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+                <option value="Draft">Draft</option>
+                <option value="Published">Published</option>
+                <option value="Scheduled">Scheduled</option>
+              </select>
+            </div>
+
+            <!-- Scheduled datetime picker (only reveals if Scheduled status selected) -->
+            <div class="space-y-1 hidden animate-fade-in" id="sec-blog-schedule-time">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Schedule release Date &amp; Time *</label>
+              <input type="datetime-local" id="blog-form-scheduletime" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-mono" />
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Category *</label>
+              <select id="blog-form-category" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+                <!-- DYNAMIC CATEGORIES SELECT -->
+              </select>
+            </div>
+
+            <!-- Tags picker list -->
+            <div class="space-y-1.5">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Tags (Multi-Tag Selection)</label>
+              <div class="relative">
+                <input type="text" id="blog-form-tags-input" placeholder="Type tag &amp; press Enter..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-normal" />
+              </div>
+              <!-- tags active badges list -->
+              <div id="blog-form-tags-badges-list" class="flex flex-wrap gap-1 mt-1.5">
+                <!-- TAG BADGES -->
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Author *</label>
+              <select id="blog-form-author" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+                <!-- DYNAMIC STAFF AUTHORS OPTIONS -->
+              </select>
+            </div>
+          </div>
+
+          <!-- SEO Accordion block -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-250/20 rounded-xl p-5 shadow-sm space-y-3">
+            <button type="button" id="btn-blog-seo-accordion" class="w-full flex items-center justify-between font-bold text-xs uppercase text-slate-450 border-b border-slate-105/20 pb-1">
+              <span><i class="bx bx-search-alt-2 text-sm"></i> SEO Configurations</span>
+              <i class="bx bx-chevron-down text-base" id="blog-seo-accordion-chevron"></i>
+            </button>
+            
+            <div id="sec-blog-seo-accordion-body" class="space-y-3 hidden animate-slide-down">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase">Meta Title Tag</label>
+                <input type="text" id="blog-form-seo-title" placeholder="Meta title text..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-normal" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-450 uppercase">Meta Description tag</label>
+                <textarea id="blog-form-seo-desc" rows="2" placeholder="Search engine description preview snippet..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-normal"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit buttons card -->
+          <div class="flex gap-2">
+            <button type="button" id="btn-blog-save-draft" class="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-850 dark:text-slate-250 border border-slate-250/30 font-bold py-2.5 rounded active:scale-98">Save Draft</button>
+            <button type="submit" id="btn-blog-publish" class="flex-1 bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 rounded active:scale-98">Publish</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 3. VIEW PORT C: CATEGORIES & TAGS INLINE MANAGER -->
+    <div id="viewport-blog-taxonomy-manager" class="hidden animate-fade-in">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Tab left: Categories -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4 text-xs font-semibold">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1 flex items-center justify-between">
+            <span>Corporate Categories</span>
+            <button type="button" id="btn-tax-add-cat-toggle" class="text-blue-650 hover:underline">Add New</button>
+          </h4>
+
+          <!-- Inline add category row input (appears top) -->
+          <form id="form-tax-add-category" class="bg-slate-50 dark:bg-slate-955 p-3 rounded border border-slate-200/30 space-y-2 hidden animate-fade-in">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase">Category Name *</label>
+                <input type="text" id="tax-cat-name" required placeholder="e.g. Land Guide" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase">Slug path *</label>
+                <input type="text" id="tax-cat-slug" required placeholder="land-guide" class="form-input text-xs bg-white dark:bg-slate-955 py-1.5 w-full font-mono" />
+              </div>
+            </div>
+            <div class="flex justify-end gap-1.5">
+              <button type="button" id="btn-tax-cancel-cat" class="px-2.5 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300">Cancel</button>
+              <button type="submit" class="px-2.5 py-1 bg-[#1e3a8a] text-white rounded hover:bg-blue-800">Save</button>
+            </div>
+          </form>
+
+          <!-- Categories dynamic table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-450 uppercase tracking-wider font-semibold text-[9px]">
+                  <th class="p-3">Category Name</th>
+                  <th class="p-3">Slug</th>
+                  <th class="p-3 text-center">Post Count</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tax-categories-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+                <!-- DYNAMIC -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tab right: Tags -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4 text-xs font-semibold">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1 flex items-center justify-between">
+            <span>Editorial Tags</span>
+            <button type="button" id="btn-tax-add-tag-toggle" class="text-blue-650 hover:underline">Add New</button>
+          </h4>
+
+          <!-- Inline add tag row input (appears top) -->
+          <form id="form-tax-add-tag" class="bg-slate-50 dark:bg-slate-955 p-3 rounded border border-slate-200/30 space-y-2 hidden animate-fade-in">
+            <div class="grid grid-cols-2 gap-2">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase">Tag Name *</label>
+                <input type="text" id="tax-tag-name" required placeholder="e.g. Investment" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-400 uppercase">Slug path *</label>
+                <input type="text" id="tax-tag-slug" required placeholder="investment" class="form-input text-xs bg-white dark:bg-slate-955 py-1.5 w-full font-mono" />
+              </div>
+            </div>
+            <div class="flex justify-end gap-1.5">
+              <button type="button" id="btn-tax-cancel-tag" class="px-2.5 py-1 bg-slate-200 text-slate-700 rounded hover:bg-slate-300">Cancel</button>
+              <button type="submit" class="px-2.5 py-1 bg-[#1e3a8a] text-white rounded hover:bg-blue-800">Save</button>
+            </div>
+          </form>
+
+          <!-- Tags dynamic table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-450 uppercase tracking-wider font-semibold text-[9px]">
+                  <th class="p-3">Tag Name</th>
+                  <th class="p-3">Slug</th>
+                  <th class="p-3 text-center">Post Count</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tax-tags-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+                <!-- DYNAMIC -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Article Read-Only Preview Modal -->
+  <div id="blog-preview-live-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden animate-scale-up max-h-[90vh] flex flex-col">
+      <div class="bg-slate-50 dark:bg-slate-955 px-5 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <span class="text-[10px] uppercase font-bold tracking-wider text-slate-450">Public Article Live Preview</span>
+        <button type="button" id="close-blog-preview-modal-btn" class="text-slate-450 hover:text-slate-705 text-2xl"><i class="bx bx-x"></i></button>
+      </div>
+
+      <div class="p-6 overflow-y-auto flex-1 space-y-4 text-slate-800 dark:text-slate-200">
+        <article class="space-y-4">
+          <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold">
+            <span id="modal-prev-category" class="bg-blue-500/10 text-blue-600 px-2 py-0.5 rounded uppercase">Investments</span>
+            <span id="modal-prev-date">July 16, 2026</span>
+          </div>
+
+          <h1 id="modal-prev-title" class="font-display font-extrabold text-2xl text-slate-950 dark:text-white leading-tight">Article Title Title</h1>
+          
+          <div class="flex items-center gap-2 text-xs text-slate-500 font-semibold border-b border-slate-105/20 pb-3">
+            <div class="h-7 w-7 rounded-full bg-[#1e3a8a] text-white flex items-center justify-center font-bold font-mono">B</div>
+            <div>
+              <span class="block font-bold text-slate-900 dark:text-white" id="modal-prev-author">Amina Bello</span>
+              <span class="block text-[9px] text-slate-400 font-normal">BlueSky Site Editor Coordinator</span>
+            </div>
+          </div>
+
+          <!-- Featured image -->
+          <div class="rounded-lg overflow-hidden border border-slate-200/20 max-h-52">
+            <img id="modal-prev-image" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=800&q=80" alt="Featured image" class="w-full h-full object-cover" />
+          </div>
+
+          <p id="modal-prev-excerpt" class="text-xs font-semibold text-slate-500 italic pl-3 border-l-2 border-[#1e3a8a] leading-relaxed">Excerpt synopsis details.</p>
+          
+          <div id="modal-prev-body" class="text-xs font-light text-slate-655 dark:text-slate-355 leading-relaxed space-y-3">
+            Body contents.
+          </div>
+
+          <!-- Tags list -->
+          <div id="modal-prev-tags-list" class="flex flex-wrap gap-1 border-t border-slate-105/20 pt-3">
+            <!-- TAGS -->
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== SECTION: news-subscribers-template ====== -->
+<div data-section="news-subscribers-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Sub-tab Navigation -->
+    <div class="border-b border-slate-200/20 pb-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Newsletter &amp; Campaigns Hub</h3>
+        <p class="text-xs text-slate-500 mt-1">Manage broadcast segments, design marketing campaigns, and review delivery engagement logs.</p>
+      </div>
+      
+      <div class="border-b border-slate-200/20 flex gap-4 text-xs font-bold mr-4" id="news-subtabs-nav">
+        <button data-news-subtab="subscribers" class="pb-1.5 border-b-2 border-blue-600 text-blue-600 font-display uppercase tracking-wider" id="btn-news-subscribers-tab">Subscribers Database</button>
+        <button data-news-subtab="compose" class="pb-1.5 border-b-2 border-transparent text-slate-400 hover:text-slate-655 font-display uppercase tracking-wider" id="btn-news-compose-tab">Compose Campaign</button>
+        <button data-news-subtab="history" class="pb-1.5 border-b-2 border-transparent text-slate-400 hover:text-slate-655 font-display uppercase tracking-wider" id="btn-news-history-tab">Campaign History</button>
+      </div>
+    </div>
+
+    <!-- 1. VIEWPORT A: SUBSCRIBERS DATABASE -->
+    <div id="viewport-news-subscribers" class="space-y-4 animate-fade-in">
+      <!-- Counts Metrics -->
+      <div class="grid grid-cols-2 gap-4 text-xs font-semibold">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-4 rounded-xl shadow-sm flex flex-col justify-center">
+          <span class="text-[9px] text-slate-400 uppercase font-bold block">Total active Subscribed members</span>
+          <p class="text-lg font-extrabold text-slate-905 dark:text-white mt-1" id="news-sub-total-count">0</p>
+        </div>
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-4 rounded-xl shadow-sm flex flex-col justify-center">
+          <span class="text-[9px] text-slate-400 uppercase font-bold block">Unsubscribed this period</span>
+          <p class="text-lg font-extrabold text-rose-500 mt-1" id="news-sub-unsub-count">0</p>
+        </div>
+      </div>
+
+      <!-- Filters & Actions -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-805 rounded-md p-3">
+        <div class="relative w-full">
+          <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+          <input type="text" id="news-sub-search" placeholder="Search by email or name..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-855" />
+        </div>
+        
+        <select id="filter-news-sub-source" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full font-semibold">
+          <option value="all">All Sources</option>
+          <option value="Website signup">Website signup</option>
+          <option value="Customer">Customer</option>
+          <option value="Affiliate">Affiliate</option>
+          <option value="Manually added">Manually added</option>
+        </select>
+
+        <select id="filter-news-sub-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full font-semibold">
+          <option value="all">All Statuses</option>
+          <option value="Subscribed">Subscribed</option>
+          <option value="Unsubscribed">Unsubscribed</option>
+        </select>
+
+        <div class="flex gap-2 w-full md:col-span-2 justify-end">
+          <button id="btn-news-sub-add-manual" class="bg-indigo-650 hover:bg-indigo-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1"><i class="bx bx-plus text-sm"></i> Add</button>
+          <button id="btn-news-sub-import-csv" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1"><i class="bx bx-upload text-sm"></i> Import CSV</button>
+        </div>
+      </div>
+
+      <!-- Subscribers Table -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                <th class="p-3">Subscriber Name</th>
+                <th class="p-3">Email Coordinates</th>
+                <th class="p-3">Source Channel</th>
+                <th class="p-3 font-mono">Date Subscribed</th>
+                <th class="p-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="news-subscribers-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+              <!-- DYNAMIC SUBSCRIBERS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. VIEWPORT B: COMPOSE/SEND CAMPAIGN -->
+    <div id="viewport-news-compose" class="hidden animate-fade-in space-y-4">
+      <form id="news-campaign-composer-form" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Editor large column -->
+        <div class="lg:col-span-2 space-y-4 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Campaign Reference Name *</label>
+            <input type="text" id="campaign-form-name" required placeholder="e.g. July Newsletter - Promo Release" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Subject Line *</label>
+            <input type="text" id="campaign-form-subject" required placeholder="e.g. Claim 10% Discount on Epe Oasis Plots!" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Email Content Body *</label>
+            <div class="border border-slate-200/50 dark:border-slate-800 rounded-lg overflow-hidden flex flex-col">
+              <!-- Formatting toolbar -->
+              <div class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/50 p-2 flex gap-1.5 items-center flex-wrap">
+                <button type="button" data-camp-tool="bold" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded font-bold text-xs" title="Bold">B</button>
+                <button type="button" data-camp-tool="italic" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded italic text-xs" title="Italic">I</button>
+                <button type="button" data-camp-tool="heading" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded font-extrabold text-[10px]" title="Heading H2">H2</button>
+                <button type="button" data-camp-tool="list" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded text-xs" title="Bullet List">• List</button>
+                <button type="button" data-camp-tool="link" class="px-2 py-1 bg-white dark:bg-slate-900 hover:bg-slate-100 border border-slate-200/50 dark:border-slate-800 rounded text-xs flex items-center" title="Link URL"><i class="bx bx-link text-sm"></i></button>
+              </div>
+              <textarea id="campaign-form-content" required rows="10" placeholder="Type email campaign content here..." class="w-full p-3 bg-slate-50 dark:bg-slate-950 text-slate-850 dark:text-white border-0 focus:ring-0 text-xs font-normal leading-relaxed resize-y"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar settings right -->
+        <div class="space-y-4">
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1"><i class="bx bx-paper-plane text-sm"></i> Campaigns Settings</h4>
+            
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Recipient Target Segment *</label>
+              <select id="campaign-form-segment" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+                <option value="All Subscribers">All Subscribers</option>
+                <option value="Customer">Customers Only</option>
+                <option value="Affiliate">Affiliates Only</option>
+              </select>
+            </div>
+
+            <!-- Send options -->
+            <div class="space-y-2">
+              <label class="text-[9px] font-bold text-slate-400 uppercase block">Send Schedule Type *</label>
+              <div class="flex gap-4 items-center">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="camp-send-option" value="now" checked class="text-[#1e3a8a] focus:ring-0" />
+                  <span>Send Immediately</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="camp-send-option" value="schedule" class="text-[#1e3a8a] focus:ring-0" />
+                  <span>Schedule Later</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Datetime picker schedule (only visible when schedule selected) -->
+            <div class="space-y-1 hidden animate-fade-in" id="sec-campaign-schedule-time">
+              <label class="text-[9px] font-bold text-slate-400 uppercase">Schedule date &amp; Time *</label>
+              <input type="datetime-local" id="campaign-form-scheduletime" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-mono" />
+            </div>
+
+            <!-- Test dispatch actions button -->
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-850/60 flex flex-col gap-2">
+              <button type="button" id="btn-campaign-test-send" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-850 dark:text-slate-250 border border-slate-200/50 font-bold py-2 rounded text-xs active:scale-98 flex items-center justify-center gap-1"><i class="bx bx-envelope text-sm"></i> Send Test Email</button>
+            </div>
+          </div>
+
+          <!-- Submit triggers -->
+          <div class="flex gap-2">
+            <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 rounded active:scale-98 flex items-center justify-center gap-1.5"><i class="bx bx-send text-sm"></i> Dispatch Campaign</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 3. VIEWPORT C: CAMPAIGN HISTORY -->
+    <div id="viewport-news-history" class="hidden animate-fade-in space-y-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                <th class="p-3">Campaign Reference</th>
+                <th class="p-3">Email Subject</th>
+                <th class="p-3 font-mono">Sent/Scheduled Date</th>
+                <th class="p-3 text-center">Recipients</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-center">Open Rate *</th>
+                <th class="p-3 text-center">Click Rate *</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="news-campaigns-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+              <!-- DYNAMIC CAMPAIGNS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="text-[10px] text-slate-400 italic font-medium">* Illustrative engagement data. Real tracking requires active marketing server SMTP integrations.</p>
+    </div>
+  </div>
+
+  <!-- Manual Add Subscriber Modal -->
+  <div id="news-add-sub-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-scale-up text-xs font-semibold text-slate-850 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Add Subscriber manually</h4>
+        <button type="button" id="close-news-add-sub-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <form id="news-add-sub-form" class="p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Subscriber Full Name (Optional)</label>
+          <input type="text" id="news-form-sub-name" placeholder="e.g. Florence Nduka" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Email Address *</label>
+          <input type="email" id="news-form-sub-email" required placeholder="e.g. florence@domain.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+        </div>
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Save Subscriber</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CSV Import Subscribers Modal -->
+  <div id="news-csv-import-modal" class="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-scale-up text-xs font-semibold text-slate-800 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Import bulk Subscribers CSV</h4>
+        <button type="button" id="close-news-csv-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="p-5 space-y-4">
+        <!-- Choose File step -->
+        <div class="space-y-2" id="csv-upload-step">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wide block">Select Subscribers CSV File *</label>
+          <div class="flex items-center gap-2">
+            <input type="file" id="news-csv-file-input" class="hidden" accept=".csv" />
+            <button type="button" id="btn-trigger-news-csv" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 border border-slate-200/50 dark:border-slate-800 px-3 py-2 rounded font-bold">Choose CSV File</button>
+            <span id="news-csv-file-label" class="text-[10px] text-slate-400 italic truncate max-w-[200px]">No file chosen</span>
+          </div>
+        </div>
+
+        <!-- Preview step (hidden by default) -->
+        <div class="space-y-2 hidden border-t border-slate-100 dark:border-slate-850 pt-3" id="csv-preview-step">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Import rows preview:</span>
+          <div class="max-h-36 overflow-y-auto border border-slate-200/40 dark:border-slate-800 rounded-lg">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-450 text-[9px] font-bold">
+                  <th class="p-2">Name</th>
+                  <th class="p-2">Email Address</th>
+                </tr>
+              </thead>
+              <tbody id="csv-preview-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+                <!-- PREVIEW ROWS -->
+              </tbody>
+            </table>
+          </div>
+          <button type="button" id="btn-confirm-csv-import" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded active:scale-98 flex items-center justify-center gap-1.5"><i class="bx bx-check-circle"></i> Confirm bulk Import</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Test Email Send Modal -->
+  <div id="news-test-send-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-scale-up text-xs font-semibold text-slate-850 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Send Test Broadcast</h4>
+        <button type="button" id="close-news-test-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <form id="news-test-send-form" class="p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-400 uppercase">Test Recipient Email *</label>
+          <input type="email" id="news-test-email" required placeholder="e.g. test@domain.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+        </div>
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Send Test Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Read-only campaign view modal -->
+  <div id="news-history-detail-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-xl overflow-hidden animate-scale-up max-h-[85vh] flex flex-col text-xs font-semibold text-slate-850 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider" id="hist-modal-campaign-name">Campaign Details</h4>
+        <button type="button" id="close-news-history-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      
+      <div class="p-5 overflow-y-auto flex-1 space-y-4">
+        <div class="grid grid-cols-2 gap-3 border-b border-slate-100 dark:border-slate-850 pb-3">
+          <div><span class="text-slate-400 block text-[9px] uppercase">Segment Target</span><span id="hist-modal-segment" class="font-bold text-slate-900 dark:text-white">All Subscribers</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Sent Date Time</span><span id="hist-modal-date" class="font-mono text-slate-500">2026-07-15</span></div>
+          <div class="col-span-2"><span class="text-slate-400 block text-[9px] uppercase">Subject Line</span><span id="hist-modal-subject" class="font-bold text-indigo-650 dark:text-blue-400">Campaign Subject</span></div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Email body content</label>
+          <div id="hist-modal-body" class="p-3 bg-slate-50 dark:bg-slate-950 rounded border border-slate-200/35 font-normal leading-relaxed text-slate-655 dark:text-slate-350 min-h-24">
+            Campaign Body content.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: news-subscribers-template ====== -->
+
+<!-- ====== SECTION: contact-inquiries-template ====== -->
+<div data-section="contact-inquiries-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Customer Inquiries</h3>
+        <p class="text-xs text-slate-500 mt-1">Review contact inquiries sent via the public portal site forms.</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">From Client</th>
+              <th class="p-3">Message Context</th>
+              <th class="p-3 font-mono">Date Logged</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="contact-inquiries-table-body" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+            <!-- DYNAMIC CONTACT INQUIRIES -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: contact-inquiries-template ====== -->

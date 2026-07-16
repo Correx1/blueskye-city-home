@@ -1,0 +1,552 @@
+<!-- ====== SECTION: customers-list-template ====== -->
+<div data-section="customers-list-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-855 dark:text-white">Customers Directory</h3>
+        <p class="text-xs text-slate-500 mt-1">Manage global CRM clients, active property deeds, compliance checks, and portal access accounts.</p>
+      </div>
+      <button id="add-customer-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-3 py-2 rounded text-xs flex items-center gap-1 active:scale-98">
+        <i class="bx bx-plus text-sm"></i>
+        <span>Add New Customer</span>
+      </button>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full md:col-span-2">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <i class="bx bx-search text-xs"></i>
+        </span>
+        <input type="text" id="admin-search-customers" placeholder="Search customer name, email, or phone..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-1.5" />
+      </div>
+      
+      <select id="filter-kyc-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="all">All Verification</option>
+        <option value="Approved">Verified</option>
+        <option value="Pending Review">Pending Review</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+
+      <select id="filter-payment-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="all">All Payment Status</option>
+        <option value="Active">Active</option>
+        <option value="Completing">Completing</option>
+        <option value="Fully Paid">Fully Paid</option>
+      </select>
+
+      <select id="filter-assigned-affiliate" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="all">All Affiliates</option>
+        <option value="Direct">Direct Only</option>
+        <!-- DYNAMIC AFFILIATE OPTIONS -->
+      </select>
+    </div>
+
+    <!-- Customers Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Customer Details</th>
+              <th class="p-3">Contact Info</th>
+              <th class="p-3">Compliance Status</th>
+              <th class="p-3">Payment Status</th>
+              <th class="p-3">Referred Affiliate</th>
+              <th class="p-3">Date Joined</th>
+              <th class="p-3">Properties Owned</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-customers-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: customers-list-template ====== -->
+
+<!-- ====== SECTION: customer-form-template ====== -->
+<div data-section="customer-form-template">
+  <div class="space-y-4 animate-fade-in max-w-xl mx-auto text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 id="customer-form-title-text" class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Register New Customer Account</h3>
+        <p class="text-xs text-slate-500 mt-1">Provide national verification references, contact options and profile status details.</p>
+      </div>
+      <button id="back-to-customers-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98">
+        <i class="bx bx-left-arrow-alt text-sm"></i>
+        <span>Back to List</span>
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 shadow-sm">
+      <form id="customer-registration-form" class="space-y-4">
+        <input type="hidden" id="cust-edit-id" value="" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">Customer Full Name <span class="text-rose-500">*</span></label>
+            <input type="text" id="cust-form-name" required placeholder="e.g. Florence Nduka" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+            <div id="err-cust-name" class="text-[9px] text-rose-500 font-semibold hidden">Name is required.</div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">Email Coordinate <span class="text-rose-500">*</span></label>
+            <input type="email" id="cust-form-email" required placeholder="e.g. florence@domain.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+            <div id="err-cust-email" class="text-[9px] text-rose-500 font-semibold hidden">Valid email is required.</div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">Phone Number <span class="text-rose-500">*</span></label>
+            <input type="text" id="cust-form-phone" required placeholder="e.g. +234 803 123 4567" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+            <div id="err-cust-phone" class="text-[9px] text-rose-500 font-semibold hidden">Phone number is required.</div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Gender</label>
+            <select id="cust-form-gender" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-slate-100 dark:border-slate-850 pt-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">Bank Verification Number (BVN) <span class="text-rose-500">*</span></label>
+            <input type="text" id="cust-form-bvn" maxlength="11" placeholder="11-digit BVN" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+            <div id="err-cust-bvn" class="text-[9px] text-rose-500 font-semibold hidden">11-digit BVN is required.</div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">National Identification Number (NIN) <span class="text-rose-500">*</span></label>
+            <input type="text" id="cust-form-nin" maxlength="11" placeholder="11-digit NIN" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+            <div id="err-cust-nin" class="text-[9px] text-rose-500 font-semibold hidden">11-digit NIN is required.</div>
+          </div>
+        </div>
+
+        <div class="space-y-1 border-t border-slate-100 dark:border-slate-850 pt-3">
+          <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide flex items-center gap-1">Residential / Business Address <span class="text-rose-500">*</span></label>
+          <input type="text" id="cust-form-address" placeholder="Physical location residence address..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2" />
+          <div id="err-cust-address" class="text-[9px] text-rose-500 font-semibold hidden">Address is required.</div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 border-t border-slate-100 dark:border-slate-850 pt-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">Referral Affiliate</label>
+            <select id="cust-form-affiliate" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2">
+              <option value="Direct">Direct (None)</option>
+              <!-- DYNAMIC REFERRAL LIST -->
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">KYC Verification Status</label>
+            <select id="cust-form-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2">
+              <option value="Pending Review">Pending Review</option>
+              <option value="Approved">Verified (Approved)</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-2 justify-end pt-3 border-t border-slate-100 dark:border-slate-850">
+          <button type="button" id="cancel-cust-form-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded text-xs active:scale-98 font-bold">
+            Cancel
+          </button>
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-5 py-2 rounded text-xs active:scale-98 font-bold">
+            Confirm Registration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: customer-form-template ====== -->
+
+<!-- ====== SECTION: customer-detail-template ====== -->
+<div data-section="customer-detail-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button id="detail-back-btn" class="p-1 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition-colors text-xl" title="Back to Customers">
+          <i class="bx bx-left-arrow-alt"></i>
+        </button>
+        <div>
+          <h3 id="cust-details-title-name" class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Customer Name</h3>
+          <p class="text-xs text-slate-500 mt-1">Client Profile Ledger &amp; Legal Compliance Records</p>
+        </div>
+      </div>
+      <div class="flex gap-2 items-center">
+        <span id="cust-portal-access-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase">Portal Enabled</span>
+        <span id="cust-kyc-status-badge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase">Verified</span>
+        <button id="cust-details-modify-btn" class="bg-amber-600 hover:bg-amber-700 text-white transition-all px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98">
+          <i class="bx bx-edit text-xs"></i>
+          <span>Modify Profile Details</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Metrics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-wallet"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Committed Capital</span>
+          <span class="text-sm font-black text-slate-800 dark:text-white truncate block" id="metric-committed-value">₦0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-check-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Total Paid Off</span>
+          <span class="text-sm font-black text-emerald-600 dark:text-emerald-400 truncate block" id="metric-paid-value">₦0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-info-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Outstanding Balance</span>
+          <span class="text-sm font-black text-rose-600 dark:text-rose-455 truncate block" id="metric-balance-value">₦0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content Split columns -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
+      
+      <!-- Left Column: Controls and Actions -->
+      <div class="lg:col-span-1 space-y-4">
+        <!-- Portal Access Control Box -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 shadow-sm text-xs space-y-3">
+          <h5 class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b border-slate-100 dark:border-slate-850 pb-2">
+            Portal Authorization
+          </h5>
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Sign-in Permissions</span>
+              <span id="portal-sign-in-status" class="text-[10px] text-emerald-500 font-bold">Currently Active</span>
+            </div>
+            <button id="toggle-cust-access-btn" class="px-2.5 py-1 text-[11px] font-semibold rounded active:scale-98 transition-all flex items-center gap-1 bg-rose-600 text-white hover:bg-rose-700">
+              <i class="bx bx-block"></i> Disable Portal
+            </button>
+          </div>
+          <button id="reset-cust-password-btn" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-1.5 rounded text-xs border border-slate-200/45 active:scale-98 flex items-center justify-center gap-1">
+            <i class="bx bx-key"></i> Simulate Reset Password link
+          </button>
+        </div>
+
+        <!-- Compliance Document Reviewers -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 shadow-sm text-xs space-y-4">
+          <h5 class="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider border-b border-slate-100 dark:border-slate-850 pb-2">
+            Compliance / KYC Reviewer
+          </h5>
+          
+          <!-- Doc 1: ID -->
+          <div class="p-3 bg-slate-50 dark:bg-slate-955/50 border border-slate-100 dark:border-slate-850 rounded space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-700 dark:text-slate-300">1. Verification ID Scan</span>
+              <span id="kyc-status-doc-id" class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-500/10 text-amber-500">Pending</span>
+            </div>
+            <p id="kyc-reject-reason-doc-id" class="text-[10px] text-rose-500 font-medium hidden">Reason: </p>
+            <div class="flex gap-2 justify-end pt-1">
+              <button id="approve-doc-id-btn" class="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold active:scale-98">Approve</button>
+              <button id="reject-doc-id-btn" class="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold active:scale-98">Reject</button>
+              <button id="reupload-doc-id-btn" class="px-2 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-[10px] font-bold active:scale-98">Re-upload</button>
+            </div>
+          </div>
+
+          <!-- Doc 2: Photo -->
+          <div class="p-3 bg-slate-50 dark:bg-slate-955/50 border border-slate-100 dark:border-slate-850 rounded space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-700 dark:text-slate-300">2. Passport Photograph</span>
+              <span id="kyc-status-doc-photo" class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-500/10 text-amber-500">Pending</span>
+            </div>
+            <p id="kyc-reject-reason-doc-photo" class="text-[10px] text-rose-500 font-medium hidden">Reason: </p>
+            <div class="flex gap-2 justify-end pt-1">
+              <button id="approve-doc-photo-btn" class="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold active:scale-98">Approve</button>
+              <button id="reject-doc-photo-btn" class="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold active:scale-98">Reject</button>
+              <button id="reupload-doc-photo-btn" class="px-2 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-[10px] font-bold active:scale-98">Re-upload</button>
+            </div>
+          </div>
+
+          <!-- Doc 3: Address -->
+          <div class="p-3 bg-slate-50 dark:bg-slate-955/50 border border-slate-100 dark:border-slate-850 rounded space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-slate-700 dark:text-slate-300">3. Proof of Address</span>
+              <span id="kyc-status-doc-address" class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-500/10 text-amber-500">Pending</span>
+            </div>
+            <p id="kyc-reject-reason-doc-address" class="text-[10px] text-rose-500 font-medium hidden">Reason: </p>
+            <div class="flex gap-2 justify-end pt-1">
+              <button id="approve-doc-address-btn" class="px-2 py-0.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[10px] font-bold active:scale-98">Approve</button>
+              <button id="reject-doc-address-btn" class="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold active:scale-98">Reject</button>
+              <button id="reupload-doc-address-btn" class="px-2 py-0.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-[10px] font-bold active:scale-98">Re-upload</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: 8 scrollable tabs nav and content -->
+      <div class="lg:col-span-2 space-y-4">
+        <!-- Tabs Navigation -->
+        <div class="flex border-b border-slate-200/20 gap-4 text-xs overflow-x-auto whitespace-nowrap scrollbar-none pb-1" id="customer-details-tabs-nav">
+          <button data-cust-tab="info" class="pb-2 border-b-2 font-bold transition-all border-[#1e3a8a] text-[#1e3a8a] dark:text-blue-400">Personal Info</button>
+          <button data-cust-tab="kyc" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">KYC Docs</button>
+          <button data-cust-tab="properties" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Properties Owned</button>
+          <button data-cust-tab="payments" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Payment History</button>
+          <button data-cust-tab="inspections" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Inspection History</button>
+          <button data-cust-tab="affiliate" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Assigned Affiliate</button>
+          <button data-cust-tab="documents" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Land Documents</button>
+          <button data-cust-tab="notes" class="pb-2 border-b-2 font-bold transition-all border-transparent text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">Staff Notes</button>
+        </div>
+
+        <!-- Panels Container -->
+        <div id="customer-details-tab-pane-container" class="space-y-4">
+          <!-- 1. Personal Info Panel -->
+          <div id="pane-info" class="tab-panel space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">Personal Details Profile</h5>
+              <div class="grid grid-cols-2 gap-4 text-xs font-semibold">
+                <div><span class="text-slate-400 font-normal block">Full Name</span><span id="info-cust-name" class="text-slate-800 dark:text-slate-250">Raphael</span></div>
+                <div><span class="text-slate-400 font-normal block">Email Coordinate</span><span id="info-cust-email" class="text-slate-855 dark:text-slate-300 font-mono">raphael@domain.com</span></div>
+                <div><span class="text-slate-400 font-normal block">Phone Number</span><span id="info-cust-phone" class="text-slate-800 dark:text-slate-250 font-mono">08031234567</span></div>
+                <div><span class="text-slate-400 font-normal block">Residential Address</span><span id="info-cust-address" class="text-slate-800 dark:text-slate-250">Lekki Lagos</span></div>
+                <div><span class="text-slate-400 font-normal block">NIN</span><span id="info-cust-nin" class="text-slate-800 dark:text-slate-250 font-mono">22233344401</span></div>
+                <div><span class="text-slate-400 font-normal block">BVN</span><span id="info-cust-bvn" class="text-slate-800 dark:text-slate-250 font-mono">11100022201</span></div>
+                <div><span class="text-slate-400 font-normal block">Assigned Affiliate Reference</span><span id="info-cust-affiliate" class="text-slate-800 dark:text-slate-250">Direct (None)</span></div>
+                <div><span class="text-slate-400 font-normal block">Date Joined</span><span id="info-cust-date" class="text-slate-800 dark:text-slate-250 font-mono">2026-07-15</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. KYC Compliance Documents Panel -->
+          <div id="pane-kyc" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">KYC Verification Files</h5>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="border border-slate-200 dark:border-slate-800 rounded p-2.5 bg-slate-50 dark:bg-slate-955 flex flex-col items-center justify-between text-center space-y-2">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">ID Scan / Deed</span>
+                  <a id="kyc-doc-id-link" href="#" target="_blank" class="text-blue-500 hover:underline text-xs flex items-center gap-1 font-semibold"><i class="bx bx-show-alt text-base"></i> View ID Scan</a>
+                </div>
+                <div class="border border-slate-200 dark:border-slate-800 rounded p-2.5 bg-slate-50 dark:bg-slate-955 flex flex-col items-center justify-between text-center space-y-2">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Passport Photograph</span>
+                  <a id="kyc-doc-photo-link" href="#" target="_blank" class="text-blue-500 hover:underline text-xs flex items-center gap-1 font-semibold"><i class="bx bx-image text-base"></i> View Photo</a>
+                </div>
+                <div class="border border-slate-200 dark:border-slate-800 rounded p-2.5 bg-slate-50 dark:bg-slate-955 flex flex-col items-center justify-between text-center space-y-2">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Address Proof</span>
+                  <a id="kyc-doc-address-link" href="#" target="_blank" class="text-blue-500 hover:underline text-xs flex items-center gap-1 font-semibold"><i class="bx bx-receipt text-base"></i> View Utility Bill</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Properties Owned Panel -->
+          <div id="pane-properties" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">Properties & Plots Purchased</h5>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase font-semibold text-[10px]">
+                      <th class="p-3">Property Name</th>
+                      <th class="p-3">Price</th>
+                      <th class="p-3">Type</th>
+                      <th class="p-3">Payment Plan</th>
+                      <th class="p-3">Sales Status</th>
+                      <th class="p-3 text-right">Redirect</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-properties-owned-tbody">
+                    <!-- DYNAMIC PLOTS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Payment History Panel -->
+          <div id="pane-payments" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">Payment History Ledger</h5>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase font-semibold text-[10px]">
+                      <th class="p-3">Payment Date</th>
+                      <th class="p-3">Property</th>
+                      <th class="p-3">Amount</th>
+                      <th class="p-3">Channel</th>
+                      <th class="p-3">Reference ID</th>
+                      <th class="p-3">Verification Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-payments-history-tbody">
+                    <!-- DYNAMIC PAYMENTS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Site Inspections Panel -->
+          <div id="pane-inspections" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">Inspections Booking Log</h5>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase font-semibold text-[10px]">
+                      <th class="p-3">Booking Date</th>
+                      <th class="p-3">Property Target</th>
+                      <th class="p-3">Viewing Type</th>
+                      <th class="p-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-inspections-tbody">
+                    <!-- DYNAMIC INSPECTIONS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Referred Affiliate Panel -->
+          <div id="pane-affiliate" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 pb-1 border-b border-slate-100 dark:border-slate-850">Referral Affiliate Partner</h5>
+              <div id="referred-affiliate-profile-box" class="space-y-3 text-xs">
+                <!-- DYNAMIC AFFILIATE DATA -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Land Documents Locker Panel -->
+          <div id="pane-documents" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-2 mb-3">
+                <h5 class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">Legal Land &amp; Survey Deeds</h5>
+                <button type="button" id="trigger-deed-upload-modal-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 font-bold px-2 py-1 rounded text-[10px] flex items-center gap-1 active:scale-98"><i class="bx bx-upload text-xs"></i>Upload New Land Deed</button>
+              </div>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase font-semibold text-[10px]">
+                      <th class="p-3">Document Type</th>
+                      <th class="p-3">File Name</th>
+                      <th class="p-3">Upload Date</th>
+                      <th class="p-3">Uploaded By</th>
+                      <th class="p-3 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-land-documents-tbody">
+                    <!-- DYNAMIC DOCUMENTS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Staff Notes Panel -->
+          <div id="pane-notes" class="tab-panel space-y-4 hidden">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-4 shadow-sm">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">Staff Commentary Log</h5>
+              <div id="detail-staff-notes-list" class="space-y-3">
+                <!-- DYNAMIC NOTES -->
+              </div>
+              
+              <form id="add-customer-note-form" class="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-850">
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                  <div class="space-y-1">
+                    <label class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Note Category</label>
+                    <select id="note-category-select" class="form-input text-xs w-full bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-1">
+                      <option value="General">General Commentary</option>
+                      <option value="Payment Issue">Payment Issue</option>
+                      <option value="Legal">Legal Concerns</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Comment Text</label>
+                  <textarea id="note-text-input" rows="3" required placeholder="Type interactives details, issues..." class="form-input text-xs w-full bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-1.5 min-h-[70px]"></textarea>
+                </div>
+                <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 font-bold px-4 py-1.5 rounded text-xs active:scale-98">Publish Notes Entry</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Password Reset Confirmation Modal -->
+<div id="pw-reset-confirm-modal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center hidden animate-fade-in">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-5 max-w-sm w-full space-y-4 text-slate-800 dark:text-slate-200">
+    <div class="flex items-center gap-2 text-amber-500">
+      <i class="bx bx-error text-2xl animate-pulse"></i>
+      <h4 class="text-sm font-black uppercase tracking-wider">Reset Client Password?</h4>
+    </div>
+    <p class="text-xs text-slate-500 leading-relaxed">This will generate a secure reset token and revoke their current login credentials. Do you want to proceed?</p>
+    <div class="flex gap-2 justify-end border-t border-slate-100 dark:border-slate-850 pt-3">
+      <button id="pw-reset-modal-cancel" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 text-slate-700 dark:text-slate-300 rounded text-xs font-bold active:scale-98">Cancel</button>
+      <button id="pw-reset-modal-confirm" class="px-4 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded text-xs font-bold active:scale-98">Generate Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- KYC Document Reject Reason Modal -->
+<div id="kyc-reject-reason-modal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center hidden animate-fade-in">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-5 max-w-sm w-full space-y-4 text-slate-800 dark:text-slate-200">
+    <div class="flex items-center gap-2 text-rose-600">
+      <i class="bx bx-x-circle text-2xl"></i>
+      <h4 class="text-sm font-black uppercase tracking-wider">Reject KYC Document</h4>
+    </div>
+    <form id="kyc-reject-modal-form" class="space-y-4">
+      <input type="hidden" id="modal-reject-doc-type" value="" />
+      <div class="space-y-1 text-xs">
+        <label class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Reason for Rejection <span class="text-rose-500">*</span></label>
+        <textarea id="modal-reject-reason-text" required rows="3" placeholder="Identify document discrepancy (e.g. Blurry photo, expired ID)..." class="form-input text-xs w-full bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 min-h-[70px]"></textarea>
+      </div>
+      <div class="flex gap-2 justify-end border-t border-slate-100 dark:border-slate-850 pt-3 text-xs">
+        <button type="button" id="kyc-reject-modal-cancel" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-850 text-slate-700 dark:text-slate-300 rounded text-xs font-bold active:scale-98">Cancel</button>
+        <button type="submit" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded text-xs font-bold active:scale-98">Submit Rejection</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Land Document Upload Modal -->
+<div id="land-doc-upload-modal" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center hidden animate-fade-in">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-5 max-w-sm w-full space-y-4 text-slate-800 dark:text-slate-200">
+    <div class="flex items-center gap-2 text-blue-600">
+      <i class="bx bx-upload text-2xl"></i>
+      <h4 class="text-sm font-black uppercase tracking-wider">Upload Land Deed / Document</h4>
+    </div>
+    <form id="land-doc-upload-modal-form" class="space-y-4">
+      <div class="space-y-1 text-xs">
+        <label class="text-[10px] text-slate-455 uppercase font-bold tracking-wider">Document Type</label>
+        <select id="modal-land-doc-type" class="form-input text-xs w-full bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-1.5">
+          <option value="Allocation Letter">Allocation Letter</option>
+          <option value="Certificate of Occupancy (C of O)">Certificate of Occupancy (C of O)</option>
+          <option value="Deed of Assignment">Deed of Assignment</option>
+          <option value="Other Legal Deeds">Other Legal Deeds</option>
+        </select>
+      </div>
+      <div class="space-y-1 text-xs">
+        <label class="text-[10px] text-slate-455 uppercase font-bold tracking-wider">File Attachment <span class="text-rose-500">*</span></label>
+        <input type="file" id="modal-land-doc-file" required accept=".pdf,.doc,.docx,.jpg,.png" class="w-full text-xs text-slate-500 font-semibold" />
+      </div>
+      <div class="flex gap-2 justify-end border-t border-slate-100 dark:border-slate-850 pt-3 text-xs">
+        <button type="button" id="land-doc-modal-cancel" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-855 text-slate-700 dark:text-slate-300 rounded text-xs font-bold active:scale-98">Cancel</button>
+        <button type="submit" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-bold active:scale-98">Upload Document</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- ====== END SECTION: customer-detail-template ====== -->

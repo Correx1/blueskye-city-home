@@ -1,0 +1,100 @@
+<!-- ====== SECTION: withdrawals-list-template ====== -->
+<div data-section="withdrawals-list-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Withdrawal requests Ledger</h3>
+        <p class="text-xs text-slate-500 mt-1">Audit payout requests, approve disbursement queues, and attach transaction receipts.</p>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full">
+        <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+        <input type="text" id="with-search-input" placeholder="Search affiliate name..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-855 py-1.5" />
+      </div>
+      
+      <select id="filter-with-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full">
+        <option value="Pending">Pending Review</option>
+        <option value="Approved">Approved (Awaiting Payout)</option>
+        <option value="Paid">Paid off &amp; Released</option>
+        <option value="all">All Withdrawals</option>
+      </select>
+
+      <div class="flex gap-1 w-full">
+        <input type="date" id="filter-with-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2" />
+        <input type="date" id="filter-with-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2" />
+      </div>
+
+      <button id="clear-with-filters-btn" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-850 text-slate-600 dark:text-slate-300 rounded text-xs hover:bg-slate-200 border border-slate-200/40 active:scale-98 flex items-center justify-center gap-1 font-bold">
+        <i class="bx bx-x"></i> Clear Filters
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Requested Date</th>
+              <th class="p-3">Affiliate Partner</th>
+              <th class="p-3">Amount Requested</th>
+              <th class="p-3">Masked Bank Account</th>
+              <th class="p-3">Status</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="withdrawals-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reconcile Modal Overlay -->
+  <div id="payout-process-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-scale-up">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Process cashout disbursement</h4>
+        <button type="button" id="close-payout-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs font-semibold">
+        <!-- Reconcile summary details -->
+        <div class="grid grid-cols-2 gap-3 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+          <div><span class="text-slate-400 block text-[9px] uppercase">Realtor Billed</span><span id="modal-with-name" class="font-bold text-slate-800 dark:text-white">Florence Nduka</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Amount Requested</span><span id="modal-with-amount" class="font-bold text-emerald-600">₦0</span></div>
+          <div class="col-span-2"><span class="text-slate-400 block text-[9px] uppercase">Official Bank Target Details</span><span id="modal-with-bank" class="text-slate-700 dark:text-slate-350 block mt-0.5">Zenith Bank — 1012345678 — florence</span></div>
+        </div>
+
+        <!-- Progress step status indicators -->
+        <div class="space-y-3.5">
+          <!-- Step 1: initial review buttons -->
+          <div id="payout-step-1" class="flex gap-2 justify-end">
+            <button type="button" id="btn-approve-withdrawal" class="flex-1 bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 rounded active:scale-98 flex items-center justify-center gap-1"><i class="bx bx-check-circle"></i> Approve Request</button>
+            <button type="button" id="btn-reject-withdrawal" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2.5 px-4 rounded active:scale-98">Reject Request</button>
+          </div>
+
+          <!-- Step 2: receipt attach upload (Appears after Step 1 approval) -->
+          <div id="payout-step-2" class="space-y-3 hidden border-t border-slate-100 dark:border-slate-850 pt-3">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Upload bank disbursement receipt (PDF/Image) *</label>
+              <div class="flex items-center gap-2">
+                <input type="file" id="payout-receipt-file-input" class="hidden" accept=".pdf,image/*" />
+                <button type="button" id="btn-trigger-receipt-file" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold px-3 py-2 rounded border border-slate-200/40 flex items-center gap-1"><i class="bx bx-paperclip"></i> Choose File</button>
+                <span id="payout-receipt-file-label" class="text-[10px] text-slate-400 truncate italic max-w-[180px]">No document attached</span>
+              </div>
+            </div>
+            
+            <button type="button" id="btn-confirm-mark-paid" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded active:scale-98 flex items-center justify-center gap-1"><i class="bx bx-badge-check"></i> Mark as Paid</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: withdrawals-list-template ====== -->

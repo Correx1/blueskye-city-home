@@ -1,0 +1,140 @@
+<!-- ====== SECTION: staff-accounts-template ====== -->
+<div data-section="staff-accounts-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Staff Management</h3>
+        <p class="text-xs text-slate-500 mt-1">Configure internal corporate operators, toggle statuses, and trigger email invites.</p>
+      </div>
+      <button id="btn-add-staff-trigger" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1">
+        <i class="bx bx-user-plus text-sm"></i> Add Staff Member
+      </button>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full md:col-span-2">
+        <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+        <input type="text" id="staff-search-input" placeholder="Search staff name or email..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-855" />
+      </div>
+      
+      <select id="filter-staff-role" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full">
+        <option value="all">All Roles</option>
+        <option value="Super Admin">Super Admin</option>
+        <option value="Sales Manager">Sales Manager</option>
+        <option value="Marketing Manager">Marketing Manager</option>
+        <option value="Site Manager">Site Manager</option>
+        <option value="Finance/Accounts">Finance/Accounts</option>
+      </select>
+
+      <button id="clear-staff-filters-btn" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-850 text-slate-600 dark:text-slate-300 rounded text-xs hover:bg-slate-200 border border-slate-200/40 active:scale-98 flex items-center justify-center gap-1 font-bold">
+        <i class="bx bx-x"></i> Clear
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Staff Operator</th>
+              <th class="p-3">Email Address</th>
+              <th class="p-3">Assigned Role</th>
+              <th class="p-3">Status</th>
+              <th class="p-3 font-mono">Date Added</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="staff-accounts-table-body" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+            <!-- DYNAMIC STAFF MEMBERS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Staff Modal Overlay -->
+  <div id="add-staff-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-scale-up text-xs font-semibold text-slate-800 dark:text-slate-250">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Invite New Staff Operator</h4>
+        <button type="button" id="close-staff-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+
+      <form id="add-staff-form" class="p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Full Name *</label>
+          <input type="text" id="staff-form-name" required placeholder="e.g. Amina Bello" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2 w-full" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Email Coordinates *</label>
+          <input type="email" id="staff-form-email" required placeholder="e.g. amina@blueskye.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2 w-full" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Assign Role *</label>
+            <select id="staff-form-role" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2 w-full">
+              <option value="Super Admin">Super Admin</option>
+              <option value="Sales Manager">Sales Manager</option>
+              <option value="Marketing Manager">Marketing Manager</option>
+              <option value="Site Manager">Site Manager</option>
+              <option value="Finance/Accounts">Finance/Accounts</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Temporary Password *</label>
+            <input type="text" id="staff-form-password" required placeholder="Generate passcode..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2 w-full font-mono" />
+          </div>
+        </div>
+
+        <div class="flex gap-2 justify-end pt-2 border-t border-slate-100 dark:border-slate-850/60">
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-5 py-2 rounded active:scale-98 flex items-center gap-1.5"><i class="bx bx-send text-sm"></i> Send System Invite</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: staff-accounts-template ====== -->
+
+<!-- ====== SECTION: access-permissions-template ====== -->
+<div data-section="access-permissions-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Role Access Permissions Matrix</h3>
+        <p class="text-xs text-slate-500 mt-1">Configure granular system feature permissions across default and custom staff role classes.</p>
+      </div>
+      <button id="btn-add-custom-role" class="bg-indigo-650 hover:bg-indigo-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1">
+        <i class="bx bx-plus-circle text-sm"></i> Add Custom Role
+      </button>
+    </div>
+
+    <!-- Permissions Grid Board -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]" id="perm-grid-header-row">
+              <th class="p-3 w-56">Feature Module</th>
+              <!-- DYNAMIC COLUMN HEADERS -->
+            </tr>
+          </thead>
+          <tbody id="perm-grid-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+            <!-- DYNAMIC MATRIX ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-end pt-2">
+      <button id="save-permissions-btn" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 px-5 rounded text-xs active:scale-98 flex items-center gap-1.5"><i class="bx bx-save text-sm"></i> Save Access Matrix</button>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: access-permissions-template ====== -->

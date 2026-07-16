@@ -1,0 +1,705 @@
+<!-- PROPERTIES_LIST -->
+<template id="properties-list-template">
+  <div class="space-y-6 animate-fade-in relative text-slate-800 dark:text-slate-200 text-[14.5px]">
+    
+    <!-- Module Title -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <h3 class="text-sm font-black uppercase tracking-wider text-slate-850 dark:text-white">Properties Catalog</h3>
+      <button id="add-property-modal-btn" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-semibold py-2.5 px-4 rounded text-xs flex items-center gap-1.5 active:scale-98 transition-colors">
+        <i class="bx bx-plus text-sm"></i>
+        <span>Add New Property</span>
+      </button>
+    </div>
+
+    <!-- Dynamic Filters Grid Bar -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4 space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <!-- Search Input -->
+        <div class="relative col-span-1 sm:col-span-2">
+          <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+            <i class="bx bx-search text-sm"></i>
+          </span>
+          <input type="text" id="admin-search-properties" placeholder="Search property name..." class="w-full form-input text-xs pl-9 bg-slate-50 dark:bg-slate-950 text-slate-850 dark:text-white py-2" />
+        </div>
+        
+        <!-- Location filter -->
+        <div>
+          <select id="filter-property-city" class="w-full form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2">
+            <option value="all">All Locations</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Abuja">Abuja</option>
+            <option value="Port Harcourt">Port Harcourt</option>
+          </select>
+        </div>
+        
+        <!-- Project Filter -->
+        <div>
+          <select id="filter-property-project" class="w-full form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2">
+            <option value="all">All Projects</option>
+            <!-- DYNAMIC PROJECT FILTER OPTIONS -->
+          </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div>
+          <select id="filter-property-status" class="w-full form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2">
+            <option value="all">All Status</option>
+            <option value="Available">Available</option>
+            <option value="Reserved">Reserved</option>
+            <option value="Sold">Sold</option>
+          </select>
+        </div>
+
+        <!-- Sorting -->
+        <div>
+          <select id="sort-property" class="w-full form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white py-2">
+            <option value="default">Default Sort</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="title-asc">Title: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Advanced Price & Size Filters Row -->
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+        <div class="flex flex-wrap items-center gap-3.5 text-xs">
+          <!-- Price Range Min-Max -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-500 font-semibold">Price (₦ Millions):</span>
+            <input type="number" id="filter-price-min" placeholder="Min" class="w-16 form-input text-[11px] bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1 px-1.5" />
+            <span class="text-slate-400">-</span>
+            <input type="number" id="filter-price-max" placeholder="Max" class="w-16 form-input text-[11px] bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1 px-1.5" />
+          </div>
+          <!-- Size Range Min-Max -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-500 font-semibold">Size (Sqm):</span>
+            <input type="number" id="filter-size-min" placeholder="Min" class="w-16 form-input text-[11px] bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1 px-1.5" />
+            <span class="text-slate-400">-</span>
+            <input type="number" id="filter-size-max" placeholder="Max" class="w-16 form-input text-[11px] bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1 px-1.5" />
+          </div>
+        </div>
+
+        <div>
+          <button id="clear-filters-btn" class="text-xs text-red-500 hover:text-red-700 hover:underline font-semibold flex items-center gap-0.5 focus:outline-none">
+            <i class="bx bx-refresh text-sm"></i>
+            <span>Clear Filters</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Properties Table List Grid -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-md overflow-hidden shadow-sm relative">
+      
+      <div id="properties-empty-state" class="hidden p-8 text-center space-y-3">
+        <i class="bx bx-building-house text-4xl text-slate-400 dark:text-slate-600 block"></i>
+        <p id="empty-state-text" class="text-sm font-semibold text-slate-500">No properties matched your current catalog filters.</p>
+        <button id="empty-state-action" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-4 py-2 rounded text-xs font-semibold active:scale-98 transition-all">Clear Filters</button>
+      </div>
+
+      <div class="overflow-x-auto w-full" id="properties-table-wrapper">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-xs">
+              <th class="p-4">Property Name</th>
+              <th class="p-4">Project</th>
+              <th class="p-4">Location</th>
+              <th class="p-4">Size (Sqm/Plots)</th>
+              <th class="p-4">Price (₦)</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Date Added</th>
+              <th class="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-properties-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- PROPERTIES_ADD_EDIT -->
+<template id="properties-add-edit-template">
+  <div class="space-y-6 animate-fade-in text-slate-800 dark:text-slate-200 w-full mx-auto text-[14.5px]">
+    
+    <div class="flex items-center justify-between border-b border-slate-200/20 pb-4">
+      <h3 id="prop-form-title-text" class="text-base font-black uppercase tracking-wider text-slate-855 dark:text-white">
+        Create Property Catalog Entry
+      </h3>
+      <button id="cancel-property-btn" class="bg-slate-200 dark:bg-slate-800 text-slate-850 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-750 transition-all font-semibold px-4 py-2 rounded text-xs flex items-center gap-1.5 shadow-sm active:scale-98">
+        <i class="bx bx-left-arrow-alt text-sm"></i>
+        <span>Back to Catalog</span>
+      </button>
+    </div>
+
+    <form id="property-full-form" class="space-y-6" novalidate>
+      <input type="hidden" id="full-prop-id" value="" />
+
+      <!-- Section: Basic Info -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-6 space-y-4">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">Section: Basic Info</h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Title -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Property Name / Title <span class="text-red-500">*</span></label>
+            <input type="text" id="full-prop-title" placeholder="e.g. Banana Island Infinity Mansion Plot A" class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+            <span class="text-xs text-red-500 font-semibold block hidden" id="err-prop-title">Property name is required.</span>
+          </div>
+
+          <!-- Project Linkage -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Development Project (Optional)</label>
+            <select id="full-prop-project" class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white">
+              <option value="None">None (Independent Development)</option>
+              <!-- DYNAMIC PROJECT OPTIONS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Location -->
+          <div class="space-y-1.5 md:col-span-1">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Location / Structured Address <span class="text-red-500">*</span></label>
+            <input type="text" id="full-prop-location" placeholder="e.g. Zone L, Banana Island, Ikoyi, Lagos" class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+            <span class="text-xs text-red-500 font-semibold block hidden" id="err-prop-location">Location is required.</span>
+          </div>
+
+          <!-- Size + Unit Toggle -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Size & Unit Type <span class="text-red-500">*</span></label>
+            <div class="flex gap-2">
+              <input type="number" id="full-prop-size-num" placeholder="e.g. 950" class="w-2/3 form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+              <select id="full-prop-size-unit" class="w-1/3 form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white font-bold">
+                <option value="Sqm">Sqm</option>
+                <option value="Plots">Plots</option>
+              </select>
+            </div>
+            <span class="text-xs text-red-500 font-semibold block hidden" id="err-prop-size">Numeric property size is required.</span>
+          </div>
+
+          <!-- Availability Status -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Initial Listing Status</label>
+            <select id="full-prop-status" class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white font-semibold">
+              <option value="Available">Available</option>
+              <option value="Reserved">Reserved</option>
+              <option value="Sold">Sold</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Pricing & Payment -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-6 space-y-4">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">Section: Pricing & Payment</h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Base Price -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Selling Price Value (₦) <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 font-bold">₦</span>
+              <input type="number" id="full-prop-price" placeholder="e.g. 450000000" class="w-full form-input py-2 pl-7 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+            </div>
+            <span class="text-xs text-red-500 font-semibold block hidden" id="err-prop-price">Price value is required.</span>
+          </div>
+
+          <!-- Payment Options checkboxes -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Available Buyer Payment Plans</label>
+            <div class="flex flex-wrap gap-4 mt-2">
+              <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                <input type="checkbox" id="plan-outright" checked class="rounded border-slate-300 text-[#1e3a8a] focus:ring-[#1e3a8a] h-4 w-4" />
+                <span>Outright Outflow</span>
+              </label>
+              <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                <input type="checkbox" id="plan-3m" class="rounded border-slate-300 text-[#1e3a8a] focus:ring-[#1e3a8a] h-4 w-4" />
+                <span>3-Month Installment</span>
+              </label>
+              <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                <input type="checkbox" id="plan-6m" class="rounded border-slate-300 text-[#1e3a8a] focus:ring-[#1e3a8a] h-4 w-4" />
+                <span>6-Month Installment</span>
+              </label>
+              <label class="flex items-center gap-2 text-sm font-semibold cursor-pointer">
+                <input type="checkbox" id="plan-12m" class="rounded border-slate-300 text-[#1e3a8a] focus:ring-[#1e3a8a] h-4 w-4" />
+                <span>12-Month Installment</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Description & Media -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-6 space-y-6">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">Section: Description & Media</h4>
+        
+        <!-- Description -->
+        <div class="space-y-1.5">
+          <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Property Listing Description <span class="text-red-500">*</span></label>
+          <textarea id="full-prop-desc" rows="4" placeholder="Detail boundary landmarks, security access, utilities..." class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white min-h-[120px]"></textarea>
+          <span class="text-xs text-red-500 font-semibold block hidden" id="err-prop-desc">Listing description details are required.</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Photo Upload & preview grid -->
+          <div class="space-y-3">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Photo Assets Gallery</label>
+            <div class="border border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-5 flex flex-col items-center justify-center text-center space-y-2.5 bg-slate-50/50 dark:bg-slate-950/20">
+              <i class="bx bx-image-add text-3xl text-slate-400"></i>
+              <span class="text-xs text-slate-500">Select images to upload to catalog gallery</span>
+              <button type="button" id="trigger-photos-upload" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all font-semibold px-3 py-1.5 rounded text-xs active:scale-98">Browse Photos</button>
+              <input type="file" id="prop-photos-input" multiple accept="image/*" class="hidden" />
+            </div>
+            
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-slate-400 uppercase block">Selected Images Preview</label>
+              <div id="photos-preview-container" class="flex flex-wrap gap-2.5">
+                <!-- DYNAMIC PREVIEW THUMBNAILS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Documents upload categorised by Type -->
+          <div class="space-y-3">
+            <label class="text-xs font-semibold text-slate-600 dark:text-slate-350 uppercase block">Legal, Deeds & Survey Files</label>
+            <div class="bg-slate-50 dark:bg-slate-950/40 p-4 rounded border border-slate-200 dark:border-slate-800/80 space-y-4">
+              
+              <div class="grid grid-cols-2 gap-2 items-center">
+                <select id="doc-type-uploader-select" class="form-input text-xs bg-white dark:bg-slate-900 py-1.5">
+                  <option value="Survey Plan">Survey Plan</option>
+                  <option value="Layout Map">Layout Map</option>
+                  <option value="Government Approval Docs">Government Approval</option>
+                  <option value="Certificate of Occupancy (C of O)">C of O Scan</option>
+                  <option value="Other Legal Documents">Other Legal Docs</option>
+                </select>
+                <button type="button" id="trigger-docs-upload" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-300/40 py-1.5 px-3 rounded text-xs font-semibold flex items-center justify-center gap-1 active:scale-98">
+                  <i class="bx bx-paperclip"></i> Attach File
+                </button>
+                <input type="file" id="prop-docs-input" class="hidden" />
+              </div>
+
+              <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-400 uppercase block">Attached Documents Store</span>
+                <div id="docs-preview-container" class="space-y-1.5">
+                  <p class="text-xs text-slate-450 italic">No regulatory verification documents uploaded yet.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Publishing -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-6 space-y-4">
+        <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-2">Section: Publishing</h4>
+        
+        <div class="flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs font-semibold text-slate-700 dark:text-slate-300 block">Publish to Website</span>
+            <p class="text-[11px] text-slate-500">Controls whether this listing shows up live on the public property search site.</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="full-prop-publish-toggle" checked class="sr-only peer" />
+            <div class="w-9 h-5 bg-slate-200 dark:bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500"></div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Form Submit Trigger Actions -->
+      <div class="flex items-center gap-3.5 pt-4 border-t border-slate-200 dark:border-slate-850">
+        <button type="submit" id="prop-form-submit-btn" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-3 px-8 rounded text-sm shadow-sm active:scale-98 transition-colors">
+          Publish Property Listing
+        </button>
+        <button type="button" id="cancel-property-form-btn" class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 transition-all font-bold py-3 px-8 rounded text-sm active:scale-98">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</template>
+
+<!-- PROPERTY_DETAIL_VIEW -->
+<template id="property-detail-template">
+  <div class="space-y-6 animate-fade-in text-slate-800 dark:text-slate-200 text-[14.5px] w-full">
+    
+    <!-- Detail Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-200/20 pb-4 gap-3">
+      <div class="flex items-center gap-3">
+        <h3 id="detail-prop-title" class="text-base font-black uppercase tracking-wider text-slate-850 dark:text-white">Property Title</h3>
+        <span id="detail-prop-status-badge" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase">Available</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="detail-edit-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded text-xs transition-colors flex items-center gap-1.5 active:scale-98">
+          <i class="bx bx-edit text-sm"></i>
+          <span>Edit Property</span>
+        </button>
+        <button id="detail-back-btn" class="bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 hover:bg-slate-300 dark:hover:bg-slate-750 transition-colors font-semibold px-4 py-2 rounded text-xs flex items-center gap-1.5 active:scale-98">
+          <i class="bx bx-left-arrow-alt text-sm"></i>
+          <span>Back to Catalog</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs Menu Nav -->
+    <div class="border-b border-slate-200 dark:border-slate-800">
+      <nav class="flex gap-6 text-sm" id="detail-tabs-nav">
+        <button data-detail-tab="overview" class="detail-tab-btn border-b-2 border-blue-600 text-blue-600 pb-3 font-semibold focus:outline-none">Overview</button>
+        <button data-detail-tab="sales" class="detail-tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 pb-3 font-medium focus:outline-none">Assigned Customers & Sales</button>
+        <button data-detail-tab="inspections" class="detail-tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 pb-3 font-medium focus:outline-none">Inspection History</button>
+        <button data-detail-tab="documents" class="detail-tab-btn border-b-2 border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300 pb-3 font-medium focus:outline-none">Documents Store</button>
+      </nav>
+    </div>
+
+    <!-- Tab Panels Container -->
+    <div id="detail-tab-panels" class="mt-4">
+      
+      <!-- Tab 1: Overview Panel -->
+      <div id="panel-overview" class="tab-panel space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 space-y-4">
+            <!-- Description -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 space-y-4">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-slate-855 pb-2">Description</h4>
+              <p id="detail-desc" class="text-slate-650 dark:text-slate-400 whitespace-pre-line leading-relaxed">Property description text...</p>
+            </div>
+            
+            <!-- Photo Gallery Grid -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 space-y-4">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-slate-855 pb-2">Photo Gallery</h4>
+              <div id="detail-gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- DYNAMIC GALLERY PHOTOS -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Read-only Details Specifications -->
+          <div class="space-y-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 space-y-4">
+              <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-slate-855 pb-2">Specifications</h4>
+              <ul class="space-y-3 text-slate-600 dark:text-slate-400 text-sm">
+                <li class="flex justify-between"><span class="font-medium text-slate-500">Project:</span> <span id="detail-project" class="font-semibold text-slate-850 dark:text-white">-</span></li>
+                <li class="flex justify-between"><span class="font-medium text-slate-500">Location:</span> <span id="detail-location" class="font-semibold text-slate-850 dark:text-white">-</span></li>
+                <li class="flex justify-between"><span class="font-medium text-slate-500">Size:</span> <span id="detail-size" class="font-semibold text-slate-850 dark:text-white">-</span></li>
+                <li class="flex justify-between"><span class="font-medium text-slate-500">Price Value:</span> <span id="detail-price" class="font-bold text-[#1e3a8a] dark:text-blue-400">-</span></li>
+                <li class="flex justify-between"><span class="font-medium text-slate-500">Website Visibility:</span> <span id="detail-publish-status" class="font-semibold">-</span></li>
+                <li class="flex justify-between flex-wrap gap-2 pt-2.5 border-t border-slate-100 dark:border-slate-800">
+                  <span class="font-medium text-slate-500 block w-full">Available Plans:</span>
+                  <div id="detail-plans-list" class="flex flex-wrap gap-1.5 mt-1">
+                    <!-- DYNAMIC PLANS -->
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Assigned Customers & Sales Panel -->
+      <div id="panel-sales" class="tab-panel hidden bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5">
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-slate-855 pb-2 mb-4">Assigned Customers & Sales</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-950 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-xs">
+                <th class="p-3">Buyer Name</th>
+                <th class="p-3">Sale Date</th>
+                <th class="p-3">Sale Value</th>
+                <th class="p-3">Payment status</th>
+                <th class="p-3 text-right">Links</th>
+              </tr>
+            </thead>
+            <tbody id="detail-sales-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+              <!-- DYNAMIC SALES LIST -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Inspection History Panel -->
+      <div id="panel-inspections" class="tab-panel hidden bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5">
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-100 dark:border-slate-855 pb-2 mb-4">Inspection History</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50 dark:bg-slate-950 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-xs">
+                <th class="p-3">Requester</th>
+                <th class="p-3">Tour Date</th>
+                <th class="p-3">Type</th>
+                <th class="p-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="detail-inspections-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+              <!-- DYNAMIC INSPECTIONS LIST -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Documents Store Panel -->
+      <div id="panel-documents" class="tab-panel hidden space-y-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-5 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-855 pb-2">
+            <h4 class="text-xs font-semibold uppercase tracking-wider text-slate-500">Legal & Survey File Archive</h4>
+            <button id="doc-upload-trigger-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-colors font-semibold px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98">
+              <i class="bx bx-plus text-xs"></i>
+              <span>Upload Document</span>
+            </button>
+          </div>
+          
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-xs">
+                  <th class="p-3">Document Type</th>
+                  <th class="p-3">File Name</th>
+                  <th class="p-3">Upload Date</th>
+                  <th class="p-3">Uploader</th>
+                  <th class="p-3">File Size</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="detail-docs-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+                <!-- DYNAMIC LEGAL FILES -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Upload Document Modal Dialog -->
+    <div id="doc-upload-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center hidden animate-fade-in">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-6 max-w-md w-full mx-4 space-y-4">
+        <div class="flex items-center justify-between border-b border-slate-150 dark:border-slate-800 pb-2">
+          <h4 class="text-sm font-semibold uppercase tracking-wider text-slate-850 dark:text-white">Upload Legal Document</h4>
+          <button id="doc-modal-close" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i class="bx bx-x text-xl"></i></button>
+        </div>
+        <form id="doc-upload-modal-form" class="space-y-4">
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-slate-500 uppercase block">Document Type</label>
+            <select id="modal-doc-type" required class="w-full form-input py-2 text-sm bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white">
+              <option value="Survey Plan">Survey Plan</option>
+              <option value="Layout Map">Layout Map</option>
+              <option value="Government Approval Docs">Government Approval Docs</option>
+              <option value="Certificate of Occupancy (C of O)">Certificate of Occupancy (C of O)</option>
+              <option value="Deed of Assignment">Deed of Assignment</option>
+              <option value="Other Legal Documents">Other Legal Documents</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-slate-500 uppercase block">Choose File</label>
+            <input type="file" id="modal-doc-file" required class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#1e3a8a] dark:file:bg-slate-800 dark:file:text-white hover:file:bg-blue-100 cursor-pointer" />
+          </div>
+          <div class="flex gap-3 justify-end pt-2 border-t border-slate-100 dark:border-slate-800">
+            <button type="button" id="doc-modal-cancel" class="bg-slate-150/50 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350 font-semibold px-4 py-2 rounded text-xs active:scale-98">Cancel</button>
+            <button type="submit" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-semibold px-5 py-2 rounded text-xs active:scale-98">Upload File</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</template>
+
+<!-- LAND_PLOT_MAPPING -->
+<template id="land-plot-mapping-template">
+  <!-- Plot Mapping is untouched -->
+  <div class="space-y-6 animate-fade-in text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Land Plot Allocation & Beacons Tracker</h3>
+        <p class="text-xs text-slate-500 mt-1">Track layout plot mapping, physical hand-over beacons, and client document compliance.</p>
+      </div>
+      <button id="go-to-allocate-plot-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all font-bold px-4 py-2.5 rounded text-xs flex items-center gap-1.5 shadow-sm active:scale-98">
+        <i class="bx bx-plus text-sm"></i>
+        <span>Allocate New Plot</span>
+      </button>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-4">
+      <div class="relative flex-1 w-full">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <i class="bx bx-search text-sm"></i>
+        </span>
+        <input type="text" id="admin-search-plots" placeholder="Search Plot ID, client name, or survey coords..." class="w-full form-input text-xs pl-9 bg-slate-50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+      </div>
+      <div class="flex gap-2 w-full sm:w-auto">
+        <select id="filter-plot-project-select" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white max-w-[180px]">
+          <option value="all">All Projects</option>
+        </select>
+        <select id="filter-plot-status-select" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white max-w-[130px]">
+          <option value="all">All Status</option>
+          <option value="Available">Available</option>
+          <option value="Reserved">Reserved</option>
+          <option value="Escrow Pending">Escrow Pending</option>
+          <option value="Allocated">Allocated</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-4">Plot ID</th>
+              <th class="p-4">Project Block</th>
+              <th class="p-4">Size & Price</th>
+              <th class="p-4">Client Assignee</th>
+              <th class="p-4">Physical Status</th>
+              <th class="p-4">Allocation Deeds</th>
+              <th class="p-4 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="admin-plots-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC PLOTS ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>
+
+<!-- PLOT_ALLOCATION_FORM -->
+<template id="plot-allocation-form-template">
+  <!-- Plot Form is untouched -->
+  <div class="space-y-6 animate-fade-in text-slate-855 dark:text-slate-200 max-w-3xl mx-auto">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 id="plot-form-title-text" class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">
+          Register New Land Plot Allocation
+        </h3>
+        <p class="text-xs text-slate-500 mt-1">Specify coordinate records, assign customer profile and upload legal compliance paperwork files.</p>
+      </div>
+      <button id="back-to-plots-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all font-bold px-4 py-2 rounded text-xs flex items-center gap-1.5 shadow-sm active:scale-98">
+        <i class="bx bx-left-arrow-alt text-sm"></i>
+        <span>Back to Allocations</span>
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-6 shadow-sm">
+      <form id="plot-allocation-form" class="space-y-5">
+        <input type="hidden" id="plot-edit-id" value="" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Plot ID / Layout Block Number</label>
+            <input type="text" id="form-plot-id" required placeholder="e.g. BLOCK-10, PLOT-04" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5" />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Development Project Layout</label>
+            <select id="form-plot-project" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5">
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Dimensions / Size (Sqm)</label>
+            <input type="text" id="form-plot-area" required placeholder="e.g. 600 Sqm" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5" />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Beacons coordinates (Survey Coordinates)</label>
+            <input type="text" id="form-plot-coordinates" required placeholder="e.g. 6.4285° N, 3.4226° E" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Base Selling Price (NGN)</label>
+            <input type="number" id="form-plot-price" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5" />
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Payment Scheme</label>
+            <select id="form-plot-payment-mode" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5">
+              <option value="Outright">Outright</option>
+              <option value="Installmental">Installmental</option>
+              <option value="Escrow Hold">Escrow Hold</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-slate-100 dark:border-slate-850 pt-4">
+          <div class="space-y-1.5 md:col-span-1">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Assignee Customer Profile</label>
+            <select id="form-plot-client" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5">
+            </select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Allocation status</label>
+            <select id="form-plot-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5">
+              <option value="Available">Available</option>
+              <option value="Reserved">Reserved</option>
+              <option value="Escrow Pending">Escrow Pending</option>
+              <option value="Allocated">Allocated</option>
+            </select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-[10px] font-extrabold text-slate-455 uppercase tracking-wide">Physical Beacons Placement</label>
+            <select id="form-plot-physical-stage" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-2.5">
+              <option value="No Action">No Action</option>
+              <option value="Beacons Placed">Beacons Placed</option>
+              <option value="Inspected">Inspected</option>
+              <option value="Fully Handed Over">Fully Handed Over</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="border-t border-slate-100 dark:border-slate-850 pt-4 space-y-4">
+          <h4 class="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-350">Deeds & Surveys Document Center</h4>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="space-y-2 bg-slate-50 dark:bg-slate-955/30 p-3.5 rounded border border-slate-150/10 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-455 block">Provisional Allocation Letter</span>
+              </div>
+              <div class="space-y-2">
+                <input type="file" id="upload-plot-provisional" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png" />
+                <button type="button" id="btn-trigger-provisional" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-850 text-slate-700 dark:text-white font-bold py-1.5 rounded text-[10px] border border-slate-300/40">
+                  <i class="bx bx-upload"></i> Choose Document File
+                </button>
+                <div id="info-plot-provisional" class="text-[9px] font-bold text-slate-500 text-center truncate">No file chosen</div>
+              </div>
+            </div>
+
+            <div class="space-y-2 bg-slate-50 dark:bg-slate-955/30 p-3.5 rounded border border-slate-150/10 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-455 block">Deed of Assignment scan</span>
+              </div>
+              <div class="space-y-2">
+                <input type="file" id="upload-plot-deed" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png" />
+                <button type="button" id="btn-trigger-deed" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-850 text-slate-700 dark:text-white font-bold py-1.5 rounded text-[10px] border border-slate-300/40">
+                  <i class="bx bx-upload"></i> Choose Document File
+                </button>
+                <div id="info-plot-deed" class="text-[9px] font-bold text-slate-500 text-center truncate">No file chosen</div>
+              </div>
+            </div>
+
+            <div class="space-y-2 bg-slate-50 dark:bg-slate-955/30 p-3.5 rounded border border-slate-150/10 flex flex-col justify-between">
+              <div>
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-455 block">Registered Survey Plan</span>
+              </div>
+              <div class="space-y-2">
+                <input type="file" id="upload-plot-plan" class="hidden" accept=".pdf,.doc,.docx,.jpg,.png" />
+                <button type="button" id="btn-trigger-plan" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-850 text-slate-700 dark:text-white font-bold py-1.5 rounded text-[10px] border border-slate-300/40">
+                  <i class="bx bx-upload"></i> Choose Document File
+                </button>
+                <div id="info-plot-plan" class="text-[9px] font-bold text-slate-500 text-center truncate">No file chosen</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 justify-end pt-3">
+          <button type="button" id="cancel-allocation-btn" class="bg-slate-150/50 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-350 font-bold px-5 py-2.5 rounded text-xs active:scale-98">
+            Cancel
+          </button>
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all font-bold px-6 py-2.5 rounded text-xs shadow-sm active:scale-98">
+            Confirm Allocation Register
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>

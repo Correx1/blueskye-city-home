@@ -1,0 +1,81 @@
+<!-- ====== SECTION: commissions-ledger-template ====== -->
+<div data-section="commissions-ledger-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">System Commissions Ledger</h3>
+        <p class="text-xs text-slate-500 mt-1">Audit generation 1 &amp; generation 2 override realtor commission records across all sales transactions.</p>
+      </div>
+    </div>
+
+    <!-- Affiliate Selector for Scoped Export / Drilldown Detail -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <label class="text-xs font-bold uppercase text-slate-400">Drilldown Affiliate Scopes:</label>
+        <select id="comm-drilldown-select" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-1.5 w-60">
+          <option value="all">-- View All System-Wide Commissions --</option>
+          <!-- DYNAMIC AFFILIATES OPTIONS -->
+        </select>
+      </div>
+      
+      <!-- Running total snapshot and export -->
+      <div class="flex items-center gap-4 text-xs font-semibold">
+        <div class="text-slate-550">
+          Accumulative: <span id="comm-scoped-total" class="text-emerald-600 font-bold">₦0</span>
+        </div>
+        <button id="comm-export-csv-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1">
+          <i class="bx bx-download text-sm"></i> Export CSV Statement
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full">
+        <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+        <input type="text" id="comm-search-input" placeholder="Search affiliate name or sale ref..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-805 py-1.5" />
+      </div>
+      
+      <select id="filter-comm-gen" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full">
+        <option value="all">All Generations</option>
+        <option value="Generation 1 (Direct)">Generation 1 (Direct)</option>
+        <option value="Generation 2 (Override)">Generation 2 (Override)</option>
+      </select>
+
+      <select id="filter-comm-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full">
+        <option value="all">All Status</option>
+        <option value="Pending">Pending / Unpaid</option>
+        <option value="Paid">Released / Paid</option>
+      </select>
+
+      <div class="flex gap-1 w-full md:col-span-2">
+        <input type="date" id="filter-comm-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2" />
+        <input type="date" id="filter-comm-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2" />
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse" id="comm-table-element">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Credit Date</th>
+              <th class="p-3">Realtor Affiliate</th>
+              <th class="p-3">Sponsor Level</th>
+              <th class="p-3">Sale Reference</th>
+              <th class="p-3">Commission Rate</th>
+              <th class="p-3">Accrued Payout</th>
+              <th class="p-3">Status</th>
+            </tr>
+          </thead>
+          <tbody id="commissions-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: commissions-ledger-template ====== -->

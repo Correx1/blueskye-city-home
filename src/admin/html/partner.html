@@ -1,0 +1,389 @@
+<!-- ====== SECTION: partner-directory-template ====== -->
+<div data-section="partner-directory-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Affiliates Directory Ledger</h3>
+        <p class="text-xs text-slate-500 mt-1">Manage partner records, review KYC compliance items, inspect bank verifications, and track downline networks.</p>
+      </div>
+      <button id="add-manual-partner-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-3 py-2 rounded text-xs flex items-center gap-1.5 active:scale-98">
+        <i class="bx bx-user-plus text-sm"></i><span>Register Affiliate</span>
+      </button>
+    </div>
+
+    <!-- Metrics Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 flex items-center justify-center flex-shrink-0"><i class="bx bx-group text-base"></i></div>
+        <div>
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Total Partners</span>
+          <span class="text-sm font-black text-slate-800 dark:text-white" id="part-metric-total">0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 flex items-center justify-center flex-shrink-0"><i class="bx bx-user-check text-base"></i></div>
+        <div>
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Active Network</span>
+          <span class="text-sm font-black text-emerald-600 dark:text-emerald-450" id="part-metric-active">0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 flex items-center justify-center flex-shrink-0"><i class="bx bx-shield text-base"></i></div>
+        <div>
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Identity KYC Pending</span>
+          <span class="text-sm font-black text-amber-600 dark:text-amber-400" id="part-metric-pending">0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 flex items-center justify-center flex-shrink-0"><i class="bx bx-money text-base"></i></div>
+        <div>
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Commissions Liability</span>
+          <span class="text-sm font-black text-purple-600 dark:text-purple-400" id="part-metric-payouts">₦0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full md:col-span-2">
+        <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+        <input type="text" id="part-search-input" placeholder="Search name, code, email..." class="form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-1.5 w-full" />
+      </div>
+      <select id="filter-part-kyc" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 dark:text-white py-1.5 w-full">
+        <option value="all">All KYC Statuses</option>
+        <option value="Approved">Verified KYC</option>
+        <option value="Pending Review">Pending Review</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+      <select id="filter-part-tier" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 dark:text-white py-1.5 w-full">
+        <option value="all">All Tiers/Gens</option>
+        <option value="Gen 1">Generation 1 (Root)</option>
+        <option value="Gen 2">Generation 2 (Sub-recruit)</option>
+      </select>
+      <select id="filter-part-active" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 dark:text-white py-1.5 w-full">
+        <option value="all">All Connections</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
+      <button id="clear-part-filters-btn" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-850 text-slate-600 dark:text-slate-300 rounded text-xs hover:bg-slate-200 border border-slate-200/40 active:scale-98 flex items-center justify-center gap-1 w-full font-bold">
+        <i class="bx bx-x"></i> Clear Filters
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Partner details</th>
+              <th class="p-3">Referral Code</th>
+              <th class="p-3">Tier / Level</th>
+              <th class="p-3">Upline Recruiter</th>
+              <th class="p-3">Total Sales Value</th>
+              <th class="p-3">Commission Unpaid</th>
+              <th class="p-3">KYC status</th>
+              <th class="p-3 text-center">Active</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="partner-directory-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC PARTNERS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: partner-directory-template ====== -->
+
+<!-- ====== SECTION: partner-detail-template ====== -->
+<div data-section="partner-detail-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 font-bold font-display text-sm" id="detail-part-initials">AP</div>
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white" id="detail-part-title-name">AFFILIATE NAME</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Code: <code class="font-mono text-blue-600 dark:text-blue-450 font-bold bg-slate-50 dark:bg-slate-955 px-1 py-0.5 rounded" id="detail-part-code">SKY-CODE</code> | Joined: <span id="detail-part-date-joined">2026-07-01</span></p>
+        </div>
+      </div>
+      <button id="back-to-partners-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98 font-bold">
+        <i class="bx bx-left-arrow-alt"></i><span>Back to List</span>
+      </button>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="border-b border-slate-200/30 dark:border-slate-800/80 flex gap-4 text-xs font-semibold">
+      <button data-detail-tab="profile" class="pb-2 border-b-2 border-blue-600 text-blue-600 font-display uppercase tracking-wider" id="tab-btn-profile">Profile &amp; KYC Verification</button>
+      <button data-detail-tab="tree" class="pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-655 transition-all font-display uppercase tracking-wider" id="tab-btn-tree">Generation Downline Tree</button>
+      <button data-detail-tab="finance" class="pb-2 border-b-2 border-transparent text-slate-400 hover:text-slate-655 transition-all font-display uppercase tracking-wider" id="tab-btn-finance">Commission Ledger &amp; Cashouts</button>
+    </div>
+
+    <!-- Dynamic Tab Content Viewport -->
+    <div id="partner-detail-tab-viewport" class="space-y-4">
+      
+      <!-- Subtab content 1: Profile & KYC -->
+      <div id="part-detail-tab-profile" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Personal Info -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 space-y-3.5 shadow-sm text-xs font-semibold">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-1.5">Personal details</h4>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Full Name:</span><span id="p-detail-name">Kelechi Nnamdi</span></div>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Email:</span><span id="p-detail-email">kelechi@domain.com</span></div>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Phone:</span><span id="p-detail-phone">+234...</span></div>
+            <div class="flex justify-between pb-1.5">
+              <span class="text-slate-400 font-normal">Console Access:</span>
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full" id="p-detail-active-dot"></span>
+                <span id="p-detail-active-text">Active</span>
+              </span>
+            </div>
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-850 flex justify-end">
+              <button id="toggle-part-active-btn" class="px-3 py-1.5 rounded text-xs font-bold active:scale-98 text-white transition-all"></button>
+            </div>
+          </div>
+
+          <!-- Disbursement Bank account (Separated validation item) -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 space-y-3.5 shadow-sm text-xs font-semibold">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-850 pb-1.5">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Target Bank details</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase" id="p-detail-bank-status">Pending Verification</span>
+            </div>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Bank Name:</span><span id="p-detail-bank-name">Zenith Bank PLC</span></div>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Account Number:</span><span id="p-detail-bank-num" class="font-mono">1012345678</span></div>
+            <div class="flex justify-between pb-1.5"><span class="text-slate-400 font-normal">Account Name:</span><span id="p-detail-bank-account-name">Kelechi Nnamdi Corporate</span></div>
+            
+            <div class="pt-2 border-t border-slate-100 dark:border-slate-850 flex gap-2 justify-end">
+              <button id="approve-part-bank-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98">Approve Account</button>
+              <button id="reject-part-bank-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98">Reject Account</button>
+              <button id="flag-part-bank-resubmit-btn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98">Flag Re-submit</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Identity Document items verification -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 space-y-4 shadow-sm text-xs font-semibold">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Identity KYC Compliance Documents</h4>
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider" id="p-detail-kyc-status">KYC: Pending</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border border-slate-100 dark:border-slate-850 p-3 rounded-lg flex flex-col justify-between">
+              <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-2">1. Photo Identification Card / Passport</span>
+              <div class="w-full h-40 bg-slate-50 dark:bg-slate-955 rounded border border-slate-200/10 flex items-center justify-center overflow-hidden" id="p-detail-passport-doc">
+                <!-- PHOTO ID -->
+              </div>
+            </div>
+            <div class="border border-slate-100 dark:border-slate-850 p-3 rounded-lg flex flex-col justify-between">
+              <span class="text-[10px] font-bold uppercase text-slate-400 tracking-wider mb-2">2. Utility Bill / Proof of Address</span>
+              <div class="w-full h-40 bg-slate-50 dark:bg-slate-955 rounded border border-slate-200/10 flex items-center justify-center overflow-hidden" id="p-detail-utility-doc">
+                <!-- UTILITY BILL -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Reject reason overlay input -->
+          <div id="p-detail-kyc-reject-reason-box" class="space-y-2 p-3 bg-rose-500/10 rounded-lg border border-rose-500/20 hidden">
+            <label class="text-[10px] font-bold text-rose-555 uppercase tracking-wide">Specify Reason for Rejection *</label>
+            <input type="text" id="p-detail-kyc-reject-reason" placeholder="e.g. Expired ID card or blurred scan document copy..." class="form-input text-xs w-full bg-white dark:bg-slate-955 border border-rose-300 dark:border-rose-800" />
+            <div class="flex justify-end gap-2 text-xs font-bold">
+              <button type="button" id="confirm-reject-kyc-btn" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded active:scale-98">Submit KYC Reject</button>
+              <button type="button" id="cancel-reject-kyc-btn" class="px-3 py-1.5 border border-slate-200 dark:border-slate-800 rounded hover:bg-slate-50 dark:hover:bg-slate-955">Cancel</button>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-850 flex gap-2 justify-end">
+            <button id="approve-part-kyc-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1"><i class="bx bx-check-shield"></i> Approve Profile KYC</button>
+            <button id="trigger-reject-part-kyc-btn" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1"><i class="bx bx-shield-x"></i> Reject KYC</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: partner-detail-template ====== -->
+
+<!-- ====== SECTION: partner-form-template ====== -->
+<div data-section="partner-form-template">
+  <div class="space-y-4 animate-fade-in max-w-lg mx-auto text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Register Affiliate Partner</h3>
+        <p class="text-xs text-slate-500 mt-1">Manual intake registration form for new realtors, agents, and sub-affiliates.</p>
+      </div>
+      <button id="cancel-part-form-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98 font-bold">
+        <i class="bx bx-left-arrow-alt"></i><span>Back to List</span>
+      </button>
+    </div>
+
+    <!-- Intake Form -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+      <form id="part-creation-form" class="space-y-4 text-xs font-semibold">
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Affiliate Full Name *</label>
+          <input type="text" id="part-form-name" required placeholder="e.g. Kelechi Nnamdi" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full font-bold" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Email Address *</label>
+            <input type="email" id="part-form-email" required placeholder="name@domain.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Phone Number *</label>
+            <input type="text" id="part-form-phone" required placeholder="+234..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full" />
+          </div>
+        </div>
+
+        <!-- Bank Details inside form -->
+        <div class="space-y-2.5 p-3 bg-slate-50 dark:bg-slate-955 border border-slate-200/20 rounded-lg">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide block">Disbursement Bank details</span>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Bank Name *</label>
+            <input type="text" id="part-form-bank-name" required placeholder="e.g. Zenith Bank PLC" class="form-input text-xs bg-white dark:bg-slate-900 py-1.5 w-full" />
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Account Number *</label>
+              <input type="text" id="part-form-bank-num" required placeholder="10-digit NUBAN" class="form-input text-xs bg-white dark:bg-slate-900 py-1.5 w-full font-mono" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Account Name *</label>
+              <input type="text" id="part-form-bank-accname" required placeholder="Holder full name" class="form-input text-xs bg-white dark:bg-slate-900 py-1.5 w-full" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sponsor upline select -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Referral Code *</label>
+            <input type="text" id="part-form-code" required placeholder="SKY-XXXX-YY" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full font-mono font-bold" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Upline Sponsor / Recruiter</label>
+            <select id="part-form-upline" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full">
+              <option value="">Direct (No Upline Recruiter)</option>
+              <!-- DYNAMIC REFERRALS -->
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-2 justify-end pt-2 text-xs font-bold">
+          <button type="button" id="part-form-cancel-btn" class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded text-slate-500 hover:bg-slate-50 active:scale-98">Cancel</button>
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-5 py-2 rounded active:scale-98 flex items-center gap-1.5"><i class="bx bx-save text-sm"></i> Save Affiliate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: partner-form-template ====== -->
+
+<!-- ====== SECTION: visual-tree-subtab ====== -->
+<div data-section="visual-tree-subtab">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm space-y-4">
+    <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-850 pb-2">
+      <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Lifetime Recruits Network Hierarchy</h4>
+      <span class="text-[10px] text-slate-500 font-semibold" id="tree-upline-sponsor-text">Sponsor: Direct</span>
+    </div>
+
+    <!-- Tree View visual representation -->
+    <div class="p-4 bg-slate-50 dark:bg-slate-955 rounded-lg border border-slate-200/20 overflow-x-auto">
+      <div id="visual-tree-hierarchy-root" class="space-y-4 min-w-[500px]">
+        <!-- TREE CONTAINER DYNAMIC GENERATION -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: visual-tree-subtab ====== -->
+
+<!-- ====== SECTION: finance-subtab ====== -->
+<div data-section="finance-subtab">
+  <div class="space-y-4">
+    <!-- Payout metrics -->
+    <div class="grid grid-cols-3 gap-3 text-xs font-semibold">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm">
+        <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Total Revenue Accrued</span>
+        <span class="text-sm font-black text-slate-855 dark:text-white block mt-0.5" id="finance-earned">₦0</span>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm">
+        <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Unpaid Balance</span>
+        <span class="text-sm font-black text-emerald-600 dark:text-emerald-450 block mt-0.5" id="finance-balance">₦0</span>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm">
+        <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Attributed Sales Count</span>
+        <span class="text-sm font-black text-blue-600 block mt-0.5" id="finance-sales-count">0 Deals</span>
+      </div>
+    </div>
+
+    <!-- Attributed Sales Record Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-4 shadow-sm space-y-2">
+      <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-1.5">Attributed Sales Ledger</h5>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase text-[9px]">
+              <th class="p-2.5">Sale Reference</th>
+              <th class="p-2.5">Date Added</th>
+              <th class="p-2.5">Customer Name</th>
+              <th class="p-2.5">Property Plot</th>
+              <th class="p-2.5">Agreed Price</th>
+              <th class="p-2.5 text-right">Commission Earned</th>
+            </tr>
+          </thead>
+          <tbody id="finance-sales-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ATTRIBUTED SALES -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Commission Credits Running History -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-4 shadow-sm space-y-2">
+      <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-1.5">Commissions Credits Logs (Gen 1 vs Gen 2 Override)</h5>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase text-[9px]">
+              <th class="p-2.5">Credit Date</th>
+              <th class="p-2.5">Credit Reference</th>
+              <th class="p-2.5">Tier / Generation</th>
+              <th class="p-2.5">Commission Rate</th>
+              <th class="p-2.5 text-right">Credit Amount</th>
+            </tr>
+          </thead>
+          <tbody id="finance-comm-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC COMMISSIONS CREDITS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Withdrawal History Requests -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-4 shadow-sm space-y-2">
+      <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-1.5">Cashouts Withdrawal history</h5>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase text-[9px]">
+              <th class="p-2.5">Request Date</th>
+              <th class="p-2.5">Disbursement Bank</th>
+              <th class="p-2.5">Amount requested</th>
+              <th class="p-2.5">Transfer slip proof</th>
+              <th class="p-2.5">Disbursement Status</th>
+            </tr>
+          </thead>
+          <tbody id="finance-withdrawal-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC WITHDRAWALS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: finance-subtab ====== -->

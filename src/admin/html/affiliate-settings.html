@@ -1,0 +1,60 @@
+<!-- ====== SECTION: affiliate-settings-template ====== -->
+<div data-section="affiliate-settings-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200 max-w-lg mx-auto">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Affiliate Default Settings</h3>
+        <p class="text-xs text-slate-500 mt-1">Configure global downline privacy visibility rules and tier commission rate defaults.</p>
+      </div>
+    </div>
+
+    <!-- Settings Card form -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+      <form id="affiliate-settings-form" class="space-y-5 text-xs font-semibold">
+        
+        <!-- Privacy toggles -->
+        <div class="space-y-2.5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1">1. Downline Sales Privacy</h4>
+          <div class="flex items-center justify-between py-1">
+            <div>
+              <span class="block text-slate-950 dark:text-white font-bold text-xs">Allow affiliates to see downline sales</span>
+              <span class="block text-[10px] text-slate-450 mt-0.5">Enables child recruiter sales listings visibility in partner portals.</span>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="sett-allow-downline-sales" class="sr-only peer" />
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-650 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Default commission rates settings -->
+        <div class="space-y-3 pt-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-850 pb-1">2. Global Tier Rates Defaults</h4>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Gen 1 Direct Rate (%) *</label>
+              <input type="number" id="sett-rate-gen1" min="0" max="100" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-bold" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Gen 2 Override Rate (%) *</label>
+              <input type="number" id="sett-rate-gen2" min="0" max="100" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-bold" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Overrides redirection helper box -->
+        <div class="p-3 bg-blue-500/10 rounded-lg border border-blue-500/20 space-y-1.5 font-normal">
+          <h5 class="font-bold text-blue-650 dark:text-blue-400 flex items-center gap-1"><i class="bx bx-info-circle"></i> Custom Realtor Overrides</h5>
+          <p class="text-[11px] text-slate-500 leading-relaxed">System-wide defaults apply to all affiliates automatically. To configure custom commission rates overrides for a specific realtor partner, please select their profile from the <button type="button" id="sett-redirect-directory-btn" class="text-blue-600 hover:underline font-bold">Affiliate Directory</button>.</p>
+        </div>
+
+        <!-- Submit controls -->
+        <div class="flex gap-2 justify-end pt-2 border-t border-slate-100 dark:border-slate-850/60">
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-5 py-2.5 rounded active:scale-98 flex items-center gap-1.5"><i class="bx bx-save text-sm"></i> Save Settings</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: affiliate-settings-template ====== -->

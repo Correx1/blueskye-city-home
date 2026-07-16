@@ -1,0 +1,200 @@
+<!-- ====== SECTION: affiliate-login-template ====== -->
+<div data-section="affiliate-login-template" class="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 text-slate-800 dark:text-slate-100">
+  <div class="max-w-md w-full space-y-8 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-2xl shadow-xl p-8 relative overflow-hidden transition-all duration-300">
+    
+    <!-- Design gradient blur accents -->
+    <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-600/10 rounded-full blur-2xl pointer-events-none"></div>
+    <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-teal-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+    <!-- Login Header -->
+    <div id="aff-login-interface" class="space-y-6">
+      <div class="text-center space-y-1.5">
+        <img src="/image/blueskye logo.png" alt="BlueSky Logo" class="h-14 w-auto mx-auto object-contain mb-2" />
+        <span class="text-emerald-600 dark:text-emerald-400 uppercase tracking-widest text-[9px] font-black">Elite Affiliate Partner Network</span>
+        <h2 class="font-display font-extrabold text-xl text-slate-900 dark:text-white leading-tight">Partner Console Sign In</h2>
+        <p class="text-[10px] text-slate-450 dark:text-slate-500 font-light">Access your referral parameters, trace accrued payouts, and manage downlines.</p>
+      </div>
+
+      <form id="aff-login-form" class="space-y-4 text-xs font-semibold">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase tracking-wider block">Affiliate Email Address</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none"><i class="bx bx-envelope text-sm"></i></span>
+            <input type="email" id="aff-login-email" required placeholder="affiliate@blueskye.com" class="form-input text-xs pl-9 bg-slate-50/50 dark:bg-slate-955 text-slate-850 dark:text-white" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between items-center">
+            <label class="text-[9px] font-bold text-slate-455 uppercase tracking-wider">Security Password</label>
+            <button type="button" id="aff-forgot-btn" class="text-[9px] text-emerald-600 dark:text-emerald-400 hover:underline uppercase font-bold tracking-wider">Forgot Password?</button>
+          </div>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none"><i class="bx bx-lock-alt text-sm"></i></span>
+            <input type="password" id="aff-login-pass" required placeholder="••••••••" class="form-input text-xs pl-9 bg-slate-50/50 dark:bg-slate-955 text-slate-855 dark:text-white" />
+          </div>
+        </div>
+
+        <!-- Testing trigger choices -->
+        <div class="bg-slate-50 dark:bg-slate-955 p-3 rounded-lg border border-slate-100 dark:border-slate-800 space-y-2">
+          <span class="block text-[8.5px] uppercase tracking-wider text-slate-400 font-bold">Simulate Login Mode:</span>
+          <div class="flex gap-4 text-[9.5px]">
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="aff-kyc-sim" value="Verified" checked class="text-emerald-600" />
+              <span>Verified Account</span>
+            </label>
+            <label class="flex items-center gap-1 cursor-pointer">
+              <input type="radio" name="aff-kyc-sim" value="Pending" class="text-amber-600" />
+              <span class="text-amber-655 font-bold">Pending KYC Notice</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 rounded-lg active:scale-98 transition-all flex items-center justify-center gap-1.5 shadow-md">
+          <span>Launch Partner Workspace</span>
+          <i class="bx bx-right-arrow-alt text-base"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- FORGOT PASSWORD INTERFACE -->
+    <div id="aff-forgot-interface" class="space-y-6 hidden">
+      <div class="text-center space-y-1.5">
+        <h2 class="font-display font-extrabold text-lg text-slate-900 dark:text-white leading-tight">Recover Partner Access</h2>
+        <p class="text-[10px] text-slate-400 font-light">Enter your registered email address to receive credentials recovery instructions.</p>
+      </div>
+
+      <form id="aff-forgot-form" class="space-y-4 text-xs font-semibold">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase block">Email Address</label>
+          <input type="email" id="aff-forgot-email" required placeholder="partner@blueskye.com" class="form-input text-xs bg-slate-50/50 dark:bg-slate-955 py-2 w-full" />
+        </div>
+
+        <div class="flex gap-2">
+          <button type="button" id="aff-forgot-cancel" class="w-1/2 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-lg font-bold">Back</button>
+          <button type="submit" class="w-1/2 bg-[#1e3a8a] hover:bg-blue-800 text-white py-2.5 rounded-lg font-bold">Send Instructions</button>
+        </div>
+      </form>
+
+      <!-- Recovery success toast inside card -->
+      <div id="aff-forgot-success-banner" class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-650 p-3 rounded-lg text-[10px] hidden font-bold text-center">
+        <i class="bx bx-check-circle text-xs mr-1 align-middle"></i> Instructions have been sent successfully to your email.
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ====== END SECTION: affiliate-login-template ====== -->
+
+<!-- ====== SECTION: affiliate-shell-template ====== -->
+<div data-section="affiliate-shell-template">
+  <!-- Layout grid: Left Sidebar Menu & Right Main Content viewport -->
+  <div class="flex flex-col lg:flex-row min-h-[85vh] bg-[#f8fafc] dark:bg-slate-955 border border-slate-200/40 dark:border-slate-850/60 rounded-2xl overflow-hidden shadow-xl text-slate-800 dark:text-slate-200" id="affiliate-main-layout">
+    
+    <!-- LEFT SIDEBAR PANEL -->
+    <aside class="w-full lg:w-64 bg-[#0f172a] text-white flex flex-col justify-between shrink-0 p-4 relative" id="affiliate-sidebar">
+      <div class="space-y-6">
+        <!-- Brand Header Logo -->
+        <div class="flex items-center gap-3 border-b border-white/10 pb-4">
+          <img src="/image/blueskye logo.png" alt="BlueSky Logo" class="h-10 w-auto object-contain brightness-100 contrast-125" />
+          <div>
+            <h1 class="font-display font-black text-xs tracking-wider">BlueSky Partner</h1>
+            <span class="text-[8.5px] uppercase tracking-widest text-emerald-400 font-black block font-mono" id="aff-type-sidebar-label">Ambassador</span>
+          </div>
+        </div>
+
+        <!-- Sidebar Navigation Buttons (Only 8 entries!) -->
+        <nav class="space-y-1 text-xs font-semibold" id="affiliate-nav-rail">
+          <button data-aff-tab="dashboard" class="affiliate-rail-btn active w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white font-bold"><i class="bx bx-grid-alt text-base text-emerald-450"></i><span>Dashboard (Home)</span></button>
+          <button data-aff-tab="sales" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-shopping-bag text-base"></i><span>My Sales</span></button>
+          <button data-aff-tab="commissions" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-line-chart text-base"></i><span>My Commissions</span></button>
+          <button data-aff-tab="withdrawals" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-export text-base"></i><span>Withdrawal Requests</span></button>
+          <button data-aff-tab="downlines" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-group text-base"></i><span>My Downlines (Gen 1)</span></button>
+          <button data-aff-tab="tools" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-link-external text-base"></i><span>Referral Tools</span></button>
+          <button data-aff-tab="kyc" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-id-card text-base"></i><span>KYC Verification</span></button>
+          <button data-aff-tab="support" class="affiliate-rail-btn w-full flex items-center gap-3 py-2.5 px-3 rounded-lg text-left transition-all hover:bg-white/10 text-white/80"><i class="bx bx-help-circle text-base"></i><span>Support</span></button>
+        </nav>
+      </div>
+
+      <!-- User card details footer -->
+      <div class="border-t border-white/10 pt-4 mt-6 flex items-center justify-between">
+        <div class="flex items-center gap-2 min-w-0">
+          <img src="" id="aff-profile-avatar-left" alt="Partner Avatar" class="h-8 w-8 rounded-full border border-white/20 object-cover" />
+          <div class="min-w-0 text-left">
+            <h4 class="font-bold truncate text-[11px]" id="aff-profile-name-left">Jane Doe</h4>
+            <span class="text-[9px] text-white/50 truncate block" id="aff-profile-email-left">affiliate@blueskye.com</span>
+          </div>
+        </div>
+        <button id="aff-sidebar-settings-btn" class="text-white/60 hover:text-white transition-colors" title="Account settings"><i class="bx bx-cog text-base"></i></button>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL AREA -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#f8fafc] dark:bg-slate-950">
+      
+      <!-- HEADER CONSOLE -->
+      <header class="bg-white dark:bg-slate-900 border-b border-slate-200/50 dark:border-slate-850 px-6 py-4 flex items-center justify-between shadow-xs relative z-30">
+        <div class="flex items-center gap-2">
+          <!-- Mobile Menu trigger toggle button -->
+          <button id="aff-mobile-toggle" class="lg:hidden text-slate-500 hover:text-slate-800 dark:hover:text-white mr-2"><i class="bx bx-menu text-xl"></i></button>
+          <h2 class="font-display font-extrabold text-base text-slate-900 dark:text-white flex items-center gap-1.5" id="aff-viewport-title">
+            <i class="bx bx-grid-alt text-lg text-emerald-600"></i>
+            <span>Affiliate Dashboard</span>
+          </h2>
+        </div>
+
+        <div class="flex items-center gap-4 relative">
+          <!-- Notification Bell Trigger Icon (Bell outline with unread tag badge) -->
+          <div class="relative">
+            <button id="aff-notif-btn" class="h-9 w-9 rounded-lg border border-slate-200/50 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-800 dark:hover:text-white transition-all">
+              <i class="bx bx-bell text-lg"></i>
+              <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-[8px] font-black h-4 w-4 flex items-center justify-center border border-white dark:border-slate-900 animate-pulse">1</span>
+            </button>
+
+            <!-- Notifications Dropdown Popover (Absolute position) -->
+            <div id="aff-notif-dropdown" class="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-850 rounded-xl shadow-xl p-3 space-y-2 text-xs font-semibold hidden animate-scale-up">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-1.5">
+                <span class="font-bold text-slate-900 dark:text-white">Recent Notices</span>
+                <button id="aff-notif-clear-btn" class="text-[9px] text-emerald-650 hover:underline">Mark read</button>
+              </div>
+              <div class="divide-y divide-slate-100 dark:divide-slate-850">
+                <div class="py-2 space-y-0.5 text-left">
+                  <span class="block text-[10px] text-emerald-650 font-extrabold flex items-center gap-0.5"><i class="bx bx-coin-stack"></i> Commission Earned</span>
+                  <p class="text-[9.5px] text-slate-450 dark:text-slate-400 font-normal leading-relaxed">Direct Sale Gen 1: ₦5,000,000 accrued from Alao purchase.</p>
+                  <span class="block text-[8px] text-slate-400 font-mono">1 hour ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile & Settings circle avatar Dropdown Trigger -->
+          <div class="relative">
+            <button id="aff-avatar-btn" class="flex items-center gap-1.5 focus:outline-none" title="User account profile menu">
+              <img src="" id="aff-profile-avatar-right" alt="User Profile Image" class="h-8.5 w-8.5 rounded-full border border-slate-200/50 dark:border-slate-800 object-cover hover:opacity-90 transition-opacity" />
+              <i class="bx bx-chevron-down text-slate-400 text-xs transition-transform" id="aff-avatar-chevron"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="aff-avatar-dropdown" class="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-850 rounded-xl shadow-xl py-1.5 text-xs font-semibold hidden animate-scale-up">
+              <button id="aff-dropdown-settings" class="w-full text-left py-2 px-4 hover:bg-slate-50 dark:hover:bg-slate-850/50 flex items-center gap-2 text-slate-700 dark:text-slate-355"><i class="bx bx-user-circle text-base"></i> Profile &amp; Settings</button>
+              <button id="aff-dropdown-logout" class="w-full text-left py-2 px-4 hover:bg-rose-50 dark:hover:bg-rose-955/20 flex items-center gap-2 text-rose-600"><i class="bx bx-log-out text-base"></i> Log Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- KYC PENDING BANNERS (Persistent notice after login if pending KYC approval) -->
+      <div id="affiliate-kyc-pending-banner" class="bg-amber-500/10 border-b border-amber-500/20 text-amber-700 dark:text-amber-400 px-6 py-3.5 text-xs font-semibold flex items-center gap-2 text-left hidden">
+        <i class="bx bx-info-circle text-base text-amber-600 dark:text-amber-500 shrink-0"></i>
+        <span><strong>KYC Compliance Status:</strong> Your compliance verification documents are currently under review. Commission withdrawals will unlock once verified.</span>
+      </div>
+
+      <!-- MAIN WORKSPACE VIEWPORT -->
+      <main class="flex-1 p-6 overflow-y-auto" id="aff-viewport">
+        <!-- DYNAMIC VIEWS RENDER HERE -->
+      </main>
+
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: affiliate-shell-template ====== -->

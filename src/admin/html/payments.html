@@ -1,0 +1,249 @@
+<!-- ====== SECTION: payments-list-template ====== -->
+<div data-section="payments-list-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Payments Audit Registry</h3>
+        <p class="text-xs text-slate-500 mt-1">Audit customer transfer slips, confirm bank clearings, and record manual cash deposits.</p>
+      </div>
+      <button id="add-manual-payment-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-3 py-2 rounded text-xs flex items-center gap-1 active:scale-98">
+        <i class="bx bx-plus text-sm"></i>
+        <span>Log Manual Payment</span>
+      </button>
+    </div>
+
+    <!-- Payments stats row -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-lg p-3 shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-money"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Total Revenue Collected</span>
+          <span class="text-sm font-black text-slate-800 dark:text-white truncate block" id="pay-metric-collected">₦0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-time"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Awaiting Reconcile</span>
+          <span class="text-sm font-black text-amber-600 dark:text-amber-400 truncate block" id="pay-metric-pending">0 Pending</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-check-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Confirmed Audits</span>
+          <span class="text-sm font-black text-blue-600 dark:text-blue-400 truncate block" id="pay-metric-approved">0 Cleared</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-250 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-x-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Rejected Proofs</span>
+          <span class="text-sm font-black text-rose-600 dark:text-rose-455 truncate block" id="pay-metric-rejected">0 Rejected</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full md:col-span-2">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <i class="bx bx-search text-xs"></i>
+        </span>
+        <input type="text" id="pay-search-input" placeholder="Search customer name, property or reference..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5" />
+      </div>
+      
+      <select id="filter-pay-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="Pending Confirmation">Awaiting Review</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Rejected">Rejected</option>
+        <option value="all">All Transactions</option>
+      </select>
+
+      <select id="filter-pay-channel" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="all">All Methods</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="Cash">Cash Deposit</option>
+        <option value="Cheque">Cheque Deposit</option>
+      </select>
+
+      <div class="flex gap-1 w-full md:col-span-2">
+        <input type="date" id="filter-pay-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-1/2" />
+        <input type="date" id="filter-pay-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-1/2" />
+      </div>
+    </div>
+
+    <!-- Payments table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Payment Date</th>
+              <th class="p-3">Customer Details</th>
+              <th class="p-3">Associated Sale / Property</th>
+              <th class="p-3">Amount Deposited</th>
+              <th class="p-3">Payment Channel</th>
+              <th class="p-3">Reference Code</th>
+              <th class="p-3">Audit Status</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="payments-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC PAYMENTS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: payments-list-template ====== -->
+
+<!-- ====== SECTION: payment-confirm-template ====== -->
+<div data-section="payment-confirm-template">
+  <div class="space-y-4 animate-fade-in max-w-4xl mx-auto text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Audit Bank Transaction Proof</h3>
+        <p class="text-xs text-slate-500 mt-1">Cross-check the client's bank transfer slip details to verify cleared payments.</p>
+      </div>
+      <button id="cancel-pay-audit-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98 font-bold">
+        <i class="bx bx-left-arrow-alt"></i>
+        <span>Back to List</span>
+      </button>
+    </div>
+
+    <!-- Proof reconcile split panels -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Left side: uploaded proof visualizer -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-4 flex flex-col items-center justify-center min-h-[300px]">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2 self-start">Uploaded Proof Receipt</span>
+        <div class="w-full flex-1 flex items-center justify-center bg-slate-50 dark:bg-slate-955 rounded-lg border border-slate-200/20 overflow-hidden p-4 relative group">
+          <!-- DYNAMIC IMAGE IF PRESENT -->
+          <div id="reconcile-proof-image-placeholder"></div>
+        </div>
+      </div>
+
+      <!-- Right side: details check form -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 space-y-4">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">Transaction Reconcile details</h4>
+        
+        <div class="grid grid-cols-2 gap-x-3 gap-y-2 border-b border-slate-100 dark:border-slate-800/60 pb-3 text-xs">
+          <div><span class="text-slate-400 block text-[9px] uppercase">Customer Billed</span><span class="font-bold text-slate-800 dark:text-white" id="reconcile-client-name">Name</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Contract Property</span><span class="font-semibold text-slate-700 dark:text-slate-300 truncate block" id="reconcile-property-title">Plot Spec</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Original Claimed Amount</span><span class="font-bold text-emerald-600 dark:text-emerald-450" id="reconcile-claimed-amount">₦0</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Claimed Reference ID</span><span class="font-mono text-slate-500" id="reconcile-claimed-ref">TXN-000</span></div>
+        </div>
+
+        <form id="pay-reconcile-form" class="space-y-3.5">
+          <input type="hidden" id="audit-pay-id" value="" />
+          
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Confirmed Reconciled Amount (₦) *</label>
+            <input type="number" id="audit-confirmed-amount" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full font-bold" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Official Receipt Date *</label>
+              <input type="date" id="audit-confirmed-date" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Official Bank Reference ID *</label>
+              <input type="text" id="audit-confirmed-ref" required placeholder="Bank transaction ID" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full font-mono" />
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Audit Observation Note</label>
+            <textarea id="audit-note" rows="2" placeholder="Verify matching transaction logs in Escrow ledger statement..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full"></textarea>
+          </div>
+
+          <div class="flex gap-2.5 pt-2 text-xs">
+            <button type="submit" id="approve-payment-btn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded active:scale-98 flex items-center justify-center gap-1">
+              <i class="bx bx-check-double text-base"></i> Confirm &amp; Credit Sale
+            </button>
+            <button type="button" id="reject-payment-btn" class="w-28 bg-rose-605 hover:bg-rose-700 bg-rose-600 text-white font-bold py-2.5 rounded active:scale-98 flex items-center justify-center gap-1">
+              <i class="bx bx-x-circle text-base"></i> Reject Proof
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: payment-confirm-template ====== -->
+
+<!-- ====== SECTION: payment-form-template ====== -->
+<div data-section="payment-form-template">
+  <div class="space-y-4 animate-fade-in max-w-lg mx-auto text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Record Manual Offline Payment</h3>
+        <p class="text-xs text-slate-500 mt-1">Directly record cash, check, or escrow deposits received on behalf of clients.</p>
+      </div>
+      <button id="cancel-pay-form-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98 font-bold">
+        <i class="bx bx-left-arrow-alt"></i>
+        <span>Back to List</span>
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+      <form id="pay-manual-form" class="space-y-4">
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Link Customer Sale Agreement *</label>
+          <select id="pay-form-sale" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full">
+            <option value="">-- Select Sale Record --</option>
+            <!-- DYNAMIC SALE OPTIONS -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Amount Deposited (₦) *</label>
+            <input type="number" id="pay-form-amount" required placeholder="e.g. 15000000" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full font-bold" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Method / Channel *</label>
+            <select id="pay-form-channel" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full">
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="Cash">Cash Deposit</option>
+              <option value="Cheque">Cheque Deposit</option>
+              <option value="Other">Other Method</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Transaction Date *</label>
+            <input type="date" id="pay-form-date" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Bank Reference Code *</label>
+            <input type="text" id="pay-form-ref" required placeholder="Reference number" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full font-mono" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Accounting Commentary</label>
+          <textarea id="pay-form-note" rows="2" placeholder="Record depositor references, branch details..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 py-2 w-full"></textarea>
+        </div>
+
+        <div class="flex gap-2 justify-end pt-2 text-xs font-bold">
+          <button type="button" id="pay-form-cancel-btn" class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded text-slate-500 hover:bg-slate-50 active:scale-98">Cancel</button>
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-5 py-2 rounded active:scale-98 flex items-center gap-1"><i class="bx bx-save text-sm"></i> Confirm Receipt</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: payment-form-template ====== -->

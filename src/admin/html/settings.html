@@ -1,0 +1,590 @@
+<!-- ====== SECTION: settings-hub-template ====== -->
+<div data-section="settings-hub-template">
+  <!-- Layout grid: Left Navigation Rail & Right Viewport container -->
+  <div class="flex flex-col lg:flex-row gap-6 animate-fade-in text-slate-800 dark:text-slate-200">
+    
+    <!-- LEFT RAIL NAVIGATION -->
+    <div class="w-full lg:w-60 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-4 shadow-sm flex flex-col gap-1.5 shrink-0 h-fit text-xs font-semibold" id="settings-left-rail">
+      <h3 class="text-[9px] font-extrabold uppercase tracking-wider text-slate-400 px-3 pb-2 border-b border-slate-100 dark:border-slate-800 mb-1.5 flex items-center gap-1"><i class="bx bx-cog text-xs"></i> System Settings</h3>
+      <button data-settings-hub-tab="company" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-blue-600 dark:text-blue-400 font-bold border-l-4 border-blue-600 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-buildings text-sm"></i> Company Info</button>
+      <button data-settings-hub-tab="staff" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-group text-sm"></i> Staff &amp; Users</button>
+      <button data-settings-hub-tab="permissions" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-key text-sm"></i> Roles &amp; Permissions</button>
+      <button data-settings-hub-tab="payments" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-wallet text-sm"></i> Finance &amp; Accounts</button>
+      <button data-settings-hub-tab="notifications" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-bell text-sm"></i> Notifications</button>
+      <button data-settings-hub-tab="content" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-slider-alt text-sm"></i> Content &amp; Support</button>
+      <button data-settings-hub-tab="audit" class="settings-rail-btn w-full py-2.5 px-3 hover:bg-slate-50 dark:hover:bg-slate-850/50 rounded-lg text-left text-slate-450 hover:text-slate-655 flex items-center gap-2 active:scale-98 transition-all"><i class="bx bx-history text-sm"></i> Activity Log</button>
+    </div>
+
+    <!-- RIGHT PANEL VIEWPORTS -->
+    <div class="flex-1 min-w-0">
+      
+      <!-- 1. COMPANY INFO VIEWPORT -->
+      <div id="viewport-set-company" class="space-y-4 animate-fade-in">
+        <form id="form-set-company" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4 text-xs font-semibold">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1"><i class="bx bx-buildings text-sm"></i> 1. Corporate Identity Profile</h4>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Site/Company Name *</label>
+              <input type="text" id="set-co-name" required placeholder="BlueSky City Homes Ltd" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Corporate Email *</label>
+              <input type="email" id="set-co-email" required placeholder="info@blueskyecity.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-455 uppercase">Headquarters Telephone *</label>
+              <input type="text" id="set-co-phone" required placeholder="+234 812 345 6789" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-455 uppercase">Office Address *</label>
+              <input type="text" id="set-co-address" required placeholder="Admiralty Way, Lekki Phase 1, Lagos" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-100 dark:border-slate-800 pt-3">
+            <div class="space-y-2">
+              <label class="text-[9px] font-bold text-slate-455 uppercase block">Corporate Brand Assets</label>
+              <div class="space-y-2">
+                <div class="flex gap-2 items-center">
+                  <input type="text" id="set-co-logo-url" placeholder="Paste Logo Image URL..." class="form-input text-[11px] bg-slate-50 dark:bg-slate-955 py-1.5 flex-1" />
+                  <span class="text-[10px] text-slate-400">Logo</span>
+                </div>
+                <div class="flex gap-2 items-center">
+                  <input type="text" id="set-co-fav-url" placeholder="Paste Favicon URL..." class="form-input text-[11px] bg-slate-50 dark:bg-slate-955 py-1.5 flex-1" />
+                  <span class="text-[10px] text-slate-400">Favicon</span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="text-[9px] font-bold text-slate-455 uppercase block">Social Media Handles Links</label>
+              <div class="space-y-1.5">
+                <input type="text" id="set-co-fb" placeholder="Facebook URL link" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full" />
+                <input type="text" id="set-co-tw" placeholder="Twitter URL link" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full" />
+                <input type="text" id="set-co-li" placeholder="LinkedIn URL link" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full" />
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-1 border-t border-slate-100 dark:border-slate-800 pt-3">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Public Footer Copyright Text</label>
+            <input type="text" id="set-co-footer" placeholder="© 2026 BlueSky City Homes Ltd. All rights reserved." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button type="submit" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 px-5 rounded active:scale-98">Save identity profile</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 2. STAFF & USERS VIEWPORT -->
+      <div id="viewport-set-staff" class="hidden space-y-4 animate-fade-in">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 flex items-center gap-1"><i class="bx bx-group text-sm"></i> Staff Accounts Directory</h4>
+            <button id="btn-set-add-staff" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-3 rounded text-[11px] active:scale-98 flex items-center gap-1"><i class="bx bx-user-plus text-sm"></i> Add Staff Member</button>
+          </div>
+
+          <!-- Staff list table -->
+          <div class="overflow-x-auto text-xs font-semibold">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[9px]">
+                  <th class="p-3">Staff Name</th>
+                  <th class="p-3">Email Coordinates</th>
+                  <th class="p-3">Assigned Role</th>
+                  <th class="p-3">Status</th>
+                  <th class="p-3 font-mono">Date Added</th>
+                  <th class="p-3 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="set-staff-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+                <!-- DYNAMIC STAFF MEMBERS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. ROLES & PERMISSIONS VIEWPORT -->
+      <div id="viewport-set-permissions" class="hidden space-y-6 animate-fade-in text-xs font-semibold">
+        <!-- Two pane split: Left Roles index, Right matrix -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 h-[60vh]">
+          <!-- Roles Pane Left (5 cols) -->
+          <div class="lg:col-span-4 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-855 rounded-xl p-4 shadow-sm flex flex-col overflow-hidden h-full">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+              <span class="text-[10px] font-bold text-slate-450 uppercase tracking-wide">Roles Directory</span>
+              <button id="btn-set-add-role" class="text-blue-650 hover:underline flex items-center gap-0.5"><i class="bx bx-plus"></i> Add Role</button>
+            </div>
+            
+            <!-- Roles scroll list -->
+            <div id="set-roles-list-container" class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-850">
+              <!-- DYNAMIC ROLES -->
+            </div>
+          </div>
+
+          <!-- Dynamic Permission matrix Right (8 cols) -->
+          <div class="lg:col-span-8 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-855 rounded-xl p-4 shadow-sm flex flex-col overflow-hidden h-full relative" id="set-permissions-matrix-pane">
+            <div id="permissions-pane-placeholder" class="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-400">
+              <i class="bx bx-key text-3xl text-slate-300 mb-1"></i>
+              <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-450">No Role Selected</h4>
+              <p class="text-[9px] text-slate-400 mt-1 max-w-xs">Select a staff role from the left index list directory to adjust module privileges.</p>
+            </div>
+
+            <!-- Live permissions matrix (hidden if no role selected) -->
+            <div id="permissions-pane-viewport" class="flex-1 flex flex-col h-full hidden">
+              <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2 mb-3">
+                <div>
+                  <h4 class="text-xs font-black uppercase text-slate-900 dark:text-white" id="perm-role-name">Super Admin</h4>
+                  <p class="text-[9.5px] text-slate-400 font-normal mt-0.5" id="perm-role-desc">Full configuration privileges.</p>
+                </div>
+                <button id="btn-perm-save-matrix" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1 px-3 rounded text-[10px] active:scale-98">Save Changes</button>
+              </div>
+
+              <!-- Modules matrix lists -->
+              <div class="flex-1 overflow-y-auto border border-slate-100 dark:border-slate-850 rounded-lg">
+                <table class="w-full text-left border-collapse text-xs font-semibold">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-455 text-[9px] uppercase tracking-wide">
+                      <th class="p-2.5">System Module</th>
+                      <th class="p-2.5 text-right w-44">Privilege Access Level</th>
+                    </tr>
+                  </thead>
+                  <tbody id="perm-matrix-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-slate-700 dark:text-slate-300">
+                    <!-- DYNAMIC ROWS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. COMMISSION & PAYMENTS VIEWPORT -->
+      <div id="viewport-set-payments" class="hidden space-y-4 animate-fade-in text-xs font-semibold">
+        <form id="form-set-payments" class="space-y-4">
+          <!-- Card A: commission defaults -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1"><i class="bx bx-badge-percent text-sm"></i> Affiliate Commission Defaults</h4>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Generation 1 (Direct Referrals) % *</label>
+                <input type="number" id="set-pay-gen1" min="0" max="100" required placeholder="10" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Generation 2 (Downline Network) % *</label>
+                <input type="number" id="set-pay-gen2" min="0" max="100" required placeholder="5" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-3">
+              <div>
+                <span class="block font-bold">Allow affiliates to see downline sales details</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Enable Generation 2 networking transparency inside affiliate dashboards.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-pay-downline-visible" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Card B: Installment plan defaults -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1"><i class="bx bx-calendar-star text-sm"></i> Installments Plans Defaults</h4>
+            
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Default Installment Period (Months) *</label>
+                <input type="number" id="set-pay-inst-months" min="1" max="60" required placeholder="12" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 py-2 w-full font-mono" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Default Down Payment Required (%) *</label>
+                <input type="number" id="set-pay-inst-down" min="0" max="100" required placeholder="20" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 py-2 w-full font-mono" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Card C: payment bank details (multiple) -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1 flex items-center justify-between">
+              <span>Corporate Bank Accounts</span>
+              <button type="button" id="btn-set-add-bank" class="text-blue-650 hover:underline">Add account</button>
+            </h4>
+
+            <!-- Inline add bank form -->
+            <div id="sec-set-add-bank-form" class="bg-slate-50 dark:bg-slate-955 p-3 rounded-lg border border-slate-200/40 space-y-3 hidden animate-fade-in">
+              <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase">Account Name *</label>
+                  <input type="text" id="set-bank-name" placeholder="BlueSky City Ltd" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase">Bank Institution *</label>
+                  <input type="text" id="set-bank-institution" placeholder="Zenith Bank" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full" />
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase">Account Number *</label>
+                  <input type="text" id="set-bank-number" placeholder="1012345678" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full font-mono" />
+                </div>
+                <div class="space-y-1">
+                  <label class="text-[9px] font-bold text-slate-400 uppercase">Purpose/Label *</label>
+                  <select id="set-bank-label" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full">
+                    <option value="Operations">Operations</option>
+                    <option value="Investment">Investment</option>
+                    <option value="Customer Payments">Customer Payments</option>
+                  </select>
+                </div>
+              </div>
+              <div class="flex justify-end gap-1.5">
+                <button type="button" id="btn-set-bank-cancel" class="px-2.5 py-1 bg-slate-200 text-slate-700 rounded">Cancel</button>
+                <button type="button" id="btn-set-bank-save" class="px-2.5 py-1 bg-[#1e3a8a] text-white rounded">Save</button>
+              </div>
+            </div>
+
+            <!-- Banks accounts Table -->
+            <div class="overflow-x-auto text-[11px] font-semibold">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-455 text-[9px] uppercase">
+                    <th class="p-2">Label</th>
+                    <th class="p-2">Account Name</th>
+                    <th class="p-2">Bank</th>
+                    <th class="p-2 font-mono">Account Number</th>
+                    <th class="p-2 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="set-banks-tbody" class="divide-y divide-slate-100 dark:divide-slate-850">
+                  <!-- DYNAMIC -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Card D: Fund Split Auto-Routing Rules -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1.5"><i class="bx bx-git-branch text-sm"></i> Payment Auto-Routing Split Rules</h4>
+            <p class="text-[10px] text-slate-400 font-normal leading-relaxed">Configure the auto-distribution percentages routed to designated holding accounts when a plot payment is confirmed.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-450 uppercase block">Stanbic IBTC (Investment/Savings) %</label>
+                <input type="number" id="set-split-investment" value="20" readonly class="form-input text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 py-2 w-full font-mono cursor-not-allowed" />
+                <span class="text-[8px] text-slate-400 font-normal italic">Fixed target baseline split</span>
+              </div>
+              
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-450 uppercase block">Zenith (Customer Payments) % *</label>
+                <input type="number" id="set-split-payments" min="0" max="100" required placeholder="50" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+                <span class="text-[8px] text-slate-400 font-normal italic">Admin-configurable ratio</span>
+              </div>
+
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-450 uppercase block">Moniepoint/Kuda (Operations) % *</label>
+                <input type="number" id="set-split-operations" min="0" max="100" required placeholder="30" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+                <span class="text-[8px] text-slate-400 font-normal italic">Admin-configurable ratio</span>
+              </div>
+            </div>
+
+            <!-- Split verification feedback banners -->
+            <div id="split-warning-banner" class="bg-rose-500/10 border border-rose-500/20 text-rose-650 p-2.5 rounded-lg text-[10px] font-bold hidden">
+              Error: Total sum of split percentages must equal exactly 100%. Currently: <span id="split-current-total">80%</span>.
+            </div>
+            <div id="split-success-banner" class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-650 p-2.5 rounded-lg text-[10px] font-bold hidden">
+              Success: Ratios validate to exactly 100% and will be automatically applied.
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button type="submit" id="btn-save-payments-settings" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 px-6 rounded active:scale-98">Save all changes</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 5. NOTIFICATIONS VIEWPORT -->
+      <div id="viewport-set-notifications" class="hidden space-y-4 animate-fade-in text-xs font-semibold">
+        <form id="form-set-notifications" class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1.5"><i class="bx bx-bell text-sm"></i> Administrative Notification Toggles</h4>
+          
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">New Sale alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify staff immediately upon new sales logging.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-nsale" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">KYC submitted alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify compliance officers when client upload identity credentials.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-nkyc" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">Payment uploaded alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify accounts checkouts when bank payment receipts uploaded.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-npay" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">Withdrawal requested alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify finance manager on payout withdrawal cashouts requests.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-nwithdraw" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">Inspection booked alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify site managers when a property tour slot is booked.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-ninspect" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">New support ticket alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify support desk agents when a new ticket conversation logs.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-nticket" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="block font-bold">Newsletter campaign sent alert</span>
+                <span class="block text-[10px] text-slate-400 font-normal">Notify content creators when campaign mail broadcasts dispatch.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="set-notif-ncamp" class="sr-only peer" />
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              </label>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button type="submit" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 px-5 rounded active:scale-98">Save notification toggles</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 6. CONTENT & SUPPORT SETTINGS VIEWPORT -->
+      <div id="viewport-set-content" class="hidden space-y-4 animate-fade-in text-xs font-semibold">
+        <form id="form-set-content" class="space-y-4">
+          <!-- Card Blog -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1.5"><i class="bx bx-edit text-sm"></i> Editorial Blog Defaults</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Default New Post Status</label>
+                <select id="set-blog-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full">
+                  <option value="Draft">Draft</option>
+                  <option value="Published">Published</option>
+                </select>
+              </div>
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="block font-bold">Comments enabled toggle</span>
+                  <span class="block text-[10px] text-slate-400 font-normal">Enable readers comments on corporate posts.</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="set-blog-comments" class="sr-only peer" />
+                  <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Newsletter -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1.5"><i class="bx bx-envelope text-sm"></i> Newsletter Campaigns Defaults</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Sender "From" Name *</label>
+                <input type="text" id="set-news-name" required placeholder="BlueSky City Support" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full" />
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Sender "From" Email *</label>
+                <input type="email" id="set-news-email" required placeholder="campaigns@blueskyecity.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full font-mono" />
+              </div>
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Newsletter Unsubscribe footer text *</label>
+              <input type="text" id="set-news-footer" required placeholder="You received this because you subscribed. To opt-out, click Unsubscribe." class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full" />
+            </div>
+          </div>
+
+          <!-- Card Helpdesk -->
+          <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-xl p-5 shadow-sm space-y-4">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450 border-b border-slate-100 dark:border-slate-800 pb-1.5 flex items-center gap-1.5"><i class="bx bx-help-circle text-sm"></i> Support Helpdesk Defaults</h4>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Default Ticket Priority</label>
+                <select id="set-tkt-priority" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full">
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+              <div class="space-y-1">
+                <label class="text-[9px] font-bold text-slate-455 uppercase">Auto-assignment Rule</label>
+                <select id="set-tkt-routing" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-2 w-full">
+                  <option value="Round robin">Round robin</option>
+                  <option value="Manual">Manual assignment</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button type="submit" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2.5 px-6 rounded active:scale-98">Save parameters</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- 7. ACTIVITY AUDIT LOG VIEWPORT -->
+      <div id="viewport-set-audit" class="hidden space-y-4 animate-fade-in text-xs font-semibold">
+        <!-- Log filter bar -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 rounded-md p-3">
+          <div class="relative w-full">
+            <i class="bx bx-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+            <input type="text" id="set-audit-search" placeholder="Search staff user..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-850" />
+          </div>
+
+          <select id="filter-audit-action" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-1.5 w-full text-slate-700 font-semibold">
+            <option value="all">Action Type</option>
+            <option value="Created">Created</option>
+            <option value="Updated">Updated</option>
+            <option value="Deleted">Deleted</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Confirmed">Confirmed</option>
+          </select>
+
+          <select id="filter-audit-module" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-1.5 w-full text-slate-700 font-semibold">
+            <option value="all">System Module</option>
+            <!-- DYNAMIC MODULE FILTERS -->
+          </select>
+
+          <div class="flex gap-1 w-full md:col-span-2">
+            <input type="date" id="filter-audit-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-1.5 w-1/2 font-mono text-slate-655" />
+            <input type="date" id="filter-audit-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 py-1.5 w-1/2 font-mono text-slate-655" />
+          </div>
+        </div>
+
+        <!-- Audit log records table -->
+        <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[9px]">
+                  <th class="p-3">Staff Operator</th>
+                  <th class="p-3">Action Type</th>
+                  <th class="p-3">System Module</th>
+                  <th class="p-3 w-[450px]">Activity Description</th>
+                  <th class="p-3 font-mono">Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="set-audit-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+                <!-- DYNAMIC -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal: Add Staff Member -->
+  <div id="set-staff-form-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-scale-up text-xs font-semibold text-slate-805 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider" id="staff-modal-title">Add Staff Member</h4>
+        <button type="button" id="close-set-staff-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <form id="set-staff-composer-form" class="p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Full Name *</label>
+          <input type="text" id="staff-form-name" required placeholder="e.g. Aliyu Bello" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Email Address *</label>
+          <input type="email" id="staff-form-email" required placeholder="e.g. aliyu@blueskyecity.com" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Role *</label>
+            <select id="staff-form-role" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+              <!-- DYNAMIC FROM ROLES DIRECTORY -->
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Status *</label>
+            <select id="staff-form-status" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+              <option value="Active">Active</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Temporary Invite Password *</label>
+          <input type="text" id="staff-form-pass" required placeholder="Generate custom/temp pass code..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+        </div>
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Save Staff Member</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Custom Role -->
+  <div id="set-role-form-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-850 rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-scale-up text-xs font-semibold text-slate-805 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider" id="role-modal-title">Create Custom Role</h4>
+        <button type="button" id="close-set-role-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <form id="set-role-composer-form" class="p-5 space-y-4">
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Role Title Name *</label>
+          <input type="text" id="role-form-name" required placeholder="e.g. Support Agent" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full" />
+        </div>
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Short Description *</label>
+          <input type="text" id="role-form-desc" required placeholder="e.g. Handle support inquiries conversation threads." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-normal" />
+        </div>
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Create Role</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+<!-- ====== END SECTION: settings-hub-template ====== -->

@@ -1,0 +1,160 @@
+<!-- ====== SECTION: invoices-list-template ====== -->
+<div data-section="invoices-list-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Invoices Registry Ledger</h3>
+        <p class="text-xs text-slate-500 mt-1">Audit customer purchase invoices, track balances, and download PDF statements.</p>
+      </div>
+      <button id="generate-manual-invoice-btn" class="bg-[#1e3a8a] text-white hover:bg-blue-800 transition-all px-3 py-2 rounded text-xs flex items-center gap-1 active:scale-98">
+        <i class="bx bx-plus text-sm"></i>
+        <span>Generate Manual Invoice</span>
+      </button>
+    </div>
+
+    <!-- Summary Metrics Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-file"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Total Invoiced Value</span>
+          <span class="text-sm font-black text-slate-800 dark:text-white truncate block" id="inv-metric-total">₦0</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-250 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-check-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Fully Paid Invoices</span>
+          <span class="text-sm font-black text-emerald-600 dark:text-emerald-450 truncate block" id="inv-metric-paid">0 Paid</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-250 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-loader"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Partially Paid</span>
+          <span class="text-sm font-black text-indigo-600 dark:text-indigo-400 truncate block" id="inv-metric-partial">0 Partial</span>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 p-3 rounded-lg shadow-sm flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-800 dark:text-rose-250 flex items-center justify-center text-sm flex-shrink-0">
+          <i class="bx bx-error-circle"></i>
+        </div>
+        <div class="min-w-0">
+          <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Unpaid Billings</span>
+          <span class="text-sm font-black text-rose-600 dark:text-rose-455 truncate block" id="inv-metric-unpaid">0 Unpaid</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full md:col-span-2">
+        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+          <i class="bx bx-search text-xs"></i>
+        </span>
+        <input type="text" id="inv-search-input" placeholder="Search customer, invoice ref or property..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5" />
+      </div>
+      
+      <select id="filter-inv-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-full">
+        <option value="all">All Invoices Status</option>
+        <option value="Unpaid">Unpaid</option>
+        <option value="Partially Paid">Partially Paid</option>
+        <option value="Fully Paid">Fully Paid</option>
+      </select>
+
+      <div class="flex gap-1 w-full md:col-span-3">
+        <input type="date" id="filter-inv-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-1/2" />
+        <input type="date" id="filter-inv-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 dark:text-white py-1.5 w-1/2" />
+      </div>
+    </div>
+
+    <!-- Invoices table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Invoice Date</th>
+              <th class="p-3">Invoice Number</th>
+              <th class="p-3">Customer details</th>
+              <th class="p-3">Property Asset</th>
+              <th class="p-3">Total Value</th>
+              <th class="p-3">Amount Paid</th>
+              <th class="p-3">Remaining Balance</th>
+              <th class="p-3">Status</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="invoices-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC ROWS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: invoices-list-template ====== -->
+
+<!-- ====== SECTION: invoice-form-template ====== -->
+<div data-section="invoice-form-template">
+  <div class="space-y-4 animate-fade-in max-w-lg mx-auto text-slate-855 dark:text-slate-200">
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Generate Manual Invoice</h3>
+        <p class="text-xs text-slate-500 mt-1">Issue ad-hoc billing statements not tied to standard catalog workflows.</p>
+      </div>
+      <button id="cancel-inv-form-btn" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-white px-3 py-1.5 rounded text-xs flex items-center gap-1 active:scale-98 font-bold">
+        <i class="bx bx-left-arrow-alt"></i>
+        <span>Back to List</span>
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-xl p-5 shadow-sm">
+      <form id="inv-creation-form" class="space-y-4">
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Select Customer Account *</label>
+          <select id="inv-form-customer" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full">
+            <option value="">-- Select Customer Account --</option>
+            <!-- DYNAMIC CUSTOMERS -->
+          </select>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Select Property Spec *</label>
+          <select id="inv-form-property" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 dark:text-white py-2 w-full">
+            <option value="">-- Select Property Asset --</option>
+            <!-- DYNAMIC PROPERTIES -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Total Invoice Value (₦) *</label>
+            <input type="number" id="inv-form-price" required placeholder="Agreed pricing amount" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-805 dark:text-white py-2 w-full font-bold" />
+          </div>
+          <div class="space-y-1">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Issue Date *</label>
+            <input type="date" id="inv-form-date" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-800 py-2 w-full font-mono" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wide">Invoice Payment terms</label>
+          <textarea id="inv-form-note" rows="2" placeholder="Specify deadlines, installment plan definitions..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-855 py-2 w-full"></textarea>
+        </div>
+
+        <div class="flex gap-2 justify-end pt-2 text-xs font-bold">
+          <button type="button" id="inv-form-cancel-btn" class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded text-slate-500 hover:bg-slate-50 active:scale-98">Cancel</button>
+          <button type="submit" class="bg-[#1e3a8a] text-white hover:bg-blue-800 px-5 py-2 rounded active:scale-98 flex items-center gap-1.5"><i class="bx bx-receipt text-sm"></i> Generate Invoice</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: invoice-form-template ====== -->

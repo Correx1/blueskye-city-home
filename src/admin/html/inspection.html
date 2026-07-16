@@ -1,0 +1,208 @@
+<!-- ====== SECTION: tour-bookings-template ====== -->
+<div data-section="tour-bookings-template">
+  <div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+    <!-- Header -->
+    <div class="border-b border-slate-200/20 pb-3 flex items-center justify-between">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Inspection Bookings</h3>
+        <p class="text-xs text-slate-500 mt-1">Manage scheduled client site visits, assign site managers, and log feedback reports.</p>
+      </div>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800 rounded-md p-3">
+      <div class="relative w-full">
+        <i class="bx bx-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs pointer-events-none"></i>
+        <input type="text" id="ins-search-input" placeholder="Search client name..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-855" />
+      </div>
+      
+      <select id="filter-ins-status" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-full">
+        <option value="all">All Statuses</option>
+        <option value="Pending">Pending Review</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+
+      <div class="flex gap-1 w-full md:col-span-2">
+        <input type="date" id="filter-ins-date-from" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2 font-mono" />
+        <input type="date" id="filter-ins-date-to" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-700 py-1.5 w-1/2 font-mono" />
+      </div>
+
+      <button id="clear-ins-filters-btn" class="px-3 py-1.5 bg-slate-100 dark:bg-slate-850 text-slate-600 dark:text-slate-300 rounded text-xs hover:bg-slate-200 border border-slate-200/40 active:scale-98 flex items-center justify-center gap-1 font-bold">
+        <i class="bx bx-x"></i> Clear
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+              <th class="p-3">Client details</th>
+              <th class="p-3">Property Interest</th>
+              <th class="p-3">Requested Date</th>
+              <th class="p-3">Booking Source</th>
+              <th class="p-3">Assigned Manager</th>
+              <th class="p-3">Status</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tour-bookings-table-body" class="divide-y divide-slate-100 dark:divide-slate-850">
+            <!-- DYNAMIC TOURS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking detail, reschedule & Cancel modal overlay -->
+  <div id="booking-detail-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-scale-up text-xs font-semibold text-slate-800 dark:text-slate-250">
+      
+      <!-- Modal header -->
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider">Site Inspection Details</h4>
+        <button type="button" id="close-booking-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <!-- Reconcile details -->
+        <div class="grid grid-cols-2 gap-3 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+          <div><span class="text-slate-400 block text-[9px] uppercase">Client Name</span><span id="detail-ins-name" class="font-bold text-slate-950 dark:text-white block mt-0.5"> Florence Nduka</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Property Interest</span><span id="detail-ins-property" class="font-bold text-slate-700 dark:text-slate-350 block mt-0.5"> Lekki properties</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Contact info</span><span id="detail-ins-contact" class="block mt-0.5"> florence@domain.com</span></div>
+          <div><span class="text-slate-400 block text-[9px] uppercase">Preferred Date</span><span id="detail-ins-date" class="font-mono block mt-0.5"> 2026-07-15</span></div>
+          <div class="col-span-2"><span class="text-slate-400 block text-[9px] uppercase">Requester Notes</span><p id="detail-ins-notes" class="text-slate-500 font-normal mt-0.5 leading-relaxed bg-slate-50 dark:bg-slate-955 p-2 rounded border border-slate-200/10">Client wants a physical mapping guide of plot allocation details.</p></div>
+        </div>
+
+        <!-- Confirm assign manager step form -->
+        <div id="section-ins-confirm" class="space-y-3 p-3 bg-blue-500/5 rounded-lg border border-blue-500/15 hidden animate-fade-in">
+          <span class="text-[10px] font-bold text-blue-650 dark:text-blue-400 uppercase tracking-wider block">Confirm &amp; Assign Manager</span>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Assign Site Manager *</label>
+              <select id="ins-confirm-manager" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full">
+                <!-- DYNAMIC MANAGERS LIST -->
+              </select>
+            </div>
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Final date &amp; Time *</label>
+              <input type="datetime-local" id="ins-confirm-datetime" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full font-mono" />
+            </div>
+          </div>
+          <button type="button" id="btn-confirm-booking-submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Confirm Booking Registry</button>
+        </div>
+
+        <!-- Reschedule step form -->
+        <div id="section-ins-reschedule" class="space-y-3 p-3 bg-amber-500/5 rounded-lg border border-amber-500/15 hidden animate-fade-in">
+          <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">Reschedule Site Visit</span>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Proposed Date &amp; Time *</label>
+            <input type="datetime-local" id="ins-reschedule-datetime" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full font-mono" />
+          </div>
+          <button type="button" id="btn-reschedule-booking-submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 rounded active:scale-98">Save Reschedule</button>
+        </div>
+
+        <!-- Cancel step form -->
+        <div id="section-ins-cancel" class="space-y-3 p-3 bg-rose-500/5 rounded-lg border border-rose-500/15 hidden animate-fade-in">
+          <span class="text-[10px] font-bold text-rose-555 uppercase tracking-wider block">Cancel Booking</span>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-455 uppercase">Reason for Cancellation *</label>
+            <textarea id="ins-cancel-reason" rows="2" placeholder="Detail reason for cancellation..." class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full font-normal"></textarea>
+          </div>
+          <button type="button" id="btn-cancel-booking-submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded active:scale-98">Submit Cancellation</button>
+        </div>
+
+        <!-- Post-Inspection report form -->
+        <div id="section-ins-post-report" class="space-y-3 p-3 bg-emerald-500/5 rounded-lg border border-emerald-500/15 hidden animate-fade-in">
+          <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Post-Inspection Feedback Report</span>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase block mb-1">Attendance Status *</label>
+              <div class="flex gap-4 items-center h-8">
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="ins-post-attended" value="Attended" checked class="text-emerald-600 focus:ring-0" />
+                  <span>Attended</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input type="radio" name="ins-post-attended" value="No-show" class="text-emerald-600 focus:ring-0" />
+                  <span>No-show</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-455 uppercase">Prospect Lead Status *</label>
+              <select id="ins-post-lead" class="form-input text-xs bg-white dark:bg-slate-950 py-1.5 w-full">
+                <option value="Hot">🔥 Hot (Ready to Buy)</option>
+                <option value="Warm">⚡ Warm (Considering)</option>
+                <option value="Cold">❄️ Cold (Uninterested)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-455 uppercase">Customer Feedback Comments *</label>
+            <textarea id="ins-post-feedback" rows="2" placeholder="Record customer remarks, concerns, plots preferences..." class="form-input text-xs bg-white dark:bg-slate-955 py-1.5 w-full font-normal"></textarea>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-455 uppercase">Internal Notes</label>
+            <textarea id="ins-post-notes" rows="1" placeholder="e.g. Needs document follow-up by email..." class="form-input text-xs bg-white dark:bg-slate-955 py-1.5 w-full font-normal"></textarea>
+          </div>
+
+          <button type="button" id="btn-post-report-submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded active:scale-98">Submit Report Logs</button>
+        </div>
+
+        <!-- Actions routing row -->
+        <div id="booking-actions-row" class="flex gap-2 justify-end pt-2 border-t border-slate-100 dark:border-slate-850/60">
+          <button type="button" id="act-confirm-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded active:scale-98">Schedule &amp; Confirm</button>
+          <button type="button" id="act-reschedule-btn" class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded active:scale-98">Reschedule</button>
+          <button type="button" id="act-complete-btn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded active:scale-98">Mark Completed</button>
+          <button type="button" id="act-cancel-btn" class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded active:scale-98">Cancel Booking</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: tour-bookings-template ====== -->
+
+<!-- ====== SECTION: inspections-calendar-template ====== -->
+<div data-section="inspections-calendar-template">
+  <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl p-5 shadow-sm animate-fade-in text-slate-800 dark:text-slate-200 space-y-4">
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-850 pb-3 flex-wrap gap-2">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Inspections calendar view</h3>
+        <p class="text-xs text-slate-500 mt-1">Visually track all scheduled plot tours. Color-scoped by lead status.</p>
+      </div>
+      
+      <!-- Role Scoping toggle -->
+      <div class="flex items-center gap-2 text-xs font-semibold">
+        <label class="flex items-center gap-1.5 cursor-pointer">
+          <input type="checkbox" id="cal-filter-my-inspections" class="rounded text-[#1e3a8a] focus:ring-0 w-4 h-4" />
+          <span>Show My Assigned Only</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Calendar View grid -->
+    <div class="grid grid-cols-7 gap-2 text-center text-xs font-semibold">
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Sun</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Mon</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Tue</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Wed</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Thu</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Fri</span>
+      <span class="text-slate-400 py-1 bg-slate-50 dark:bg-slate-955 rounded">Sat</span>
+      
+      <!-- Dynamic calendar grids -->
+      <div id="calendar-days-grid" class="contents"></div>
+    </div>
+  </div>
+</div>
+<!-- ====== END SECTION: inspections-calendar-template ====== -->

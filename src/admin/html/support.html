@@ -1,0 +1,234 @@
+<div class="space-y-4 animate-fade-in text-slate-800 dark:text-slate-200">
+  <!-- Header Controls -->
+  <div class="border-b border-slate-200/20 pb-3 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h3 class="text-sm font-black uppercase tracking-wider text-slate-900 dark:text-white">Support &amp; Helpdesk Console</h3>
+      <p class="text-xs text-slate-500 mt-1">Manage client conversation threads, priority tiers, and public FAQs directories.</p>
+    </div>
+    
+    <div class="border-b border-slate-200/20 flex gap-4 text-xs font-bold mr-4" id="support-subtabs-nav">
+      <button data-support-subtab="inbox" class="pb-1.5 border-b-2 border-blue-600 text-blue-600 font-display uppercase tracking-wider" id="btn-support-inbox-tab">Ticket Inbox</button>
+      <button data-support-subtab="faqs" class="pb-1.5 border-b-2 border-transparent text-slate-400 hover:text-slate-655 font-display uppercase tracking-wider" id="btn-support-faqs-tab">FAQ Management</button>
+    </div>
+  </div>
+
+  <!-- VIEWPORT A: TICKET INBOX (TWO-PANE CONSOLE) -->
+  <div id="viewport-support-inbox" class="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[65vh]">
+    
+    <!-- LEFT PANE: Ticket List catalog (4 cols) -->
+    <div class="lg:col-span-5 bg-white dark:bg-slate-900 border border-slate-200/55 dark:border-slate-800 rounded-xl flex flex-col overflow-hidden shadow-sm h-full">
+      <!-- Search & Status filter tabs -->
+      <div class="p-3 border-b border-slate-100 dark:border-slate-850 space-y-2.5">
+        <div class="relative">
+          <i class="bx bx-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="ticket-search-input" placeholder="Search requester or subject..." class="w-full form-input text-xs pl-8 bg-slate-50 dark:bg-slate-955 py-1.5 text-slate-850" />
+        </div>
+
+        <!-- Inner Status Tab Filters -->
+        <div class="flex gap-2 border-b border-slate-100 dark:border-slate-850 pb-1 text-[11px] font-bold uppercase text-slate-400" id="ticket-status-nav">
+          <button data-ticket-status-tab="all" class="pb-1 border-b-2 border-indigo-600 text-indigo-650" id="btn-tkt-status-all">All</button>
+          <button data-ticket-status-tab="Open" class="pb-1 border-b-2 border-transparent hover:text-slate-700" id="btn-tkt-status-open">Open</button>
+          <button data-ticket-status-tab="Pending" class="pb-1 border-b-2 border-transparent hover:text-slate-700" id="btn-tkt-status-pending">Pending</button>
+          <button data-ticket-status-tab="Resolved" class="pb-1 border-b-2 border-transparent hover:text-slate-700" id="btn-tkt-status-resolved">Resolved</button>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="grid grid-cols-3 gap-1 text-[10px] font-bold">
+          <select id="filter-ticket-source" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full text-slate-655 font-semibold">
+            <option value="all">Sources</option>
+            <option value="Customer Portal">Customer Portal</option>
+            <option value="Affiliate Portal">Affiliate Portal</option>
+            <option value="Public Contact Form">Public Contact Form</option>
+          </select>
+
+          <select id="filter-ticket-priority" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full text-slate-655 font-semibold">
+            <option value="all">Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+          </select>
+
+          <select id="filter-ticket-staff" class="form-input text-[10px] bg-slate-50 dark:bg-slate-955 py-1 w-full text-slate-655 font-semibold">
+            <option value="all">Staff Assigned</option>
+            <option value="Amina Bello">Amina Bello</option>
+            <option value="Aliyu Bello">Aliyu Bello</option>
+            <option value="Unassigned">Unassigned</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Ticket Rows scroll list -->
+      <div id="ticket-list-container" class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-850">
+        <!-- DYNAMIC TICKETS -->
+      </div>
+    </div>
+
+    <!-- RIGHT PANE: Selected Thread conversation details (7 cols) -->
+    <div class="lg:col-span-7 bg-white dark:bg-slate-900 border border-slate-200/55 dark:border-slate-800 rounded-xl flex flex-col overflow-hidden shadow-sm h-full relative" id="ticket-detail-pane">
+      <!-- Select message placeholder if no ticket loaded -->
+      <div id="ticket-detail-placeholder" class="flex-1 flex flex-col items-center justify-center p-6 text-center text-slate-400">
+        <i class="bx bx-conversation text-4xl text-slate-300 mb-2"></i>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-450">No ticket selected</h4>
+        <p class="text-[10px] text-slate-400 mt-1 max-w-xs">Select a conversation thread from the left index catalog pane to view correspondence details.</p>
+      </div>
+
+      <!-- Live Ticket detail viewport container (hidden if no ticket loaded) -->
+      <div id="ticket-detail-viewport" class="flex-1 flex flex-col h-full hidden">
+        <!-- Client info Header -->
+        <div class="p-4 border-b border-slate-100 dark:border-slate-850 bg-slate-50/50 dark:bg-slate-955/30 flex items-center justify-between flex-wrap gap-2 text-xs font-semibold">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-slate-900 dark:text-white" id="tkt-det-name"> Florence Nduka </span>
+              <span id="tkt-det-profile-badge-link" class="text-blue-650 hover:underline cursor-pointer flex items-center text-[10px] font-bold"><i class="bx bx-link-external mr-0.5"></i> Profile</span>
+            </div>
+            <span class="block text-[10px] text-slate-450 mt-0.5" id="tkt-det-contacts"> florence@domain.com • +23480392348 </span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-tkt-mark-resolved" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-1 px-2.5 rounded text-[10px] active:scale-98 flex items-center gap-1"><i class="bx bx-check-circle text-xs"></i> Resolve</button>
+            <button id="btn-tkt-close" class="bg-slate-205 hover:bg-slate-300 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-1 px-2.5 rounded text-[10px] active:scale-98 flex items-center gap-1"><i class="bx bx-block text-xs"></i> Close</button>
+          </div>
+        </div>
+
+        <!-- Thread & Metadata side-by-side flex split -->
+        <div class="flex-1 flex overflow-hidden">
+          <!-- Main Chat body (oldest to newest thread list) -->
+          <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Messages timeline -->
+            <div id="tkt-messages-timeline" class="flex-1 overflow-y-auto p-4 space-y-3.5 bg-slate-50/20 dark:bg-slate-950/10">
+              <!-- DYNAMIC CHAT BUBBLES -->
+            </div>
+
+            <!-- Composer editor bottom pane -->
+            <div class="p-3 border-t border-slate-100 dark:border-slate-850 bg-white dark:bg-slate-900 flex flex-col gap-2">
+              <textarea id="tkt-reply-body" rows="2.5" placeholder="Write customer-facing reply message..." class="w-full form-input text-xs bg-slate-50 dark:bg-slate-950 text-slate-850 p-2 leading-relaxed resize-none"></textarea>
+              <div class="flex justify-between items-center text-[10px] text-slate-400 font-semibold">
+                <span>Shift+Enter to add paragraphs.</span>
+                <button id="btn-tkt-send-reply" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1 px-3 rounded text-xs active:scale-98">Send Reply</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metadata Right side Panel (width 52, collapsible/scrollable) -->
+          <div class="w-56 border-l border-slate-100 dark:border-slate-850 p-4 space-y-4 overflow-y-auto bg-slate-50/10 dark:bg-slate-950/20 text-xs font-semibold text-slate-850 dark:text-slate-200">
+            <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-slate-850 pb-1 flex items-center gap-1"><i class="bx bx-info-circle text-xs"></i> Ticket Metadata</h4>
+
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Ticket Status</label>
+              <select id="tkt-meta-status" class="form-input text-xs bg-white dark:bg-slate-955 text-slate-850 py-1.5 w-full">
+                <option value="Open">Open</option>
+                <option value="Pending">Pending</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Priority Tier</label>
+              <select id="tkt-meta-priority" class="form-input text-xs bg-white dark:bg-slate-955 text-slate-850 py-1.5 w-full">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+
+            <div class="space-y-1">
+              <label class="text-[9px] font-bold text-slate-450 uppercase">Staff Assigned</label>
+              <select id="tkt-meta-staff" class="form-input text-xs bg-white dark:bg-slate-955 text-slate-850 py-1.5 w-full">
+                <option value="Unassigned">Unassigned</option>
+                <option value="Amina Bello">Amina Bello</option>
+                <option value="Aliyu Bello">Aliyu Bello</option>
+              </select>
+            </div>
+
+            <!-- Internal Staff Notes (visually distinct: yellow background box) -->
+            <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-850/60">
+              <label class="text-[9px] font-bold text-slate-450 uppercase flex items-center gap-1"><i class="bx bxs-pin text-amber-500"></i> Internal Staff Notes</label>
+              <div class="bg-amber-500/10 border border-amber-500/20 text-amber-900 dark:text-amber-300 p-2.5 rounded-lg text-[10px] space-y-2">
+                <div id="tkt-meta-internal-note-content" class="italic leading-relaxed font-light min-h-[40px]">
+                  No internal logs on this ticket yet.
+                </div>
+                <textarea id="tkt-meta-internal-note-textarea" rows="2" placeholder="Write internal team notes here..." class="w-full border-0 focus:ring-0 p-1.5 bg-white dark:bg-slate-955 text-slate-850 rounded text-[10px] font-normal leading-normal shadow-xs"></textarea>
+                <div class="flex justify-end">
+                  <button id="btn-tkt-save-internal-note" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-2 py-0.5 rounded text-[9px]">Save note</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEWPORT B: FAQ MANAGEMENT -->
+  <div id="viewport-support-faqs" class="hidden animate-fade-in space-y-4 text-xs font-semibold">
+    <div class="flex justify-between items-center">
+      <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Public FAQs Catalog Database</span>
+      <button id="btn-support-add-faq" class="bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-1.5 px-3 rounded text-xs active:scale-98 flex items-center gap-1">
+        <i class="bx bx-plus text-sm"></i> Add FAQ Entry
+      </button>
+    </div>
+
+    <!-- FAQ list Table -->
+    <div class="bg-white dark:bg-slate-900 border border-slate-200/20 rounded-xl overflow-hidden shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="bg-slate-50 dark:bg-slate-955 border-b border-slate-200/20 text-slate-450 uppercase tracking-wider font-semibold text-[9px]">
+              <th class="p-3">Display Order</th>
+              <th class="p-3">Category Title</th>
+              <th class="p-3 w-[300px]">Question Text</th>
+              <th class="p-3 w-[400px]">Answer Description</th>
+              <th class="p-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="support-faqs-tbody" class="divide-y divide-slate-100 dark:divide-slate-850 text-sm font-semibold">
+            <!-- DYNAMIC FAQS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit FAQ Modal Form Overlay -->
+  <div id="support-faq-form-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center hidden p-4">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl w-full max-w-lg overflow-hidden animate-scale-up text-xs font-semibold text-slate-800 dark:text-slate-200">
+      <div class="bg-[#1e3a8a] text-white px-5 py-4 flex items-center justify-between">
+        <h4 class="text-xs font-bold uppercase tracking-wider" id="faq-modal-title">Create FAQ Entry</h4>
+        <button type="button" id="close-support-faq-modal-btn" class="text-white/80 hover:text-white text-xl"><i class="bx bx-x"></i></button>
+      </div>
+      <form id="support-faq-composer-form" class="p-5 space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">FAQ Category *</label>
+            <select id="faq-form-category" required class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full">
+              <option value="Purchasing Land">Purchasing Land</option>
+              <option value="Affiliates & Commission">Affiliates &amp; Commission</option>
+              <option value="Site Inspection Tours">Site Inspection Tours</option>
+              <option value="Installments Payments">Installments Payments</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[9px] font-bold text-slate-450 uppercase">Display Sequence Order *</label>
+            <input type="number" id="faq-form-order" required min="1" placeholder="e.g. 1" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2 w-full font-mono" />
+          </div>
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Question Text *</label>
+          <input type="text" id="faq-form-question" required placeholder="e.g. How long does the land allocation process take?" class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 py-2.5 w-full" />
+        </div>
+
+        <div class="space-y-1">
+          <label class="text-[9px] font-bold text-slate-450 uppercase">Answer description content *</label>
+          <textarea id="faq-form-answer" required rows="5" placeholder="Write FAQ answer narrative content details here..." class="form-input text-xs bg-slate-50 dark:bg-slate-955 text-slate-850 p-2.5 w-full leading-relaxed font-normal"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold py-2 rounded active:scale-98">Save FAQ Entry</button>
+      </form>
+    </div>
+  </div>
+
+</div>

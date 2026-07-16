@@ -44,9 +44,17 @@ import orderWizardModalHtml from './components/order-wizard-modal.html?raw';
 import privacyHtml from './components/privacy-view.html?raw';
 import termsHtml from './components/terms-view.html?raw';
 
-// --- Admin Dashboard Template ---
+// --- Admin Dashboard Layout Template ---
 import adminHtml from './admin/admin-view.html?raw';
 import { renderAdminTabContent, bindAdminTabListeners } from './admin/admin-subviews.js';
+
+// --- Customer Portal Layout Template ---
+import customerHtml from './customer/customer-view.html?raw';
+import { renderCustomerPortal, bindCustomerListeners, ensureCustomerState } from './customer/js/customer.js';
+
+// --- Affiliate Portal Layout Template ---
+import affiliatePortalHtml from './affiliate/affiliate-view.html?raw';
+import { renderAffiliatePortal, bindAffiliateListeners, ensureAffiliateState } from './affiliate/js/affiliate.js';
 
 
 
@@ -108,6 +116,32 @@ const state = {
     city: 'all',
     status: 'all'
   },
+  customer: {
+    isAuthenticated: false,
+    activeTab: 'dashboard',
+    authSubTab: 'login',
+    profile: {
+      name: 'Olumide Alao',
+      email: 'client@blueskye.com',
+      phone: '+234 812 559 4832',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      activePropertiesCount: 1,
+      kycStatus: 'Verified'
+    }
+  },
+  affiliate: {
+    isAuthenticated: false,
+    activeTab: 'dashboard',
+    profile: {
+      name: 'Jane Yusuf Alao',
+      email: 'partner@blueskye.com',
+      phone: '+234 809 123 4567',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&q=80',
+      affiliate_type: 'Strategic Partner',
+      commission_rate: 20,
+      kycStatus: 'Pending'
+    }
+  },
   admin: {
     isAuthenticated: true,
     activeTab: 'overview',
@@ -117,6 +151,7 @@ const state = {
       sales: false,
       partners: false,
       finance: false,
+      billing: false,
       inspections: false,
       staff: false,
       blog: false,
@@ -140,9 +175,78 @@ const state = {
       { id: 1, clientName: 'Jane Doe', email: 'jane@domain.com', propertyTitle: 'Magnolia Diplomat Mansion', price: 850000000, formattedPrice: '₦850,000,000', plan: 'Outright', date: '2026-07-07', status: 'Pending Downpayment', paidAmount: 0 },
       { id: 2, clientName: 'Amina Yusuf', email: 'amina@domain.com', propertyTitle: 'Serene Serviced Plot', price: 150000000, formattedPrice: '₦150,000,000', plan: '6-Month Installment', date: '2026-07-05', status: 'Active Installments', paidAmount: 50000000 }
     ],
+    paymentsLog: [
+      { id: 101, saleId: 2, clientName: 'Amina Yusuf', propertyTitle: 'Serene Serviced Plot', amount: 50000000, date: '2026-07-05', channel: 'Bank Transfer', reference: 'TXN-998877', note: 'Initial deposit payment', status: 'Confirmed', proofUrl: '' },
+      { id: 102, saleId: 1, clientName: 'Jane Doe', propertyTitle: 'Magnolia Diplomat Mansion', amount: 150000000, date: '2026-07-11', channel: 'Bank Transfer', reference: 'TXN-887766', note: 'Downpayment proof uploaded', status: 'Pending Confirmation', proofUrl: 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=400&q=80' }
+    ],
+    invoicesLog: [
+      { id: 201, invoiceRef: 'INV-0001', saleId: 1, clientName: 'Jane Doe', email: 'jane@domain.com', propertyTitle: 'Magnolia Diplomat Mansion', date: '2026-07-07', price: 850000000, paid: 0, balance: 850000000, status: 'Unpaid', notes: 'Outright sale invoice.' },
+      { id: 202, invoiceRef: 'INV-0002', saleId: 2, clientName: 'Amina Yusuf', email: 'amina@domain.com', propertyTitle: 'Serene Serviced Plot', date: '2026-07-05', price: 150000000, paid: 50000000, balance: 100000000, status: 'Partially Paid', notes: 'Installment sale invoice.' }
+    ],
     referralsList: [
-      { id: 1, name: 'Obinna Diala', email: 'obinna@partner.com', phone: '+2347065554433', status: 'Approved', code: 'SKY-OBIN-99', clicks: 245, sales: 3, earned: 45000000 },
-      { id: 2, name: 'Fatima Bello', email: 'fatima@partner.com', phone: '+2349032221100', status: 'Pending Review', code: 'SKY-FATI-12', clicks: 89, sales: 0, earned: 0 }
+      {
+        id: 1,
+        name: 'Obinna Diala',
+        email: 'obinna@partner.com',
+        phone: '+2347065554433',
+        status: 'Approved',
+        code: 'SKY-OBIN-99',
+        clicks: 245,
+        sales: 3,
+        earned: 45000000,
+        balance: 15000000,
+        isActive: true,
+        uplineId: null,
+        kycDocs: { passportUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80', utilityUrl: 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=150&q=80' },
+        bankDetails: { bankName: 'Zenith Bank PLC', accountNum: '1022345678', accountName: 'Obinna Diala', status: 'Approved' },
+        commissionHistory: [
+          { id: 401, saleRef: 'SKY-SALE-0002', clientName: 'Amina Yusuf', type: 'Direct (10%)', amount: 15000000, date: '2026-07-05' },
+          { id: 402, saleRef: 'SKY-SALE-0004', clientName: 'Sarah Lawson', type: 'Indirect Gen 2 (5%)', amount: 30000000, date: '2026-07-08' }
+        ],
+        payoutsList: [
+          { id: 501, amount: 15000000, date: '2026-07-07', status: 'Pending Release', bankName: 'Zenith Bank PLC', accountNum: '1022345678' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Fatima Bello',
+        email: 'fatima@partner.com',
+        phone: '+2349032221100',
+        status: 'Pending Review',
+        code: 'SKY-FATI-12',
+        clicks: 89,
+        sales: 0,
+        earned: 0,
+        balance: 0,
+        isActive: true,
+        uplineId: 1,
+        kycDocs: { passportUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80', utilityUrl: '' },
+        bankDetails: { bankName: 'Access Bank PLC', accountNum: '0033445566', accountName: 'Fatima Bello', status: 'Pending' },
+        commissionHistory: [],
+        payoutsList: []
+      },
+      {
+        id: 3,
+        name: 'Kelechi Nnamdi',
+        email: 'kelechi@partner.com',
+        phone: '+2348033322111',
+        status: 'Approved',
+        code: 'SKY-KELE-44',
+        clicks: 120,
+        sales: 1,
+        earned: 15000000,
+        balance: 5000000,
+        isActive: true,
+        uplineId: 1,
+        kycDocs: { passportUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80', utilityUrl: 'https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=150&q=80' },
+        bankDetails: { bankName: 'GTBank PLC', accountNum: '0112233445', accountName: 'Kelechi Nnamdi', status: 'Approved' },
+        commissionHistory: [
+          { id: 403, saleRef: 'SKY-SALE-0004', clientName: 'Sarah Lawson', type: 'Direct (10%)', amount: 15000000, date: '2026-07-08' }
+        ],
+        payoutsList: [
+          { id: 502, amount: 10000000, date: '2026-07-09', status: 'Cleared & Released', bankName: 'GTBank PLC', accountNum: '0112233445' }
+        ]
+      }
     ],
     contactMessages: [
       { id: 1, name: 'Emeka Okafor', email: 'emeka@gmail.com', message: 'I want to know if there is a payment flexible plan for Eko Atlantic duplex.', date: '2026-07-07' },
@@ -228,6 +332,14 @@ const routes = {
   'admin': {
     title: 'Admin Console | Blueskye City Home',
     description: 'Internal console for property management, customer audits, commission payouts, and settings.'
+  },
+  'customer': {
+    title: 'Customer Portal | Blueskye City Home',
+    description: 'Manage your property portfolios, check payment status ledger, and submit KYC documents.'
+  },
+  'affiliate-portal': {
+    title: 'Affiliate Portal Console | Blueskye City Home',
+    description: 'Track commission overrides, manage downlines network hierarchy, and trigger withdrawals.'
   }
 };
 
@@ -282,7 +394,7 @@ function init() {
   });
 
   // Initialize Projects database with site photos and unique titles
-  projects.forEach((proj) => {
+  projects.forEach((proj, idx) => {
     const baseImages = [...(proj.images || [])];
     
     // Add 3 site logging photos
@@ -299,6 +411,35 @@ function init() {
       "Actual Site: Foundation & Piling Log",
       "Actual Site: Concrete Superstructure Shell",
       "Actual Site: Structural Inspection Log"
+    ];
+    
+    // Additional parameters for admin projects module
+    proj.totalPlots = 40 + (idx * 5);
+    proj.availablePlots = 10 + (idx * 3);
+    
+    // Stage based on current progress
+    if (proj.progress === 100) proj.stage = 'Completed';
+    else if (proj.progress >= 80) proj.stage = 'Finishes';
+    else if (proj.progress >= 45) proj.stage = 'Superstructure';
+    else if (proj.progress >= 15) proj.stage = 'Foundation';
+    else proj.stage = 'Pre-Launch';
+
+    proj.siteManager = idx % 2 === 0 ? 'Aliyu Bello' : 'Chidi Egwu';
+    
+    // Initial reports list
+    proj.reports = [
+      {
+        id: 1,
+        date: "2026-07-05",
+        author: proj.siteManager,
+        milestone: proj.stage,
+        progress: proj.progress,
+        text: `Logged project activity for ${proj.title}. The site development phase is currently moving along standard estimates. Heavy civil materials have been fully checked in and construction teams are deployed.`,
+        images: [baseImages[3] || baseImages[0]],
+        comments: [
+          { author: "Amina Bello", date: "2026-07-06 10:15", text: "Approved. Ready for the milestone escrow payment release request." }
+        ]
+      }
     ];
   });
 
@@ -491,7 +632,7 @@ function renderApp() {
   const footer = document.querySelector('footer');
   const mainContent = document.querySelector('#main-content');
 
-  if (state.activeRoute === 'admin') {
+  if (state.activeRoute === 'admin' || state.activeRoute === 'customer' || state.activeRoute === 'affiliate-portal') {
     if (navbar) navbar.classList.add('hidden');
     if (footer) footer.classList.add('hidden');
     if (mainContent) {
@@ -507,6 +648,14 @@ function renderApp() {
 
   if (mainContent) {
     mainContent.innerHTML = renderActiveView();
+  }
+  
+  if (state.activeRoute === 'customer') {
+    bindCustomerListeners(state, mainContent, renderApp);
+  }
+  
+  if (state.activeRoute === 'affiliate-portal') {
+    bindAffiliateListeners(state, mainContent, renderApp);
   }
   
   // Sync filter fields if active route is properties
@@ -624,7 +773,6 @@ function renderApp() {
 
   // Dynamic updates for modals
   updateComparisonDrawer();
-  updateDetailModal();
   
   // Run Lucide icons
   if (window.lucide) {
@@ -727,6 +875,10 @@ function renderActiveView() {
       return termsHtml;
     case 'admin':
       return adminHtml;
+    case 'customer':
+      return renderCustomerPortal(state);
+    case 'affiliate-portal':
+      return renderAffiliatePortal(state);
     default:
       return HomeViewTemplate();
   }
@@ -790,14 +942,11 @@ function getTabFriendlyTitle(tabName) {
   switch (tabName) {
     case 'overview': return 'Overview Dashboard';
     case 'properties-list': return 'Properties List';
-    case 'properties-projects': return 'Development Projects';
-    case 'properties-track': return 'Track Construction';
+    case 'projects-list': return 'Development Projects';
+    case 'projects-add': return 'Manage Project Form';
+    case 'projects-reports': return 'Project Progress Reports';
     case 'properties-mapping': return 'Land Plot Mapping';
-    case 'customers-list': return 'Customers Directory';
-    case 'customers-kyc': return 'Customer KYC Management';
-    case 'customers-access': return 'Portal Access Controls';
-    case 'customers-docs': return 'Upload Land Documents';
-    case 'customers-notes': return 'Customer Notes';
+    case 'customers': return 'Customer Database';
     case 'clients-bookings': return 'Tour Bookings';
     case 'clients-messages': return 'Contact Messages';
     case 'sales-list': return 'Sales Catalog';
